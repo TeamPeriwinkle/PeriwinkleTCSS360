@@ -1,10 +1,10 @@
 package tcss360.diybuilder.SystemControl;
 import java.io.*;
-import java.util.HashMap;
+
 import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import tcss360.diybuilder.models.Person;
+import tcss360.diybuilder.models.User;
 
 public class UserController {
 
@@ -41,11 +41,11 @@ public class UserController {
 
     }
     //returns a user object from the collected data
-    public Person getUserObject(String key)
+    public User getUserObject(String key)
     {
        JSONObject users = (JSONObject) data.get("users");
        JSONObject user = (JSONObject) users.get(key);
-       Person temp = new Person((String)user.get("username") ,  (String)user.get("email"));
+       User temp = new User((String)user.get("username") ,  (String)user.get("email"));
        return temp;
     }
         //check to see if username is already exists
