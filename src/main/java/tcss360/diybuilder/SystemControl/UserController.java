@@ -6,6 +6,11 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import tcss360.diybuilder.models.User;
 
+/**
+ * User Controller Class.
+ * @author Alex Garcia
+ */
+
 public class UserController {
 
     //initially will be loaded with users held in a json file

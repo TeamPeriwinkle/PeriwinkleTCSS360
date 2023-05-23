@@ -25,6 +25,7 @@ public class AppTest
 
     /**
      * read data from json file
+     *  @author Alex Garcia
      */
     @Test
     public void readinusers(){
@@ -34,6 +35,7 @@ public class AppTest
 
     /**
      * read data from json file and generate a User object
+     * @Author Alex Garcia
      */
     @Test
     public void createUser(){
@@ -51,6 +53,7 @@ public class AppTest
 
     /**
      * Export and import a user Object for Iteration 2(serialize and deserialize)
+     * @author Alex Garcia
      */
     @Test
     public void iteration2Test() throws IOException, ClassNotFoundException {

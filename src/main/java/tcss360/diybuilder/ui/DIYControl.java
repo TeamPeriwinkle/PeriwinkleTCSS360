@@ -9,7 +9,10 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-
+/**
+ * Login and Sign Up UI.
+ * @author Soe Lin
+ */
 public class DIYControl extends JFrame {
 
     private JLabel titleLabel;
