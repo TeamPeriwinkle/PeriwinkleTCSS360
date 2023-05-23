@@ -1,4 +1,6 @@
 package tcss360.diybuilder.ui;
+import tcss360.diybuilder.models.User;
+
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -6,6 +8,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -25,17 +28,21 @@ public class About extends JFrame {
     private String username;
     private String email;
     private JPanel myPanel;
+    private User user;
 
     public About(String theName, String theEmail) {
         super("DIYControl");
         username = theName;
         email = theEmail;
         myPanel = new JPanel();
+        user = new User(username, email);
     }
 
     public void display() {
+
+
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(400, 400);
+        this.setSize(600, 600);
         this.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -57,6 +64,44 @@ public class About extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 2;
         this.add(backButton, gbc);
+
+        JButton exportButton = new JButton("Export");
+        JButton importButton = new JButton("Import");
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        this.add(importButton, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        this.add(exportButton, gbc);
+
+        importButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                try {
+                    user.deserialize();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                } catch (ClassNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+            }
+        });
+
+        exportButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                try {
+                    user.serialize();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+            }
+        });
+
 
         JLabel line0 = new JLabel("Version Number:" + VERSIONNUMBER);
         JLabel line1 = new JLabel("This app is registered to: " + username);

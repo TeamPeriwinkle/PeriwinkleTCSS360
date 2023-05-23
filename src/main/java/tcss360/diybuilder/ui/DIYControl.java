@@ -1,5 +1,7 @@
 package tcss360.diybuilder.ui;
 import tcss360.diybuilder.SystemControl.UserController;
+import tcss360.diybuilder.models.User;
+
 import javax.swing.*;
 
 import java.awt.*;
