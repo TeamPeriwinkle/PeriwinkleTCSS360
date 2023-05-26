@@ -8,6 +8,7 @@ import tcss360.diybuilder.SystemControl.UserController;
 import tcss360.diybuilder.models.User;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 /**
  * Unit test for simple App.
@@ -28,7 +29,7 @@ public class AppTest
      *  @author Alex Garcia
      */
     @Test
-    public void readinusers(){
+    public void readinusers() throws URISyntaxException {
         UserController controller = new UserController();
         //System.out.println(controller.data.get("users"));
     }
@@ -38,7 +39,7 @@ public class AppTest
      * @Author Alex Garcia
      */
     @Test
-    public void createUser(){
+    public void createUser() throws URISyntaxException {
         UserController controller = new UserController();
         User me = controller.getUserObject("alexg123");
         String expectedName = "alexg123";

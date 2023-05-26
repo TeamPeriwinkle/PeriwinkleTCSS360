@@ -11,6 +11,8 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URISyntaxException;
+
 /**
  * Login and Sign Up UI.
  * @author Soe Lin
@@ -103,7 +105,12 @@ public class DIYControl extends JFrame {
                 if (username.compareTo("") == 0 || password.compareTo("") == 0) {
                     JOptionPane.showMessageDialog(getParent(), "Please enter your Username and Password.");
                 } else {
-                    UserController uController = new UserController();
+                    UserController uController = null;
+                    try {
+                        uController = new UserController();
+                    } catch (URISyntaxException ex) {
+                        ex.printStackTrace();
+                    }
                     if (uController.checkCredentials(username, password)) {
                         dispose();
                         JOptionPane.showMessageDialog(getParent(),
@@ -177,7 +184,12 @@ public class DIYControl extends JFrame {
                             "Please enter your Username, Email Address, and Password.", "DIYControl",
                             JOptionPane.WARNING_MESSAGE);
                 } else {
-                    UserController uController = new UserController();
+                    UserController uController = null;
+                    try {
+                        uController = new UserController();
+                    } catch (URISyntaxException ex) {
+                        ex.printStackTrace();
+                    }
                     if (uController.checkUsername(username)) {
                         JOptionPane.showMessageDialog(getParent(), "Username already exists. Please try again.");
                     } else {
