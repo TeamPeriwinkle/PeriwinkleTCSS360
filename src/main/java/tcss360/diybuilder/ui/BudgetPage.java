@@ -5,23 +5,12 @@ package tcss360.diybuilder.ui;
  * @author Soe Lin
  */
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import tcss360.diybuilder.*;
 import tcss360.diybuilder.SystemControl.BudgetController;
 import tcss360.diybuilder.SystemControl.TaskController;
 import tcss360.diybuilder.models.Budget;
@@ -81,6 +70,7 @@ public class BudgetPage extends JFrame {
                 return false; // Make all cells read-only
             }
         };
+        categoryTable.setFocusable(false);
         categoryTable.setCellSelectionEnabled(false);
         JScrollPane categoryScrollPane = new JScrollPane(categoryTable);
 
@@ -118,6 +108,7 @@ public class BudgetPage extends JFrame {
                     }
                 };
                 itemsTable.setCellSelectionEnabled(false);
+                itemsTable.setFocusable(false);
                 JScrollPane itemsScrollPane = new JScrollPane(itemsTable);
 
                 // Creating Items Table Label
@@ -144,14 +135,14 @@ public class BudgetPage extends JFrame {
                 return false; // Make all cells read-only
             }
         };
+        tasksTable.setFocusable(false);
         tasksTable.setCellSelectionEnabled(false);
         JScrollPane tasksScrollPane = new JScrollPane(tasksTable);
 
         // Panel2 setup
-        panel2.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
+        panel2.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         panel2.setPreferredSize(new Dimension(800, 100));
         panel2.add(tasksScrollPane);
-        categoryScrollPane.setFocusable(false);
         panel2.add(categoryScrollPane);
 
         // BackButton Action Listener
@@ -165,7 +156,7 @@ public class BudgetPage extends JFrame {
         this.setLayout(new BorderLayout());
         this.add(panel1, BorderLayout.NORTH);
         this.add(panel2, BorderLayout.CENTER);
-        this.add(buttonPanel, BorderLayout.SOUTH);
+        //this.add(buttonPanel, BorderLayout.SOUTH);
 
         // Set frame properties
         this.setSize(new Dimension(900, 700));
@@ -202,64 +193,9 @@ public class BudgetPage extends JFrame {
         Task task2 = new Task("Buy List2", myItemList);
         Task task3 = new Task("Buy List3", myItemList);
         ArrayList<Task> myTaskList = new ArrayList<>();
-        myTaskList.add(task1);
-        myTaskList.add(task2);
-        myTaskList.add(task3);
-
-
-        /*
-        try {
-            String jsonString = new String(Files.readAllBytes(Paths.get("src/Resources/Data.json")));
-            JSONParser parser = new JSONParser();
-            Object object = parser.parse(jsonString);
-            JSONObject jsonObject = (JSONObject) object;
-
-            String jsonString2 = new String(Files.readAllBytes(Paths.get("src/Resources/Items.json")));
-            JSONParser parser2 = new JSONParser();
-            Object object2 = parser2.parse(jsonString2);
-            JSONObject itemsJson = (JSONObject) object2;
-
-            List<String> projectString = new ArrayList<>();
-
-            // Iterate over the keys in the JSONObject
-            for (Object key : jsonObject.keySet()) {
-                projectString.add((String) key);
-            }
-
-            //System.out.println(projectString);
-
-            for (String projectName : projectString) {
-                JSONArray tasksArray = (JSONArray) jsonObject.get(projectName);
-                ArrayList<Task> tasksList = new ArrayList<>();
-                //System.out.println(tasksArray);
-                for (Object task : tasksArray) {
-                    JSONObject taskObject = (JSONObject) task;
-                    String taskName = (String) taskObject.get("name");
-                    JSONArray itemsArray = (JSONArray) itemsJson.get(taskName);
-                    if (itemsArray != null) {
-                        ArrayList<Item> itemsList = new ArrayList<Item>();
-                        for (Object item : itemsArray) {
-                            JSONObject itemObject = (JSONObject) item;
-                            String itemName = (String) itemObject.get("name");
-                            double pricePerUnit = (double) itemObject.get("price_per_unit");
-                            Long totalUnitL = (Long) itemObject.get("total_unit");
-                            int totalUnit = Math.toIntExact(totalUnitL);
-                            itemsList.add(new Item(itemName, pricePerUnit, totalUnit));
-                        }
-                        tasksList.add(new Task(taskName, itemsList));
-                    }
-                }
-                Budget budget1 = new Budget(tasksList, 300);
-                BudgetPage bg = new BudgetPage(projectName, budget1);
-                bg.display();
-            }
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-        */
+        //myTaskList.add(task1);
+        //myTaskList.add(task2);
+        //myTaskList.add(task3);
 
         Budget budget1 = new Budget(myTaskList, 9000);
         BudgetPage bg = new BudgetPage("ToBuy", budget1);
@@ -270,40 +206,66 @@ public class BudgetPage extends JFrame {
         menuBar = new JMenuBar();
         settingsSection = new JMenu();
 
-        // add backicon image
-        ImageIcon backIcon = new ImageIcon("backicon.png");
-        Image resizedBackIcon = backIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-        ImageIcon resizedBackIconImage = new ImageIcon(resizedBackIcon);
-
-
-
-
         // add taskicon image
-        ImageIcon taskIcon = new ImageIcon("taskicon.png");
-        Image resizedTaskIcon = taskIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-        ImageIcon resizedIcon = new ImageIcon(resizedTaskIcon);
+        ImageIcon backIcon = new ImageIcon("src/main/resources/backicon.png");
+        ImageIcon resizedBackIcon = new ImageIcon(backIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
+        JButton backIconButton = new JButton(resizedBackIcon);
+        backIconButton.setFocusable(false);
+        backIconButton.addActionListener(e -> {
+            dispose();
+            //create project page
+            JOptionPane.showMessageDialog(getParent(), "Mouse clicked");
+        });
+
+        CustomMenuIcon menuIcon = new CustomMenuIcon();
 
         menuBar.add(Box.createRigidArea(new Dimension(450, 0)));
-        settingsSection.setIcon(resizedBackIconImage);
-        settingsSection.setIcon(resizedIcon);
+        //settingsSection.setIcon(resizedIcon);
+        settingsSection.setIcon(menuIcon);
         menuBar.add(Box.createHorizontalGlue());
+        menuBar.add(backIconButton);
         menuBar.add(settingsSection);
 
 
         // Create "Sign Out" menu item
-        JMenuItem signOutMenuItem = new JMenuItem("Sign Out");
-        settingsSection.add(signOutMenuItem);
+        JMenuItem noteSettingMenu = new JMenuItem("Note");
+        settingsSection.add(noteSettingMenu);
 
-        signOutMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0); //sign up
-            }
-        });
+        noteSettingMenu.addActionListener(e -> dispose());
 
-        settingsSection.addSeparator();
+        //settingsSection.addSeparator();
         setJMenuBar(menuBar);
 
 
+    }
+
+    /*
+     * Three horizontal stripes menu icon class.
+     */
+    private static class CustomMenuIcon implements Icon {
+        private static final int ICON_WIDTH = 20;
+        private static final int ICON_HEIGHT = 3;
+        private static final Color ICON_COLOR = Color.BLACK;
+
+        @Override
+        public void paintIcon(Component c, Graphics g, int x, int y) {
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.setColor(ICON_COLOR);
+            g2d.fillRect(x, y, ICON_WIDTH, ICON_HEIGHT);
+            g2d.fillRect(x, y + 7, ICON_WIDTH, ICON_HEIGHT);
+            g2d.fillRect(x, y + 14, ICON_WIDTH, ICON_HEIGHT);
+            g2d.dispose();
+        }
+
+        @Override
+        public int getIconWidth() {
+            return ICON_WIDTH;
+        }
+
+        @Override
+        public int getIconHeight() {
+            return ICON_HEIGHT * 3 + 8;
+        }
     }
 
 }
