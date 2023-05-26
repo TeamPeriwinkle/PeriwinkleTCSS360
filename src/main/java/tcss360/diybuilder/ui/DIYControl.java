@@ -113,10 +113,10 @@ public class DIYControl extends JFrame {
                     }
                     if (uController.checkCredentials(username, password)) {
                         dispose();
-                        JOptionPane.showMessageDialog(getParent(),
-                                "Login Success.");
-                        About aboutPage = new About(username, email);
-                        aboutPage.display();
+                        UserHomePage userHomePage = new UserHomePage(username);
+                        userHomePage.display();
+//                        About aboutPage = new About(username, email);
+//                        aboutPage.display();
                     } else {
                         JOptionPane.showMessageDialog(getParent(), "Wrong Username or Password.");
                     }

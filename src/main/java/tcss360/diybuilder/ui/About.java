@@ -30,13 +30,12 @@ public class About extends JFrame {
     private JPanel myPanel;
     private User user;
 
-    public About(String theName, String theEmail) {
+    public About() {
         super("DIYControl");
-        username = theName;
-        email = theEmail;
         myPanel = new JPanel();
         user = new User(username, email);
     }
+
 
     public void display() {
 
@@ -137,9 +136,12 @@ public class About extends JFrame {
 
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
                 //need user Home Page to go back
-                System.out.println("Mouse clicked!");
+                dispose();
+                UserHomePage userHomePage = new UserHomePage("whatever");
+                userHomePage.display();
+
+
 
             }
         });
