@@ -146,10 +146,15 @@ public class BudgetPage extends JFrame {
         panel2.add(categoryScrollPane);
 
         // BackButton Action Listener
-        backButton.addActionListener(e -> {
-            dispose();
-            //create project page
-            JOptionPane.showMessageDialog(getParent(), "Mouse clicked");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                //create project page
+                JOptionPane.showMessageDialog(getParent(), "Mouse clicked");
+            }
+
+
         });
 
         // Add the panel to the frame
@@ -211,10 +216,15 @@ public class BudgetPage extends JFrame {
         ImageIcon resizedBackIcon = new ImageIcon(backIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
         JButton backIconButton = new JButton(resizedBackIcon);
         backIconButton.setFocusable(false);
-        backIconButton.addActionListener(e -> {
-            dispose();
-            //create project page
-            JOptionPane.showMessageDialog(getParent(), "Mouse clicked");
+        backIconButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                //create project page
+                JOptionPane.showMessageDialog(getParent(), "Mouse clicked");
+            }
+
+
         });
 
         CustomMenuIcon menuIcon = new CustomMenuIcon();
@@ -231,7 +241,14 @@ public class BudgetPage extends JFrame {
         JMenuItem noteSettingMenu = new JMenuItem("Note");
         settingsSection.add(noteSettingMenu);
 
-        noteSettingMenu.addActionListener(e -> dispose());
+        noteSettingMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+
+
+        });
 
         //settingsSection.addSeparator();
         setJMenuBar(menuBar);

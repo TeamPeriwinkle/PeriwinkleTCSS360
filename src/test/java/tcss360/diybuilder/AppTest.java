@@ -2,10 +2,12 @@ package tcss360.diybuilder;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static tcss360.diybuilder.SystemControl.UserController.*;
 
 import org.junit.Test;
-import tcss360.diybuilder.SystemControl.UserController;
-import tcss360.diybuilder.models.User;
+import tcss360.diybuilder.SystemControl.Controller;
+import tcss360.diybuilder.SystemControl.*;
+import tcss360.diybuilder.models.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -44,7 +46,7 @@ public class AppTest
         User me = controller.getUserObject("alexg123");
         String expectedName = "alexg123";
         String expectedEmail ="alex123@gmail.com";
-        String actualName = me.getName();
+        String actualName = me.getUserName();
         String actualEmail = me.getEmail();
 
         assertTrue(expectedName.equals(actualName));
@@ -66,8 +68,28 @@ public class AppTest
         User desiralizedUser = new User();
         desiralizedUser.deserialize();
 
-        assertEquals("LoganDeezDukes123", desiralizedUser.getName());
+        assertEquals("LoganDeezDukes123", desiralizedUser.getUserName());
         assertEquals("migratious@gmail.com", desiralizedUser.getEmail());
     }
 
+    @Test
+    public void loginUser(){
+        Controller genController = new Controller();
+
+        String username = "alexg123";
+        String password = "123";
+
+        UserController userController = new UserController();
+        assertTrue(userController.checkCredentials(username, password));
+
+        User testUser = userController.getUserObject(username);
+
+        Project testProj = testUser.getUserProjects().get(0);
+        testProj.initTasks(testUser.getUserName());
+
+        Task testTask = testProj.getTaskList().get(0);
+
+        System.out.println(testTask.getName());
+
+    }
 }

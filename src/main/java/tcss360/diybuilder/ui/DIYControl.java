@@ -1,14 +1,11 @@
 package tcss360.diybuilder.ui;
 import tcss360.diybuilder.SystemControl.UserController;
-import tcss360.diybuilder.models.User;
 
 import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -35,14 +32,16 @@ public class DIYControl extends JFrame {
     private String username;
     private String email;
     private String password;
+    private UserController userController;
 
     public DIYControl() {
         super("DIYControl");
     }
 
-    public void display() {
+    public void display()  {
         setSize(500, 500);
 
+        this.userController = new UserController();
         // Set layout
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -104,14 +103,9 @@ public class DIYControl extends JFrame {
 
                 if (username.compareTo("") == 0 || password.compareTo("") == 0) {
                     JOptionPane.showMessageDialog(getParent(), "Please enter your Username and Password.");
-                } else {
-                    UserController uController = null;
-                    try {
-                        uController = new UserController();
-                    } catch (URISyntaxException ex) {
-                        ex.printStackTrace();
-                    }
-                    if (uController.checkCredentials(username, password)) {
+                } else{
+
+                    if (userController.checkCredentials(username, password)) {
                         dispose();
                         UserHomePage userHomePage = new UserHomePage(username);
                         userHomePage.display();
@@ -184,24 +178,24 @@ public class DIYControl extends JFrame {
                             "Please enter your Username, Email Address, and Password.", "DIYControl",
                             JOptionPane.WARNING_MESSAGE);
                 } else {
-                    UserController uController = null;
-                    try {
-                        uController = new UserController();
-                    } catch (URISyntaxException ex) {
-                        ex.printStackTrace();
-                    }
-                    if (uController.checkUsername(username)) {
+                    if (userController.userExists(username)) {
                         JOptionPane.showMessageDialog(getParent(), "Username already exists. Please try again.");
                     } else {
-                        try (BufferedWriter writer = new BufferedWriter(new FileWriter("Data/users.csv", true))) {
-                            String line = username + "," + password + "," + email;
-                            writer.write(line);
-                            writer.newLine();
-                            JOptionPane.showMessageDialog(getParent(), "Signup successful!");
-                            dispose();
-                        } catch (IOException theE) {
-                            theE.printStackTrace();
+
+                        try {
+                            userController.createUser(username, email, password);
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
                         }
+//                        try (BufferedWriter writer = new BufferedWriter(new FileWriter("df.json", true))) {
+//                            String line = username + "," + password + "," + email;
+//                            writer.write(line);
+//                            writer.newLine();
+//                            JOptionPane.showMessageDialog(getParent(), "Signup successful!");
+//                            dispose();
+//                        } catch (IOException theE) {
+//                            theE.printStackTrace();
+//                        }
                     }
                     //dispose();
                     // create user Home Page

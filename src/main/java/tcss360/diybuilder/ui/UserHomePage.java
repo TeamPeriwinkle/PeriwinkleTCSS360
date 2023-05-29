@@ -124,7 +124,7 @@ public class UserHomePage extends JFrame {
         gbc.gridy = 0;
 
         for (Project project : projects) {
-            final String projectName = project.getTitle();
+            final String projectName = project.getName();
 
             JButton projectButton = new JButton(projectName);
             projectButton.setHorizontalAlignment(SwingConstants.LEFT);
@@ -162,7 +162,7 @@ public class UserHomePage extends JFrame {
 
     private boolean deleteProject(String projectName) {
         for (Project project : projects) {
-            if (project.getTitle().equals(projectName)) {
+            if (project.getName().equals(projectName)) {
                 projects.remove(project);
                 return true;
             }

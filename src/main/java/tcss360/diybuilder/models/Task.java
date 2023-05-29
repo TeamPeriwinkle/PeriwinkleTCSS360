@@ -15,8 +15,10 @@ public class Task {
         }
     }
 
+
     public Task(String taskName, String pn, String startDate) {
     }
+
 
     public String getName() {
         return name;
@@ -54,6 +56,7 @@ public class Task {
         return sb.toString();
     }
 
+    //ALex G comment: can use this for one of our unit tests
     public static void main(String[] theArgs) {
         ArrayList<Item> myItemList = new ArrayList<>();
         myItemList.add(new Item("Rice", 38.50, 3));
@@ -63,6 +66,7 @@ public class Task {
         System.out.println(task1.toString());
 
     }
+
 
     public String getPN() {
         return null;
@@ -74,6 +78,7 @@ public class Task {
 
     public static void add(Task task) {
     }
+
 
 }
 

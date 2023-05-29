@@ -1,13 +1,16 @@
 package tcss360.diybuilder.models;
 
+import tcss360.diybuilder.SystemControl.ProjectController;
+
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Project {
     private String name;
     private double budget;
     private String plan;
     private String description;
-    
+    private ArrayList<Task> taskList;
     
 
     public Project(String name, double budget, String plan, String description) {
@@ -18,10 +21,6 @@ public class Project {
     }
 
     public Project() {
-    }
-
-    public String getTitle() {
-        return name;
     }
 
     public double getBudget() {
@@ -40,4 +39,15 @@ public class Project {
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public ArrayList<Task> getTaskList() {
+        return taskList;
+    }
+
+    public void initTasks(String username){
+        taskList = ProjectController.readtasks(username, this.name);
+    }
 }
