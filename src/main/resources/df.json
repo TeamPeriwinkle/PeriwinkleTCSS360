@@ -2,7 +2,26 @@
   "users": {
     "alexg123": {
       "username": "alexg123",
-      "email": "alex123@gmail.com"
+      "email": "alex123@gmail.com",
+      "password": "123",
+      "projects": [{
+        "title": "bathroom",
+        "budget": 1000,
+        "plan": "not sure",
+        "description": "bathroom remodel",
+        "tasks": [{
+          "name": "replace tiles",
+          "items": [{
+            "name": "white tile",
+            "price": 10,
+            "unit": 20
+          }
+          ]
+        }
+
+        ]
+      }
+      ]
     }
   }
 }
