@@ -73,7 +73,7 @@ public class UserController extends Controller{
      * @param username
      * @return boolean
      */
-    public boolean userExists(String username) {
+    public static boolean userExists(String username) {
         JSONObject userData = (JSONObject) data.get("users");
 
         if(userData.get(username) == null){

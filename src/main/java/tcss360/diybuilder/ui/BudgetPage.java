@@ -13,9 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import tcss360.diybuilder.SystemControl.BudgetController;
 import tcss360.diybuilder.SystemControl.TaskController;
-import tcss360.diybuilder.models.Budget;
-import tcss360.diybuilder.models.Item;
-import tcss360.diybuilder.models.Task;
+import tcss360.diybuilder.SystemControl.UserController;
+import tcss360.diybuilder.models.*;
 
 public class BudgetPage extends JFrame {
 
@@ -30,11 +29,15 @@ public class BudgetPage extends JFrame {
     private Budget myBudget;
     private JMenuBar menuBar;
     private JMenu settingsSection;
+    private Project myproject;
+    private User myUser;
 
-    public BudgetPage(String theProjectName, Budget theBudget) //also need parameter for project to go back to project page
+    public BudgetPage(Project theP, User theUser) //also need parameter for project to go back to project page
     {
-        super(theProjectName + "'s Budget");
-        myBudget = theBudget;
+        super(theP.getName() + "'s Budget");
+        myproject = theP;
+        myUser = theUser;
+        myBudget = new Budget(theP.getTaskList(), theP.getBudget());
         if (myBudget.getTasksList().size() == 0) {
             rows = 1;
         } else {
@@ -187,26 +190,6 @@ public class BudgetPage extends JFrame {
         buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
     }
 
-    public static void main(String[] args)
-    {
-
-        ArrayList<Item> myItemList = new ArrayList<>();
-        myItemList.add(new Item("Rice", 38.50, 3));
-        myItemList.add(new Item("IPhone12", 969.55, 2));
-        myItemList.add(new Item("Sticker", 3.50, 3));
-        Task task1 = new Task("Buy List", myItemList);
-        Task task2 = new Task("Buy List2", myItemList);
-        Task task3 = new Task("Buy List3", myItemList);
-        ArrayList<Task> myTaskList = new ArrayList<>();
-        //myTaskList.add(task1);
-        //myTaskList.add(task2);
-        //myTaskList.add(task3);
-
-        Budget budget1 = new Budget(myTaskList, 9000);
-        BudgetPage bg = new BudgetPage("ToBuy", budget1);
-        bg.display();
-    }
-
     private void createMenuBar() {
         menuBar = new JMenuBar();
         settingsSection = new JMenu();
@@ -220,8 +203,8 @@ public class BudgetPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                //create project page
-                JOptionPane.showMessageDialog(getParent(), "Mouse clicked");
+                ProjectPage p = new ProjectPage(myproject, myUser);
+                p.display();
             }
 
 
@@ -284,6 +267,7 @@ public class BudgetPage extends JFrame {
             return ICON_HEIGHT * 3 + 8;
         }
     }
+
 
 }
 

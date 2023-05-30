@@ -1,5 +1,6 @@
 package tcss360.diybuilder.ui;
 import tcss360.diybuilder.SystemControl.UserController;
+import tcss360.diybuilder.models.User;
 
 import javax.swing.*;
 
@@ -32,16 +33,15 @@ public class DIYControl extends JFrame {
     private String username;
     private String email;
     private String password;
-    private UserController userController;
+    private UserController userC;
 
     public DIYControl() {
         super("DIYControl");
+        userC = new UserController();
     }
 
     public void display()  {
         setSize(500, 500);
-
-        this.userController = new UserController();
         // Set layout
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -105,12 +105,11 @@ public class DIYControl extends JFrame {
                     JOptionPane.showMessageDialog(getParent(), "Please enter your Username and Password.");
                 } else{
 
-                    if (userController.checkCredentials(username, password)) {
+                    if (userC.checkCredentials(username, password)) {
                         dispose();
-                        UserHomePage userHomePage = new UserHomePage(username);
+                        User u = UserController.getUserObject(username);
+                        UserHomePage userHomePage = new UserHomePage(u);
                         userHomePage.display();
-//                        About aboutPage = new About(username, email);
-//                        aboutPage.display();
                     } else {
                         JOptionPane.showMessageDialog(getParent(), "Wrong Username or Password.");
                     }
@@ -178,15 +177,15 @@ public class DIYControl extends JFrame {
                             "Please enter your Username, Email Address, and Password.", "DIYControl",
                             JOptionPane.WARNING_MESSAGE);
                 } else {
-                    if (userController.userExists(username)) {
-                        JOptionPane.showMessageDialog(getParent(), "Username already exists. Please try again.");
-                    } else {
+//                    if (UserController.userExists(username)) {
+//                        JOptionPane.showMessageDialog(getParent(), "Username already exists. Please try again.");
+//                    } else {
 
-                        try {
-                            userController.createUser(username, email, password);
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        }
+//                        try {
+//                            UserController.createUser(username, email, password);
+//                        } catch (IOException ex) {
+//                            ex.printStackTrace();
+//                        }
 //                        try (BufferedWriter writer = new BufferedWriter(new FileWriter("df.json", true))) {
 //                            String line = username + "," + password + "," + email;
 //                            writer.write(line);
@@ -196,9 +195,9 @@ public class DIYControl extends JFrame {
 //                        } catch (IOException theE) {
 //                            theE.printStackTrace();
 //                        }
-                    }
-                    //dispose();
-                    // create user Home Page
+//                    }
+                    dispose();
+                    //create user Home Page
                 }
 
             }

@@ -3,6 +3,8 @@ package tcss360.diybuilder.ui;
  * Mey
  */
 import tcss360.diybuilder.models.Project;
+import tcss360.diybuilder.models.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -15,14 +17,15 @@ public class UserHomePage extends JFrame {
     private JMenu settingsSection;
     private JPanel projectListPanel;
     private ArrayList<Project> projects;
-    private String username; 
+    private User myuser;
+    private Project myProject;
    
     
 
-    public UserHomePage(String theName) {
+    public UserHomePage(User theUser) {
         super("DIY Control");
-        projects = new ArrayList<Project>();
-        username = theName;
+        projects = theUser.getUserProjects();
+        myuser = theUser;
         createMenuBar();
     }
 
@@ -35,7 +38,7 @@ public class UserHomePage extends JFrame {
         gbc.insets = new Insets(10, 10, 10, 10);
 
         // Welcome Label
-        JLabel welcomeUser = new JLabel("Welcome Back " + username, null, SwingConstants.CENTER);
+        JLabel welcomeUser = new JLabel("Welcome Back " + myuser.getUserName(), null, SwingConstants.CENTER);
         welcomeUser.setFont(new Font("Arial", Font.PLAIN, 30));
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -69,7 +72,6 @@ public class UserHomePage extends JFrame {
         gbc.gridy = 1;
         gbc.gridwidth = 2;
         this.add(projectCreatePanel, gbc);
-
 
         createProjectLabel.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
@@ -112,6 +114,7 @@ public class UserHomePage extends JFrame {
         gbc.gridy = 2;
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        updateProjectList();
         this.add(projectListPanel, gbc);
         this.setLocationRelativeTo(null);
         setVisible(true);
@@ -124,11 +127,14 @@ public class UserHomePage extends JFrame {
         gbc.gridy = 0;
 
         for (Project project : projects) {
+            myProject = project;
+            myProject.initTasks(myuser.getUserName());
             final String projectName = project.getName();
 
             JButton projectButton = new JButton(projectName);
             projectButton.setHorizontalAlignment(SwingConstants.LEFT);
             projectButton.setPreferredSize(new Dimension(220, 25));
+            projectButton.setFocusable(false);
 
             JLabel deleteLabel = new JLabel("-");
             deleteLabel.setFont(new Font("", Font.BOLD, 20));
@@ -147,6 +153,15 @@ public class UserHomePage extends JFrame {
                             JOptionPane.showMessageDialog(projectListPanel, "Failed to delete the project", "Delete Project", JOptionPane.WARNING_MESSAGE);
                         }
                     }
+                }
+            });
+
+            projectButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    dispose();
+                    ProjectPage p = new ProjectPage(myProject, myuser);
+                    p.display();
                 }
             });
 
@@ -185,38 +200,39 @@ public class UserHomePage extends JFrame {
         menuBar.add(settingsSection);
 
         JMenuItem signOutMenuItem = new JMenuItem("Sign Out");
+        JMenuItem aboutMenuItem = new JMenuItem("About");
+
+        settingsSection.add(aboutMenuItem);
+        settingsSection.addSeparator();
         settingsSection.add(signOutMenuItem);
 
         signOutMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                dispose();
                 DIYControl jFrame = new DIYControl();
                 jFrame.display();
             }
         });
 
-        JMenuItem aboutMenuItem = new JMenuItem("About");
-        settingsSection.add(aboutMenuItem);
-
         aboutMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                About aboutPage = new About();
+                About aboutPage = new About(myuser);
                 aboutPage.display();
             }
         });
 
-        JMenuItem projectMenuItem = new JMenuItem("Project");
-        settingsSection.add(projectMenuItem);
+//        JMenuItem projectMenuItem = new JMenuItem("Project");
+//        settingsSection.add(projectMenuItem);
+//
+//        projectMenuItem.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                dispose();
+//                ProjectPage projectPage = new ProjectPage();
+//                projectPage.display();
+//            }
+//        });
 
-        projectMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                ProjectPage projectPage = new ProjectPage();
-                projectPage.display();
-            }
-        });
-
-        settingsSection.addSeparator();
         setJMenuBar(menuBar);
     }
 }

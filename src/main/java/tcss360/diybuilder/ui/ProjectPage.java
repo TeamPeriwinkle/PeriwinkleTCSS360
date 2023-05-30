@@ -2,6 +2,8 @@ package tcss360.diybuilder.ui;
 
 import tcss360.diybuilder.models.Project;
 import tcss360.diybuilder.models.Task;
+import tcss360.diybuilder.models.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,15 +17,15 @@ public class ProjectPage extends JFrame {
     private JPanel projectPanel;
     private JMenuBar menuBar;
     private JMenu settingsSection;
-    private static Project project;
+    private Project project;
     private JPanel taskListPanel;
+    private User myUser;
 
-    
 
-
-    public ProjectPage() {
-        super("Project ");
-        project = new Project();
+    public ProjectPage(Project theP, User theUser) {
+        super(theP.getName());
+        project = theP;
+        myUser = theUser;
         display();
         createMenuBar();
         setVisible(true);
@@ -32,6 +34,7 @@ public class ProjectPage extends JFrame {
     public void display() {
         //set layout
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
         this.setSize(500, 500);
         this.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -128,29 +131,47 @@ public class ProjectPage extends JFrame {
 
         noteMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                DIYControl jFrame = new DIYControl();
-                jFrame.display();
+                dispose();
+                NotesPage n = new NotesPage();
             }
         });
 
-        JMenuItem aboutMenuItem = new JMenuItem("About");
-        settingsSection.add(aboutMenuItem);
+//        JMenuItem aboutMenuItem = new JMenuItem("About");
+//        settingsSection.addSeparator();
+//        settingsSection.add(aboutMenuItem);
 
-        aboutMenuItem.addActionListener(new ActionListener() {
+//        aboutMenuItem.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                dispose();
+////                About aboutPage = new About();
+////                aboutPage.display();
+//            }
+//        });
+
+        JMenuItem budgetMenuItem = new JMenuItem("Budget");
+        settingsSection.addSeparator();
+        settingsSection.add(budgetMenuItem);
+
+        budgetMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                About aboutPage = new About();
-                aboutPage.display();
+                BudgetPage b = new BudgetPage(project, myUser);
+                b.display();
             }
         });
 
-
+        JMenuItem backMenuItem = new JMenuItem("Back");
         settingsSection.addSeparator();
-        setJMenuBar(menuBar);
-    }
+        settingsSection.add(backMenuItem);
 
-    public static void main(String[] theArgs) {
-        ProjectPage projectPage = new ProjectPage();
-        projectPage.display();
+        backMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                UserHomePage u = new UserHomePage(myUser);
+                u.display();
+            }
+        });
+
+        setJMenuBar(menuBar);
     }
 }
