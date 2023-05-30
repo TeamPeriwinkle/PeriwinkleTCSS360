@@ -3,7 +3,7 @@
 Hello Reviewers, 
 The code to be reviewed can be found [here](https://github.com/TeamPeriwinkle/TCSS360a/tree/master/src/main/java/tcss360/diybuilder).
 
-The classes that we chose to conduct the review are our [Models Classes](https://github.com/TeamPeriwinkle/TCSS360a/tree/master/src/main/java/tcss360/diybuilder/models) contained within the Model Folder. The [DIY Controller](https://github.com/TeamPeriwinkle/TCSS360a/blob/master/src/main/java/tcss360/diybuilder/SystemControl/Controller.java) in the SystemControl folder, DIY Home Page, and the UI classes within the the [UI folder](https://github.com/TeamPeriwinkle/TCSS360a/tree/master/src/main/java/tcss360/diybuilder/ui).
+The classes that we chose to conduct the review are our [Models Classes](https://github.com/TeamPeriwinkle/TCSS360a/tree/master/src/main/java/tcss360/diybuilder/models) contained within the Model Folder. The [DIY Controller](https://github.com/TeamPeriwinkle/TCSS360a/blob/master/src/main/java/tcss360/diybuilder/ui/DIYControl.java) in the UI folder, and UserHomePage.[UI folder](https://github.com/TeamPeriwinkle/TCSS360a/tree/master/src/main/java/tcss360/diybuilder/ui).
 
 # User Stories
 The user stories that the code supports are below
