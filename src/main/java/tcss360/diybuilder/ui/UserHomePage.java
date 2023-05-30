@@ -83,9 +83,9 @@ public class UserHomePage extends JFrame {
                 projectDetailsPanel.add(new JLabel("Budget:"));
                 JTextField budgetField = new JTextField();
                 projectDetailsPanel.add(budgetField);
-                projectDetailsPanel.add(new JLabel("Plan (Optional):"));
-                JTextField planField = new JTextField();
-                projectDetailsPanel.add(planField);
+//                projectDetailsPanel.add(new JLabel("Plan (Optional):"));
+//                JTextField planField = new JTextField();
+//                projectDetailsPanel.add(planField);
                 projectDetailsPanel.add(new JLabel("Description:"));
                 JTextField descriptionField = new JTextField();
                 projectDetailsPanel.add(descriptionField);
@@ -95,10 +95,10 @@ public class UserHomePage extends JFrame {
                     String projectName = projectNameField.getText();
                     String budgetText = budgetField.getText();
                     double budget = Double.parseDouble(budgetText);
-                    String plan = planField.getText();
+//                    String plan = planField.getText();
                     String description = descriptionField.getText();
                     if (!projectName.trim().isEmpty()) {
-                        Project newProject = new Project(projectName, budget, plan, description);
+                        Project newProject = new Project(projectName, budget, description);
                         projects.add(newProject);
                         JOptionPane.showMessageDialog(UserHomePage.this, "New project created: " + projectName, "Create Project", JOptionPane.INFORMATION_MESSAGE);
                         updateProjectList();
