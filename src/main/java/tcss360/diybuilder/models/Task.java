@@ -29,11 +29,7 @@ public class Task {
     }
 
     public ArrayList<Item> getItemsList() {
-        ArrayList<Item> copyList = new ArrayList<Item>();
-        for (int i = 0; i < itemsList.size(); i++) {
-            copyList.add(itemsList.get(i));
-        }
-        return copyList;
+        return itemsList;
     }
 
     public void addItem(Item theItem) {
