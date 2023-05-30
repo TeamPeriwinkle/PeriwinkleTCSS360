@@ -1,12 +1,29 @@
+/*
+ * Team Periwinkle
+ */
 package tcss360.diybuilder.models;
 
 import java.util.ArrayList;
 
+/**
+ * Task Object class.
+ *
+ * @author Soe Lin
+ * @author Mey Vo
+ */
 public class Task {
 
+    /** THe name of the Task. */
     private String name;
+    /** Array List of item. */
     private ArrayList<Item> itemsList;
 
+    /**
+     * Constructor.
+     *
+     * @param theName
+     * @param theItemsList
+     */
     public Task(String theName, ArrayList<Item> theItemsList) {
         name = theName;
         itemsList = new ArrayList<Item>();

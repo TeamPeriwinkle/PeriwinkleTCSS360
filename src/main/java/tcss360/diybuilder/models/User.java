@@ -1,3 +1,6 @@
+/*
+ * Team Periwinkle
+ */
 package tcss360.diybuilder.models;
 /**
  * User Object Class.
@@ -72,6 +75,7 @@ public class User implements Serializable {
         }
         return new Project();
     }
+
 
     /**
      *
