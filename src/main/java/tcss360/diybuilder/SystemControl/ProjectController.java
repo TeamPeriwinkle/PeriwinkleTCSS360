@@ -31,7 +31,7 @@ public class ProjectController extends Controller {
             String plan = projTemp.get("title").toString();
             String description = projTemp.get("title").toString();
 
-            Project temp = new Project(name, budget, plan, description);
+            Project temp = new Project(name, budget, description);
             projectsList.add(temp);
         }
         return projectsList;

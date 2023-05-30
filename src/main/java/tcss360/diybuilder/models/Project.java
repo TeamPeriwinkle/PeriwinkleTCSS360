@@ -8,15 +8,13 @@ import java.util.ArrayList;
 public class Project {
     private String name;
     private double budget;
-    private String plan;
     private String description;
     private ArrayList<Task> taskList;
     
 
-    public Project(String name, double budget, String plan, String description) {
+    public Project(String name, double budget, String description) {
         this.name = name;
         this.budget = budget;
-        this.plan = plan;
         this.description = description;
     }
 
@@ -25,10 +23,6 @@ public class Project {
 
     public double getBudget() {
         return budget;
-    }
-
-    public String getPlan() {
-        return plan;
     }
 
     public String getDescription() {

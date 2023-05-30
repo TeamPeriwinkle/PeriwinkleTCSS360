@@ -16,6 +16,7 @@ public class NotesPage extends JFrame {
         setLocationRelativeTo(null);
 
         createComponents();
+        setVisible(true);
     }
 
     private void createComponents() {
@@ -47,13 +48,5 @@ public class NotesPage extends JFrame {
         JOptionPane.showMessageDialog(this, "Notes saved successfully!");
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new NotesPage().setVisible(true);
-            }
-        });
-    }
 }
 

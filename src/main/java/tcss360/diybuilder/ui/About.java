@@ -25,15 +25,13 @@ import javax.swing.JPanel;
 public class About extends JFrame {
 
     private static final String VERSIONNUMBER = " 0.1";
-    private String username;
-    private String email;
     private JPanel myPanel;
     private User user;
 
-    public About() {
+    public About(User theUser) {
         super("DIYControl");
         myPanel = new JPanel();
-        user = new User(username, email);
+        user = theUser;
     }
 
 
@@ -41,7 +39,7 @@ public class About extends JFrame {
 
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(600, 600);
+        this.setSize(400, 500);
         this.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -58,14 +56,18 @@ public class About extends JFrame {
         gbc.gridy = 1;
         this.add(myPanel, gbc);
 
+        gbc.insets = new Insets(10, 10, 5, 5);
         JButton backButton = new JButton("Back");
+        backButton.setFocusable(false);
 
         gbc.gridx = 0;
         gbc.gridy = 2;
         this.add(backButton, gbc);
 
         JButton exportButton = new JButton("Export");
+        exportButton.setFocusable(false);
         JButton importButton = new JButton("Import");
+        importButton.setFocusable(false);
 
         gbc.gridx = 0;
         gbc.gridy = 3;
@@ -103,8 +105,8 @@ public class About extends JFrame {
 
 
         JLabel line0 = new JLabel("Version Number:" + VERSIONNUMBER);
-        JLabel line1 = new JLabel("This app is registered to: " + username);
-        JLabel line2 = new JLabel("Email address of the user: " + email);
+        JLabel line1 = new JLabel("This app is registered to: " + user.getUserName());
+        JLabel line2 = new JLabel("Email address of the user: " + user.getEmail());
         JLabel line3 = new JLabel("This app is provided by Team Periwinkle.");
         JLabel line4 = new JLabel("Members of Team Periwinkle:");
         JLabel line5 = new JLabel("Soe Lin, nickname: redpanda1222");
@@ -138,11 +140,8 @@ public class About extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 //need user Home Page to go back
                 dispose();
-                UserHomePage userHomePage = new UserHomePage("whatever");
+                UserHomePage userHomePage = new UserHomePage(user);
                 userHomePage.display();
-
-
-
             }
         });
 
