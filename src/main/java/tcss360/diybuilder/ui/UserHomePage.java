@@ -19,6 +19,7 @@ public class UserHomePage extends JFrame {
     private ArrayList<Project> projects;
     private User myuser;
     private Project myProject;
+    private ArrayList<ProjectButton> projectButtons;
    
     
 
@@ -26,6 +27,7 @@ public class UserHomePage extends JFrame {
         super("DIY Control");
         projects = theUser.getUserProjects();
         myuser = theUser;
+        projectButtons = new ArrayList<>();
         createMenuBar();
     }
 
@@ -126,22 +128,13 @@ public class UserHomePage extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 0;
 
-        for (Project project : projects) {
-            myProject = project;
-            myProject.initTasks(myuser.getUserName());
-            final String projectName = project.getName();
+        for (int i = 0; i < projects.size(); i++) {
+            projects.get(i).initTasks(myuser.getUserName());
+            final String projectName = projects.get(i).getName();
 
-            JButton projectButton = new JButton(projectName);
-            projectButton.setHorizontalAlignment(SwingConstants.LEFT);
-            projectButton.setPreferredSize(new Dimension(220, 25));
-            projectButton.setFocusable(false);
+            ProjectButton projectButton = new ProjectButton(projectName, i);
 
-            JLabel deleteLabel = new JLabel("-");
-            deleteLabel.setFont(new Font("", Font.BOLD, 20));
-            deleteLabel.setForeground(Color.RED);
-            deleteLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-            deleteLabel.addMouseListener(new MouseAdapter() {
+            projectButton.getDeleteLabelLabel().addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                     int confirm = JOptionPane.showConfirmDialog(projectListPanel, "Are you sure you want to delete this project?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
@@ -156,17 +149,7 @@ public class UserHomePage extends JFrame {
                 }
             });
 
-            projectButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    dispose();
-                    ProjectPage p = new ProjectPage(myProject, myuser);
-                    p.display();
-                }
-            });
-
-            projectButton.setLayout(new BorderLayout());
-            projectButton.add(deleteLabel, BorderLayout.EAST);
+            projectButton.addActionListener();
             projectListPanel.add(projectButton, gbc);
             gbc.gridy++;
         }
@@ -235,4 +218,44 @@ public class UserHomePage extends JFrame {
 
         setJMenuBar(menuBar);
     }
+
+    private class ProjectButton extends JButton {
+        private int index;
+        private JLabel deleteLabel;
+        public ProjectButton(String name, int theIndex) {
+            super(name);
+            index = theIndex;
+            deleteLabel = new JLabel("-");
+            setup();
+        }
+        public int getIndex() {
+            return index;
+        }
+
+        public void setup() {
+            this.setHorizontalAlignment(SwingConstants.LEFT);
+            this.setPreferredSize(new Dimension(220, 25));
+            this.setFocusable(false);
+            deleteLabel.setFont(new Font("", Font.BOLD, 20));
+            deleteLabel.setForeground(Color.RED);
+            deleteLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            this.setLayout(new BorderLayout());
+            this.add(deleteLabel, BorderLayout.EAST);
+        }
+        public JLabel getDeleteLabelLabel() {
+            return deleteLabel;
+        }
+
+        public void addActionListener() {
+            this.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    dispose();
+                    ProjectPage projectPage = new ProjectPage(projects.get(index), myuser);
+                    projectPage.display();
+                }
+            });
+        }
+    }
+
 }
