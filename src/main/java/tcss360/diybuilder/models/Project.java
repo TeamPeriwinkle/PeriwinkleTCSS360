@@ -83,7 +83,7 @@ public class Project {
      *
      * @return Task ArrayList
      */
-    public ArrayList<Task> getTaskList() {
+    public ArrayList<Task> getTasks() {
         return taskList;
     }
 
@@ -95,4 +95,12 @@ public class Project {
     public void initTasks(String username){
         taskList = ProjectController.readtasks(username, this.name);
     }
+
+    public void addTask(Task newTask) {
+        taskList.add(newTask);
+    }
+
+    public void removeTask(Task taskToDelete) {
+    }
+
 }

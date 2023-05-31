@@ -1,6 +1,6 @@
 package tcss360.diybuilder.ui;
 /**
- * Mey
+ * @author Mey Vo
  */
 import tcss360.diybuilder.models.Project;
 import tcss360.diybuilder.models.User;
@@ -75,6 +75,7 @@ public class UserHomePage extends JFrame {
         gbc.gridwidth = 2;
         this.add(projectCreatePanel, gbc);
 
+        //creat ProjectLabel include Title, Budget and Description
         createProjectLabel.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 JPanel projectDetailsPanel = new JPanel(new GridLayout(4, 2));
@@ -116,12 +117,14 @@ public class UserHomePage extends JFrame {
         gbc.gridy = 2;
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        // Update the list of project
         updateProjectList();
         this.add(projectListPanel, gbc);
         this.setLocationRelativeTo(null);
         setVisible(true);
     }
 
+    //creat updateProjectList
     private void updateProjectList() {
         projectListPanel.removeAll();
         GridBagConstraints gbc = new GridBagConstraints();
@@ -132,8 +135,8 @@ public class UserHomePage extends JFrame {
             projects.get(i).initTasks(myuser.getUserName());
             final String projectName = projects.get(i).getName();
 
+            // Mouseclick delete project
             ProjectButton projectButton = new ProjectButton(projectName, i);
-
             projectButton.getDeleteLabelLabel().addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                     int confirm = JOptionPane.showConfirmDialog(projectListPanel, "Are you sure you want to delete this project?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
@@ -158,6 +161,7 @@ public class UserHomePage extends JFrame {
         projectListPanel.repaint();
     }
 
+    // delete project
     private boolean deleteProject(String projectName) {
         for (Project project : projects) {
             if (project.getName().equals(projectName)) {
@@ -168,20 +172,22 @@ public class UserHomePage extends JFrame {
         return false;
     }
 
+
+    // creat MenuBar
     private void createMenuBar() {
         menuBar = new JMenuBar();
-
         settingsSection = new JMenu();
 
+        //creat taskicon.png
         ImageIcon taskIcon = new ImageIcon("src/main/resources/taskicon.png");
         Image resizedTaskIcon = taskIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
         ImageIcon resizedIcon = new ImageIcon(resizedTaskIcon);
 
-        menuBar.add(Box.createRigidArea(new Dimension(400, 0)));
         settingsSection.setIcon(resizedIcon);
         menuBar.add(Box.createHorizontalGlue());
         menuBar.add(settingsSection);
 
+        // add Signout and About in taskicon
         JMenuItem signOutMenuItem = new JMenuItem("Sign Out");
         JMenuItem aboutMenuItem = new JMenuItem("About");
 
@@ -219,6 +225,7 @@ public class UserHomePage extends JFrame {
         setJMenuBar(menuBar);
     }
 
+    // creat ProjectButton
     private class ProjectButton extends JButton {
         private int index;
         private JLabel deleteLabel;

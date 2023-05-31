@@ -37,7 +37,7 @@ public class BudgetPage extends JFrame {
         super(theP.getName() + "'s Budget");
         myproject = theP;
         myUser = theUser;
-        myBudget = new Budget(theP.getTaskList(), theP.getBudget());
+        myBudget = new Budget(theP.getTasks(), theP.getBudget());
         if (myBudget.getTasksList().size() == 0) {
             rows = 1;
         } else {
@@ -190,11 +190,92 @@ public class BudgetPage extends JFrame {
         buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
     }
 
+//     private void createMenuBar() {
+//         menuBar = new JMenuBar();
+//         settingsSection = new JMenu();
+
+//         // add taskicon image
+//         ImageIcon backIcon = new ImageIcon("src/main/resources/backicon.png");
+//         ImageIcon resizedBackIcon = new ImageIcon(backIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
+//         JButton backIconButton = new JButton(resizedBackIcon);
+//         backIconButton.setFocusable(false);
+//         backIconButton.addActionListener(new ActionListener() {
+//             @Override
+//             public void actionPerformed(ActionEvent e) {
+//                 dispose();
+//                 ProjectPage p = new ProjectPage(myproject, myUser);
+//                 p.display();
+//             }
+
+
+//         });
+
+//         CustomMenuIcon menuIcon = new CustomMenuIcon();
+
+//         menuBar.add(Box.createRigidArea(new Dimension(450, 0)));
+//         //settingsSection.setIcon(resizedIcon);
+//         settingsSection.setIcon(menuIcon);
+//         menuBar.add(Box.createHorizontalGlue());
+//         menuBar.add(backIconButton);
+//         menuBar.add(settingsSection);
+
+
+//         // Create "Note" menu item
+//         JMenuItem noteSettingMenu = new JMenuItem("Note");
+//         settingsSection.add(noteSettingMenu);
+
+//         noteSettingMenu.addActionListener(new ActionListener() {
+//             @Override
+//             public void actionPerformed(ActionEvent e) {
+//                 dispose();
+//             }
+
+
+//         });
+
+//         //settingsSection.addSeparator();
+//         setJMenuBar(menuBar);
+
+
+//     }
+
+//     /*
+//      * Three horizontal stripes menu icon class.
+//      */
+//     private static class CustomMenuIcon implements Icon {
+//         private static final int ICON_WIDTH = 20;
+//         private static final int ICON_HEIGHT = 3;
+//         private static final Color ICON_COLOR = Color.BLACK;
+
+//         @Override
+//         public void paintIcon(Component c, Graphics g, int x, int y) {
+//             Graphics2D g2d = (Graphics2D) g.create();
+//             g2d.setColor(ICON_COLOR);
+//             g2d.fillRect(x, y, ICON_WIDTH, ICON_HEIGHT);
+//             g2d.fillRect(x, y + 7, ICON_WIDTH, ICON_HEIGHT);
+//             g2d.fillRect(x, y + 14, ICON_WIDTH, ICON_HEIGHT);
+//             g2d.dispose();
+//         }
+
+//         @Override
+//         public int getIconWidth() {
+//             return ICON_WIDTH;
+//         }
+
+//         @Override
+//         public int getIconHeight() {
+//             return ICON_HEIGHT * 3 + 8;
+//         }
+//     }
+
+
+// }
+
     private void createMenuBar() {
         menuBar = new JMenuBar();
         settingsSection = new JMenu();
 
-        // add taskicon image
+        // Add back icon image
         ImageIcon backIcon = new ImageIcon("src/main/resources/backicon.png");
         ImageIcon resizedBackIcon = new ImageIcon(backIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
         JButton backIconButton = new JButton(resizedBackIcon);
@@ -203,71 +284,42 @@ public class BudgetPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                ProjectPage p = new ProjectPage(myproject, myUser);
-                p.display();
+                UserHomePage u = new UserHomePage(myUser);
+                u.display();
             }
-
-
         });
 
-        CustomMenuIcon menuIcon = new CustomMenuIcon();
+        // Add task icon image
+        ImageIcon taskIcon = new ImageIcon("src/main/resources/taskicon.png");
+        Image resizedTaskIcon = taskIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon = new ImageIcon(resizedTaskIcon);
 
-        menuBar.add(Box.createRigidArea(new Dimension(450, 0)));
-        //settingsSection.setIcon(resizedIcon);
-        settingsSection.setIcon(menuIcon);
+        // Create back icon panel
+        JPanel backIconPanel = new JPanel();
+        backIconPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        backIconPanel.add(backIconButton);
+
+        
+        menuBar.add(backIconPanel);
         menuBar.add(Box.createHorizontalGlue());
-        menuBar.add(backIconButton);
-        menuBar.add(settingsSection);
+        settingsSection.setIcon(resizedIcon);
+        menuBar.add(settingsSection); // Add settingsSection to the menu bar
 
+        // Create "Note" menu item
+        JMenuItem noteMenuItem = new JMenuItem("Note");
+        settingsSection.add(noteMenuItem);
 
-        // Create "Sign Out" menu item
-        JMenuItem noteSettingMenu = new JMenuItem("Note");
-        settingsSection.add(noteSettingMenu);
-
-        noteSettingMenu.addActionListener(new ActionListener() {
+        noteMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
             }
-
-
         });
 
-        //settingsSection.addSeparator();
+        menuBar.add(settingsSection);
+
+        // Add any additional menu items or sections as needed
+
         setJMenuBar(menuBar);
-
-
     }
-
-    /*
-     * Three horizontal stripes menu icon class.
-     */
-    private static class CustomMenuIcon implements Icon {
-        private static final int ICON_WIDTH = 20;
-        private static final int ICON_HEIGHT = 3;
-        private static final Color ICON_COLOR = Color.BLACK;
-
-        @Override
-        public void paintIcon(Component c, Graphics g, int x, int y) {
-            Graphics2D g2d = (Graphics2D) g.create();
-            g2d.setColor(ICON_COLOR);
-            g2d.fillRect(x, y, ICON_WIDTH, ICON_HEIGHT);
-            g2d.fillRect(x, y + 7, ICON_WIDTH, ICON_HEIGHT);
-            g2d.fillRect(x, y + 14, ICON_WIDTH, ICON_HEIGHT);
-            g2d.dispose();
-        }
-
-        @Override
-        public int getIconWidth() {
-            return ICON_WIDTH;
-        }
-
-        @Override
-        public int getIconHeight() {
-            return ICON_HEIGHT * 3 + 8;
-        }
-    }
-
-
 }
-

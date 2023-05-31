@@ -113,4 +113,7 @@ public class User implements Serializable {
         this.email = deserializedUser.email;
         this.userName = deserializedUser.userName;
     }
+    public String setTitle() {
+        return null;
+    }
 }

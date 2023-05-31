@@ -33,7 +33,7 @@ public class Task {
     }
 
 
-    public Task(String taskName, String pn, String startDate) {
+    public Task(String name2, int pn, String startDate) {
     }
 
 
@@ -41,7 +41,7 @@ public class Task {
         return name;
     }
 
-    public void setname(String theName) {
+    public void setName(String theName) {
         name = theName;
     }
 
@@ -70,14 +70,28 @@ public class Task {
     }
 
     public String getPN() {
-        return null;
+        return getPN();
     }
 
     public String getStartDate() {
+        return getStartDate();
+    }
+
+    public void setPn(int pn) {
+    }
+
+
+    public void setStartDate(String startDate) {
+    }
+
+
+    public static Task get(int i) {
         return null;
     }
 
-    public static void add(Task task) {
+
+    public static int size() {
+        return 0;
     }
 
 
