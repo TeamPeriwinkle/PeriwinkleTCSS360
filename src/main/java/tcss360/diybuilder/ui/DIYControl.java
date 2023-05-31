@@ -197,6 +197,19 @@ public class DIYControl extends JFrame {
 //                        }
 //                    }
                     dispose();
+
+                    // create note.txt file for new user
+                    String filePath = "src/main/resources/UserNotes/" + username + "Notes.txt";
+                    try {
+                        FileWriter writer = new FileWriter(filePath);
+                        writer.write(username + "'s Note");  // Write the content to the file
+                        writer.close();
+                        System.out.println("Text file created successfully.");
+                    } catch (IOException theE) {
+                        System.out.println("An error occurred while creating the text file.");
+                        theE.printStackTrace();
+                    }
+
                     //create user Home Page
                 }
 
