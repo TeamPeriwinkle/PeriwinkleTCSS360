@@ -120,36 +120,9 @@ public class ProjectPage extends JFrame {
         Image resizedTaskIcon = taskIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
         ImageIcon resizedIcon = new ImageIcon(resizedTaskIcon);
 
-        menuBar.add(Box.createRigidArea(new Dimension(450, 0)));
-        settingsSection.setIcon(resizedBackIconImage);
-        settingsSection.setIcon(resizedIcon);
-        menuBar.add(Box.createHorizontalGlue());
-        menuBar.add(settingsSection);
-
-        JMenuItem noteMenuItem = new JMenuItem("Note");
-        settingsSection.add(noteMenuItem);
-
-        noteMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                NotesPage n = new NotesPage();
-            }
-        });
-
-//        JMenuItem aboutMenuItem = new JMenuItem("About");
-//        settingsSection.addSeparator();
-//        settingsSection.add(aboutMenuItem);
-
-//        aboutMenuItem.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                dispose();
-////                About aboutPage = new About();
-////                aboutPage.display();
-//            }
-//        });
 
         JMenuItem budgetMenuItem = new JMenuItem("Budget");
-        settingsSection.addSeparator();
+        //settingsSection.addSeparator();
         settingsSection.add(budgetMenuItem);
 
         budgetMenuItem.addActionListener(new ActionListener() {
@@ -160,17 +133,21 @@ public class ProjectPage extends JFrame {
             }
         });
 
-        JMenuItem backMenuItem = new JMenuItem("Back");
-        settingsSection.addSeparator();
-        settingsSection.add(backMenuItem);
+        JButton backButton = new JButton(resizedBackIconImage);
 
-        backMenuItem.addActionListener(new ActionListener() {
+        backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();
                 UserHomePage u = new UserHomePage(myUser);
                 u.display();
             }
         });
+
+        menuBar.add(backButton);
+        menuBar.add(Box.createRigidArea(new Dimension(390, 0)));
+        settingsSection.setIcon(resizedIcon);
+        menuBar.add(Box.createHorizontalGlue());
+        menuBar.add(settingsSection);
 
         setJMenuBar(menuBar);
     }

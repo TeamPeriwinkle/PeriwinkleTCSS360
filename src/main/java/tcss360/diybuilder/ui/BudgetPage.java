@@ -206,68 +206,11 @@ public class BudgetPage extends JFrame {
                 ProjectPage p = new ProjectPage(myproject, myUser);
                 p.display();
             }
-
-
         });
 
-        CustomMenuIcon menuIcon = new CustomMenuIcon();
-
-        menuBar.add(Box.createRigidArea(new Dimension(450, 0)));
-        //settingsSection.setIcon(resizedIcon);
-        settingsSection.setIcon(menuIcon);
-        menuBar.add(Box.createHorizontalGlue());
         menuBar.add(backIconButton);
-        menuBar.add(settingsSection);
 
-
-        // Create "Sign Out" menu item
-        JMenuItem noteSettingMenu = new JMenuItem("Note");
-        settingsSection.add(noteSettingMenu);
-
-        noteSettingMenu.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-
-
-        });
-
-        //settingsSection.addSeparator();
         setJMenuBar(menuBar);
-
-
     }
-
-    /*
-     * Three horizontal stripes menu icon class.
-     */
-    private static class CustomMenuIcon implements Icon {
-        private static final int ICON_WIDTH = 20;
-        private static final int ICON_HEIGHT = 3;
-        private static final Color ICON_COLOR = Color.BLACK;
-
-        @Override
-        public void paintIcon(Component c, Graphics g, int x, int y) {
-            Graphics2D g2d = (Graphics2D) g.create();
-            g2d.setColor(ICON_COLOR);
-            g2d.fillRect(x, y, ICON_WIDTH, ICON_HEIGHT);
-            g2d.fillRect(x, y + 7, ICON_WIDTH, ICON_HEIGHT);
-            g2d.fillRect(x, y + 14, ICON_WIDTH, ICON_HEIGHT);
-            g2d.dispose();
-        }
-
-        @Override
-        public int getIconWidth() {
-            return ICON_WIDTH;
-        }
-
-        @Override
-        public int getIconHeight() {
-            return ICON_HEIGHT * 3 + 8;
-        }
-    }
-
-
 }
 

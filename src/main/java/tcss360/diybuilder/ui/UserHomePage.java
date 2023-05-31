@@ -184,8 +184,11 @@ public class UserHomePage extends JFrame {
 
         JMenuItem signOutMenuItem = new JMenuItem("Sign Out");
         JMenuItem aboutMenuItem = new JMenuItem("About");
+        JMenuItem noteMenuItem = new JMenuItem("Note");
 
         settingsSection.add(aboutMenuItem);
+        settingsSection.addSeparator();
+        settingsSection.add(noteMenuItem);
         settingsSection.addSeparator();
         settingsSection.add(signOutMenuItem);
 
@@ -202,6 +205,14 @@ public class UserHomePage extends JFrame {
                 dispose();
                 About aboutPage = new About(myuser);
                 aboutPage.display();
+            }
+        });
+
+        noteMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                NotePage n = new NotePage(myuser);
+                n.setVisible(true);
             }
         });
 
