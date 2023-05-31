@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import tcss360.diybuilder.SystemControl.BudgetController;
 import tcss360.diybuilder.SystemControl.TaskController;
-import tcss360.diybuilder.SystemControl.UserController;
 import tcss360.diybuilder.models.*;
 
 public class BudgetPage extends JFrame {
