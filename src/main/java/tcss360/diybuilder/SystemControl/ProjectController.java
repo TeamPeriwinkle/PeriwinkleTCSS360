@@ -4,12 +4,18 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import tcss360.diybuilder.models.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
-public class ProjectController extends Controller {
+public class ProjectController extends UserController {
+
+    //Hoping to use this in order to reduce some repeating code
+    private static JSONObject currentProject;
+    private static JSONObject currentTask;
+    private static JSONObject currentItem;
 
     //constructors
-    public ProjectController(User user) {
+    public ProjectController() {
     }
 
     //METHODS
@@ -17,11 +23,13 @@ public class ProjectController extends Controller {
     /**
      * helper method to fill ProjectList
      */
-    static public ArrayList<Project> readProjects(User user) {
+    static public ArrayList<Project> readProjects(String username) {
         ArrayList<Project> projectsList = new ArrayList<>();
 
+
+
         //currently sloppy but will retrieve the "projects array for users"
-        JSONArray projectData = readProjectdata(user.getUserName());
+        JSONArray projectData = readProjectdata(username);
 
         for (Object project : projectData) {
             JSONObject projTemp = (JSONObject) project; //not sure why I cant just do this directly but ok
@@ -101,8 +109,174 @@ public class ProjectController extends Controller {
         JSONObject accountData = (JSONObject) tempUserData.get(userName);
         JSONArray projectData = (JSONArray) accountData.get("projects");
 
+
+
         return projectData;
     }
+
+    /**
+     * To be used when creating a new project(will handle saving the project information to th json file)
+     * @param project
+     */
+    public void createProject(String username, Project project){
+        //retrieve correct placement in JSON Object for new project
+        JSONObject userData = (JSONObject) data.get("users");
+        JSONObject user = (JSONObject) userData.get(username);
+        JSONArray userProjects = (JSONArray) user.get("projects");
+
+        //initialize empty JsonObject and JSONArray to fill then add
+        JSONObject newProject = new JSONObject(); //commonly used
+        JSONArray tempTasks = new JSONArray();
+
+        //add project information to a Json Object
+        newProject.put("title", project.getName());
+        newProject.put("budget", project.getBudget());
+        newProject.put("plan", project.getPlan());
+        newProject.put("description", project.getPlan());
+        newProject.put("tasks", tempTasks);
+
+        //add everything back to the user data and update json file
+        userProjects.add(newProject);
+        user.replace("projects", userProjects);
+        userData.replace(username, user);
+
+        try {
+            updateData(userData);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * To be used when creating a new Task(will handle saving the project information to th json file)
+     * @param currentUser current signed in user
+     * @param currentProject current project that is being edited
+     * @param taskName name for the new task to be added
+     */
+    public void createTask(User currentUser, Project currentProject, String taskName){
+        //retrieve correct placement in JSON Object for new project
+        //could be simplified user and project wasnt needed as a parameter(possible hold them statically)
+        JSONObject usersData = (JSONObject) data.get("users");
+        JSONObject user = (JSONObject) usersData.get(currentUser.getUserName());
+        JSONArray userProjects = (JSONArray) user.get("projects");
+        JSONObject project = null;
+
+        //find the currentProject
+        for(Object proj: userProjects ){
+            JSONObject tempProj = (JSONObject) proj;
+            String tempProjName = (String)tempProj.get("title");
+            if(tempProjName.equals(currentProject.getName())){
+                project = tempProj;
+            }
+        }
+
+        //adding some information in case of a null exception might be beneficial
+        JSONArray projectTasks = (JSONArray) project.get("projects");
+
+        //initialize empty JsonObject and JSONArray to fill then add
+        JSONObject newTask = new JSONObject();
+        JSONArray tempItemArray = new JSONArray();
+
+        //add task information to a Json Object
+        newTask.put("name", taskName);
+        newTask.put("items", tempItemArray);
+
+        //add everything back to project data and then user data
+        projectTasks.add(newTask);
+        project.replace("tasks", projectTasks);
+
+        for (int i = 0; i < userProjects.size() ; i++) {
+            JSONObject proj = (JSONObject) userProjects.get(i);
+            String tempProjName = (String) proj.get("title");
+            if(tempProjName.equals(currentProject.getName())){
+                userProjects.set(i, project);
+            }
+        }
+
+        user.replace("projects",userProjects);
+        usersData.replace(currentUser.getUserName(), user);
+
+        try {
+            updateData(usersData);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    ///* DANGER*/before implementing createItem implement change to reduce some of the redudancy(static JSON Objects)
+    //If this isnt done this method will be 50+ lines long for no real reason
+    public void createItem(){
+
+    }
+
+
+
+    /**
+     * loads in the current project into static datafield
+     * @param title title of the project user has selected
+     */
+    public void loadProject(String title){
+        JSONArray userProjects = (JSONArray) currentUser.get("projects");
+
+        for(Object proj: userProjects){
+            JSONObject tempProj = (JSONObject)proj;
+            String projTitle = (String)tempProj.get("title");
+
+            if(projTitle.equals(title)){
+                currentProject = tempProj;
+            }
+        }
+
+        //for deubugging purposes
+        if(currentProject.isEmpty()){
+            System.out.println("Item was not loaded!!");
+        }
+    }
+
+    /**
+     * loads in the current project into static datafield
+     */
+    public void loadTask(String TaskName){
+        JSONArray projectTasks = (JSONArray) currentProject.get("tasks");
+
+        for(Object task: projectTasks){
+            JSONObject tempTask = (JSONObject)task;
+            String tempName = (String)tempTask.get("name");
+
+            if(tempName.equals(TaskName)){
+                currentTask = tempTask;
+            }
+        }
+
+        //for deubugging purposes
+        if(currentTask.isEmpty()){
+            System.out.println("Task was not loaded!!");
+        }
+    }
+
+    /**
+     * loads in the current Item into static datafield
+     * assumes task is already loaded in
+     */
+    public void loadItem(String itemName){
+        JSONArray taskItems = (JSONArray) currentTask.get("items");
+
+        for(Object item: taskItems){
+            JSONObject tempItem = (JSONObject)item;
+            String tempName = (String)tempItem.get("name");
+
+            if(tempName.equals(itemName)){
+                currentItem = tempItem;
+            }
+        }
+
+        //for deubugging purposes
+        if(currentItem.isEmpty()){
+            System.out.println("Item was not loaded!!");
+        }
+    }
+
+
 
     /**
      * @author Soe
@@ -117,5 +291,7 @@ public class ProjectController extends Controller {
         }
         return result;
     }
+
+
 
 }

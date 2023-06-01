@@ -90,6 +90,35 @@ public class AppTest
         Task testTask = testProj.getTaskList().get(0);
 
         System.out.println(testTask.getName());
+    }
+
+    /**
+     * Example of how it is possible to get information using models
+     */
+    @Test
+    public void loadItem(){
+        Controller c = new Controller();
+        String username = "alexg123";
+        String password = "123";
+
+        User alex = new User(username);
+
+        String projectTitle = "bathroom";
+        Project firstProj = alex.getProject(projectTitle);
+        firstProj.initTasks(username);
+
+        firstProj.getTaskList();
+        String taskName = "replace tiles";
+
+        Task firstTask = firstProj.getTask(taskName);
+
+        String itemName = "white tile";
+
+        Item firstItem  = firstTask.getItem(itemName);
+
+        assertEquals(itemName, firstItem.getName() );
+
 
     }
+
 }

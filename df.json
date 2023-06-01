@@ -1,0 +1,41 @@
+{
+  "users": {
+    "a1": {
+      "password": "a1",
+      "projects": [],
+      "userName": "a1",
+      "email": "a1"
+    },
+    "a2": {
+      "password": "a2",
+      "projects": [],
+      "userName": "a2",
+      "email": "a2"
+    },
+    "alexg123": {
+      "password": "123",
+      "projects": [
+        {
+          "description": "bathroom remodel",
+          "title": "bathroom",
+          "plan": "not sure",
+          "tasks": [
+            {
+              "name": "replace tiles",
+              "items": [
+                {
+                  "unit": 20,
+                  "price": 10,
+                  "name": "white tile"
+                }
+              ]
+            }
+          ],
+          "budget": 1000
+        }
+      ],
+      "email": "alex123@gmail.com",
+      "username": "alexg123"
+    }
+  }
+}

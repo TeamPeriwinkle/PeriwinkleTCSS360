@@ -50,4 +50,20 @@ public class Project {
     public void initTasks(String username){
         taskList = ProjectController.readtasks(username, this.name);
     }
+
+    /**
+     * used to get a specific project Object
+     * @param
+     * @return
+     */
+    public Task getTask(String taskName){
+        for (Task task: taskList) {
+            if(task.getName().equals(taskName)){
+                return task;
+            }
+        }
+
+        //change this later
+        return new Task("","","");
+    }
 }

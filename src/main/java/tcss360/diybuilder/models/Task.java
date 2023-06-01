@@ -79,6 +79,16 @@ public class Task {
     public static void add(Task task) {
     }
 
+    public Item getItem(String itemName){
+        for (Item item: itemsList) {
+            if(item.getName().equals(itemName)){
+                return item;
+            }
+        }
+
+        //change this later
+        return new Item("", 0, 0);
+    }
 
 }
 

@@ -4,6 +4,7 @@ package tcss360.diybuilder.models;
  * @author Alex Garcia
  */
 import tcss360.diybuilder.SystemControl.ProjectController;
+import tcss360.diybuilder.SystemControl.UserController;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -23,13 +24,20 @@ public class User implements Serializable {
         this.userName = name;
         this.email = email;
         this.password = password;
-        userProjects = ProjectController.readProjects(this);
     }
 
     public User(String name, String email){
         this.userName = name;
         this.email = email;
         this.password = "";
+    }
+
+    public User(String name){
+        User temp = UserController.getUserObject(name);
+        this.userName = temp.getUserName();
+        this.email = temp.getEmail();
+        this.password = temp.getPassword();
+        userProjects = ProjectController.readProjects(userName);
     }
 
     //getters
@@ -84,7 +92,17 @@ public class User implements Serializable {
         }
 
         return result;
+
     }
+
+    /**
+     * check to see if there is a user with the same username already
+     * @return
+     */
+    public boolean alreadyExists(){
+        return UserController.userExists(this.userName);
+    }
+
     /**
      * Serialize a User Object
      * @throws IOException

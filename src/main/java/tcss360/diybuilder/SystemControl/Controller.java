@@ -1,24 +1,20 @@
 package tcss360.diybuilder.SystemControl;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import tcss360.diybuilder.models.Item;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 
 /**
  * @author Alex G
  * Controller Class in charge of reading and writing (also a repository for data)
  */
 
-public class Controller <T>{
+public class Controller{
     static protected String DATAFILE = "df.json";
-    static protected String DATAFILE2 = "rsrc:df.json";
-    static protected JSONObject data = new JSONObject();
+    static public JSONObject data = new JSONObject();
 
     public Controller(){
         readData();
@@ -28,18 +24,25 @@ public class Controller <T>{
      * reads in json file to the json object
      * @author Alex G
      */
-    public void readData()  {
+    protected void readData()  {
 
         //figure out how to load in from an already created user json file
         JSONParser jsonParser = new JSONParser();
-        InputStream is = getFileFromResourceAsStream(DATAFILE);
+        //InputStream is = getFileFromResourceAsStream(DATAFILE);
 
-        try (InputStreamReader streamReader = new InputStreamReader(is, StandardCharsets.UTF_8);
-             BufferedReader reader = new BufferedReader(streamReader)) {
+        File f = new File(DATAFILE);
+        FileReader fr = null;
+        try {
+            fr = new FileReader(f);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        //InputStreamReader streamReader = new InputStreamReader(is, StandardCharsets.UTF_8
+        try (BufferedReader reader = new BufferedReader(fr)) {
 
             Object obj = jsonParser.parse(reader);
             data = (JSONObject) obj;
-            is.close();
+            //is.close();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
@@ -53,35 +56,50 @@ public class Controller <T>{
      * Note: this is not efficient but will suffice for now
      *  @author Alex G
      */
-    public void writeData() throws IOException {
+    protected static void writeData() {
 
+        //Path p = Paths.get("df.json");
+        //Path folder = p.getParent();
 
-        FileWriter fw = new FileWriter( DATAFILE2);
-        BufferedWriter writer = new BufferedWriter(fw);
-        writer.write(data.toJSONString());
-        writer.close();
-        fw.close();
+        FileWriter fw = null;
+        try {
+            fw = new FileWriter(DATAFILE);
+            BufferedWriter writer = new BufferedWriter(fw);
+            writer.write(data.toJSONString());
+            writer.close();
+            fw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
+//    /**
+//     * @author Alex Garcia
+//     * @param fileName
+//     * @return
+//     */
+//    protected  InputStream getFileFromResourceAsStream(String fileName) {
+//
+//        // The class loader that loaded the class
+//        ClassLoader classLoader = getClass().getClassLoader();
+//        InputStream inputStream = classLoader.getResourceAsStream(fileName);
+//
+//        // the stream holding the file content
+//        if (inputStream == null) {
+//            throw new IllegalArgumentException("file not found! " + fileName);
+//        } else {
+//            return inputStream;
+//        }
+//
+//
+//    }
     /**
-     * @author Alex Garcia
-     * @param fileName
-     * @return
+     * adds in new user information to the original json data
      */
-    private InputStream getFileFromResourceAsStream(String fileName) {
+    static protected void updateData(JSONObject userData) throws IOException {
 
-        // The class loader that loaded the class
-        ClassLoader classLoader = getClass().getClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream(fileName);
-
-        // the stream holding the file content
-        if (inputStream == null) {
-            throw new IllegalArgumentException("file not found! " + fileName);
-        } else {
-            return inputStream;
-        }
-
-
+        data.replace("users", userData);
+        writeData();
     }
 }
