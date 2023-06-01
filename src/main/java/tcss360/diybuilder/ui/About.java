@@ -45,7 +45,7 @@ public class About extends JFrame {
         gbc.insets = new Insets(10, 10, 10, 10);
 
         JLabel titleLabel = new JLabel("About");
-        titleLabel.setFont(new Font("", Font.BOLD, 24));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -59,32 +59,29 @@ public class About extends JFrame {
         gbc.insets = new Insets(10, 10, 5, 5);
         JButton backButton = new JButton("Back");
         backButton.setFocusable(false);
-
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        this.add(backButton, gbc);
-
         JButton exportButton = new JButton("Export");
         exportButton.setFocusable(false);
         JButton importButton = new JButton("Import");
         importButton.setFocusable(false);
 
         gbc.gridx = 0;
-        gbc.gridy = 3;
+        gbc.gridy = 2;
         this.add(importButton, gbc);
 
         gbc.gridx = 0;
-        gbc.gridy = 4;
+        gbc.gridy = 3;
         this.add(exportButton, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        this.add(backButton, gbc);
 
         importButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
                 try {
                     user.deserialize();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                } catch (ClassNotFoundException ex) {
+                } catch (IOException | ClassNotFoundException ex) {
                     throw new RuntimeException(ex);
                 }
 
@@ -149,10 +146,5 @@ public class About extends JFrame {
         this.setVisible(true);
 
     }
-
-    public JPanel getPanel() {
-        return myPanel;
-    }
-
 
 }

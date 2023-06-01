@@ -19,19 +19,15 @@ import tcss360.diybuilder.SystemControl.TaskController;
 import tcss360.diybuilder.models.*;
 
 public class ProjectPage2 extends JFrame {
-    private JLabel projectName;
     private JPanel projectPanel;
     private DefaultPieDataset dataset;
     private JFreeChart chart;
-    private ChartPanel chartPanel;
     private JPanel buttonsPanel;
     private JPanel taskListPanel;
     private ArrayList<Task> tasks;
     private Project project;
     private User myUser;
     private Budget myBudget;
-    private JMenuBar menuBar;
-    private JMenu settingsSection;
 
     public ProjectPage2(Project theP, User theUser) {
         super("DIY Control");
@@ -58,11 +54,11 @@ public class ProjectPage2 extends JFrame {
 
         // Create chart
         chart = ChartFactory.createPieChart("Budget Pie Chart", dataset, false, true, false);
-        chartPanel = new ChartPanel(chart);
+        ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new Dimension(200, 200));
 
         // Create description label
-        projectName = new JLabel("Project Name: " + project.getName());
+        JLabel projectName = new JLabel("Project Name: " + project.getName());
         JLabel projectDescription = new JLabel("Description: " + project.getDescription());
         projectPanel.add(projectName);
         projectPanel.add(Box.createVerticalStrut(10));
@@ -231,8 +227,8 @@ public class ProjectPage2 extends JFrame {
     }
 
     private void createMenuBar() {
-        menuBar = new JMenuBar();
-        settingsSection = new JMenu();
+        JMenuBar menuBar = new JMenuBar();
+        JMenu settingsSection = new JMenu();
 
         // Add back icon image
         ImageIcon backIcon = new ImageIcon("src/main/resources/backicon.png");
@@ -280,17 +276,13 @@ public class ProjectPage2 extends JFrame {
 
     // creat TaskButton
     private class TaskButton extends JButton {
-        private int index;
+        private final int index;
         private JLabel deleteLabel;
 
         public TaskButton(String name, int theIndex) {
             super(name);
             index = theIndex;
             setup();
-        }
-
-        public int getIndex() {
-            return index;
         }
 
         public JLabel getDeleteLabelLabel() {

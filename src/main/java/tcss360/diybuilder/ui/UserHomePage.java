@@ -103,12 +103,9 @@ public class UserHomePage extends JFrame {
                     if (!projectName.trim().isEmpty()) {
                         Project newProject = new Project(projectName, budget, description, new ArrayList<Task>());
                         projects.add(newProject);
-//                        JOptionPane.showMessageDialog(UserHomePage.this, "New project created: "
-//                                + projectName, "Create Project", JOptionPane.INFORMATION_MESSAGE);
-//                        updateProjectList();
-                        dispose();
-                        ProjectPage p = new ProjectPage(newProject, myUser);
-                        p.display();
+                        JOptionPane.showMessageDialog(UserHomePage.this, "New project created: "
+                                + projectName, "Create Project", JOptionPane.INFORMATION_MESSAGE);
+                        updateProjectList();
                     } else {
                         JOptionPane.showMessageDialog(UserHomePage.this, "Invalid project name",
                                 "Create Project", JOptionPane.WARNING_MESSAGE);
