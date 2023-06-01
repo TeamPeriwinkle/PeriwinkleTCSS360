@@ -59,7 +59,7 @@ public class UserHomePage extends JFrame {
         // creat "+" create new project
         JLabel createProjectLabel = new JLabel("+");
         createProjectLabel.setToolTipText("Create new project");
-        createProjectLabel.setFont(new Font("", Font.BOLD, 20));
+        createProjectLabel.setFont(new Font("Arial", Font.BOLD, 20));
         createProjectLabel.setForeground(Color.RED);
         projectCreatePanel.add(createProjectLabel);
 

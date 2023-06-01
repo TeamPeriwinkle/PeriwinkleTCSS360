@@ -59,7 +59,7 @@ public class ProjectPage2 extends JFrame {
         // Create chart
         chart = ChartFactory.createPieChart("Budget Pie Chart", dataset, false, true, false);
         chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new Dimension(300, 300));
+        chartPanel.setPreferredSize(new Dimension(200, 200));
 
         // Create description label
         projectName = new JLabel("Project Name: " + project.getName());
@@ -93,7 +93,8 @@ public class ProjectPage2 extends JFrame {
                 taskDetailsPanel.add(taskNameField);
 
                 // Show the panel in a JOptionPane
-                int result = JOptionPane.showConfirmDialog(getParent(), taskDetailsPanel, "Create a new task", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                int result = JOptionPane.showConfirmDialog(getParent(), taskDetailsPanel, "Create a new task",
+                        JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
                 if (result == JOptionPane.OK_OPTION) {
                     String name = taskNameField.getText();
 
@@ -101,7 +102,8 @@ public class ProjectPage2 extends JFrame {
                     Task task = new Task(name, new ArrayList<Item>());
                     tasks.add(task);
 
-                    JOptionPane.showMessageDialog(getParent(), "New task created: " + "newTask.getName()", "Create Task", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(getParent(), "New task created: " + name,
+                            "Create Task", JOptionPane.INFORMATION_MESSAGE);
 
                     // Update the list of tasks
                     updateTaskList();
@@ -126,6 +128,7 @@ public class ProjectPage2 extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 1;
         buttonsPanel.add(taskListPanel, gbc);
+        buttonsPanel.setPreferredSize(new Dimension(200, 200));
 
         // Set up layout
         setLayout(new BorderLayout());
@@ -179,15 +182,19 @@ public class ProjectPage2 extends JFrame {
             taskButton.getDeleteLabelLabel().addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    int confirm = JOptionPane.showConfirmDialog(getParent(), "Are you sure you want to delete this task?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+                    int confirm = JOptionPane.showConfirmDialog(getParent(),
+                            "Are you sure you want to delete this task?",
+                            "Confirm Delete", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
                         boolean deleted = deleteTask(taskName);
                         if (deleted) {
-                            JOptionPane.showMessageDialog(getParent(), "Task deleted: " + taskName, "Delete Task", JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.showMessageDialog(getParent(), "Task deleted: " + taskName,
+                                    "Delete Task", JOptionPane.INFORMATION_MESSAGE);
                             updateTaskList();
                             updateDeletedPieChart(taskName);
                         } else {
-                            JOptionPane.showMessageDialog(getParent(), "Failed to delete the task", "Delete Task", JOptionPane.WARNING_MESSAGE);
+                            JOptionPane.showMessageDialog(getParent(), "Failed to delete the task",
+                                    "Delete Task", JOptionPane.WARNING_MESSAGE);
                         }
                     }
                 }
@@ -229,7 +236,8 @@ public class ProjectPage2 extends JFrame {
 
         // Add back icon image
         ImageIcon backIcon = new ImageIcon("src/main/resources/backicon.png");
-        ImageIcon resizedBackIcon = new ImageIcon(backIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
+        ImageIcon resizedBackIcon = new ImageIcon(backIcon.getImage().getScaledInstance(25, 25,
+                Image.SCALE_SMOOTH));
         JButton backIconButton = new JButton(resizedBackIcon);
         backIconButton.setFocusable(false);
         backIconButton.addActionListener(new ActionListener() {
