@@ -26,10 +26,7 @@ public class Task {
      */
     public Task(String theName, ArrayList<Item> theItemsList) {
         name = theName;
-        itemsList = new ArrayList<Item>();
-        for (int i = 0; i < theItemsList.size(); i++) {
-            itemsList.add(theItemsList.get(i));
-        }
+        itemsList = theItemsList;
     }
 
 
@@ -41,7 +38,7 @@ public class Task {
         return name;
     }
 
-    public void setname(String theName) {
+    public void setName(String theName) {
         name = theName;
     }
 

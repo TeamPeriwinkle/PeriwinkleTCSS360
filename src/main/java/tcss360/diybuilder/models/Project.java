@@ -32,10 +32,11 @@ public class Project {
      * @param budget
      * @param description
      */
-    public Project(String name, double budget, String description) {
+    public Project(String name, double budget, String description, ArrayList<Task> theTaskList) {
         this.name = name;
         this.budget = budget;
         this.description = description;
+        taskList = theTaskList;
     }
 
     public Project() {
@@ -92,7 +93,7 @@ public class Project {
      *
      * @param username
      */
-    public void initTasks(String username){
-        taskList = ProjectController.readtasks(username, this.name);
-    }
+//    public void initTasks(String username){
+//        taskList = ProjectController.readtasks(username, this.name);
+//    }
 }

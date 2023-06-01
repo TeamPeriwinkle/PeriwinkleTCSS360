@@ -1,13 +1,11 @@
 package tcss360.diybuilder.ui;
-// /**
-//  * @author Mey Vo
-//  */
-import tcss360.diybuilder.models.Item;
-import tcss360.diybuilder.models.Project;
-import tcss360.diybuilder.models.Task;
-import tcss360.diybuilder.models.User;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.DefaultPieDataset;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,57 +13,69 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-public class ProjectPage extends JFrame {
+import org.jfree.chart.ChartPanel;
+import tcss360.diybuilder.SystemControl.BudgetController;
+import tcss360.diybuilder.SystemControl.TaskController;
+import tcss360.diybuilder.models.*;
 
-    private JMenuBar menuBar;
-    private JMenu settingsSection;
-    private Project project;
+public class ProjectPage2 extends JFrame {
+    private JLabel projectName;
+    private JPanel projectPanel;
+    private DefaultPieDataset dataset;
+    private JFreeChart chart;
+    private ChartPanel chartPanel;
+    private JPanel buttonsPanel;
     private JPanel taskListPanel;
     private ArrayList<Task> tasks;
+    private Project project;
     private User myUser;
+    private Budget myBudget;
+    private JMenuBar menuBar;
+    private JMenu settingsSection;
 
-    public ProjectPage(Project theP, User theUser) {
+    public ProjectPage2(Project theP, User theUser) {
         super("DIY Control");
         project = theP;
         myUser = theUser;
         tasks = project.getTaskList();
-        createMenuBar();
-        setVisible(true);
+        myBudget = new Budget(project.getTaskList(), project.getBudget());
+        projectPanel = new JPanel();
+        buttonsPanel = new JPanel();
+        taskListPanel = new JPanel(new GridBagLayout());
     }
 
     public void display() {
-        // Set layout
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(500, 500);
-        this.setLayout(new GridBagLayout());
+        createMenuBar();
+        projectPanel.setLayout(new BoxLayout(projectPanel, BoxLayout.Y_AXIS));
+
+        // Create Dataset
+        dataset = new DefaultPieDataset();
+        double remBudget = project.getBudget() - BudgetController.calculateOverallTotal(myBudget);
+        dataset.setValue("Remaining Budget", remBudget);
+        for (Task t : tasks) {
+            dataset.setValue(t.getName(), TaskController.calcuateTaskCost(t));
+        }
+
+        // Create chart
+        chart = ChartFactory.createPieChart("Budget Pie Chart", dataset, false, true, false);
+        chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new Dimension(300, 300));
+
+        // Create description label
+        projectName = new JLabel("Project Name: " + project.getName());
+        JLabel projectDescription = new JLabel("Description: " + project.getDescription());
+        projectPanel.add(projectName);
+        projectPanel.add(Box.createVerticalStrut(10));
+        projectPanel.add(projectDescription);
+
+        // Set up Buttons Panel
+        buttonsPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        // Project label
-        JLabel projectName = new JLabel("Project Name: " + project.getName(), null, SwingConstants.CENTER);
-        projectName.setFont(new Font("Arial", Font.PLAIN, 25));
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 2; // Make this component span across two columns
-        gbc.insets = new Insets(10, 10, 10, 10); // Change this to create desired space below the label
-        this.add(projectName, gbc);
-
-        // Description
-        JLabel descriptionLabel = new JLabel("Description: " + project.getDescription());
-        descriptionLabel.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 2; // Adjust as needed
-        gbc.insets = new Insets(10, 10, 30, 10); // Adjust as needed
-        this.add(descriptionLabel, gbc);
-
-        // Panel of "+" and "Create new Task" labels
         JPanel taskCreatePanel = new JPanel();
         taskCreatePanel.setLayout(new BoxLayout(taskCreatePanel, BoxLayout.X_AXIS));
-        gbc.insets = new Insets(10, 10, 10, 10); // Adjust as needed
 
-        // Create "+"
         JLabel createTaskLabel = new JLabel("+");
         createTaskLabel.setToolTipText("Create new Task");
         createTaskLabel.setFont(new Font("Arial", Font.BOLD, 20));
@@ -73,6 +83,32 @@ public class ProjectPage extends JFrame {
         taskCreatePanel.add(createTaskLabel);
 
         createTaskLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        createTaskLabel.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                JPanel taskDetailsPanel = new JPanel(new GridLayout(3, 2));
+
+                taskDetailsPanel.add(new JLabel("Task Name:"));
+                JTextField taskNameField = new JTextField();
+                taskDetailsPanel.add(taskNameField);
+
+                // Show the panel in a JOptionPane
+                int result = JOptionPane.showConfirmDialog(getParent(), taskDetailsPanel, "Create a new task", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                if (result == JOptionPane.OK_OPTION) {
+                    String name = taskNameField.getText();
+
+                    // Create new task
+                    Task task = new Task(name, new ArrayList<Item>());
+                    tasks.add(task);
+
+                    JOptionPane.showMessageDialog(getParent(), "New task created: " + "newTask.getName()", "Create Task", JOptionPane.INFORMATION_MESSAGE);
+
+                    // Update the list of tasks
+                    updateTaskList();
+                    updateAddedPieChart();
+                }
+            }
+        });
 
         // Add space between "+" and "Create new project" labels
         taskCreatePanel.add(Box.createHorizontalStrut(10)); // Change the number 10 to increase or decrease the space
@@ -83,49 +119,43 @@ public class ProjectPage extends JFrame {
         taskCreatePanel.add(taskLabel);
 
         gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.gridwidth = 2;
-        this.add(taskCreatePanel, gbc);
+        gbc.gridy = 0;
+        buttonsPanel.add(taskCreatePanel, gbc);
 
-        //creat TaskLabel include Name, PN and Start Date
-        createTaskLabel.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                JPanel taskDetailsPanel = new JPanel(new GridLayout(3, 2));
-
-                taskDetailsPanel.add(new JLabel("Task Name:"));
-                JTextField taskNameField = new JTextField();
-                taskDetailsPanel.add(taskNameField);
-
-                // Show the panel in a JOptionPane
-                int result = JOptionPane.showConfirmDialog(ProjectPage.this, taskDetailsPanel, "Create a new task", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-                if (result == JOptionPane.OK_OPTION) {
-                    String name = taskNameField.getText();
-
-                    // Create new task
-                    Task task = new Task(name, new ArrayList<Item>());
-                    tasks.add(task);
-
-                    JOptionPane.showMessageDialog(ProjectPage.this, "New task created: " + "newTask.getName()", "Create Task", JOptionPane.INFORMATION_MESSAGE);
-
-                    // Update the list of tasks
-                    updateTaskList();
-                }
-            }
-        });
-
-        taskListPanel = new JPanel(new GridBagLayout());
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.gridwidth = 2;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        this.add(taskListPanel, gbc);
         updateTaskList();
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        buttonsPanel.add(taskListPanel, gbc);
 
-        this.setLocationRelativeTo(null);
-        this.setVisible(true);
+        // Set up layout
+        setLayout(new BorderLayout());
+        add(projectPanel, BorderLayout.NORTH);
+        add(chartPanel, BorderLayout.CENTER);
+        add(buttonsPanel, BorderLayout.SOUTH);
+
+        setSize(600, 600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
 
-    //creat updateTaskList
+    private void updateAddedPieChart() {
+        // Create Dataset
+        double remBudget = project.getBudget() - BudgetController.calculateOverallTotal(myBudget);
+        dataset.setValue("Remaining Budget", remBudget);
+        for (Task t : tasks) {
+            dataset.setValue(t.getName(), TaskController.calcuateTaskCost(t));
+        }
+
+        chart.fireChartChanged();
+    }
+
+    private void updateDeletedPieChart(String name) {
+        dataset.remove(name);
+
+        chart.fireChartChanged();
+    }
+
     private void updateTaskList() {
         taskListPanel.removeAll();
 
@@ -149,14 +179,15 @@ public class ProjectPage extends JFrame {
             taskButton.getDeleteLabelLabel().addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    int confirm = JOptionPane.showConfirmDialog(taskListPanel, "Are you sure you want to delete this task?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+                    int confirm = JOptionPane.showConfirmDialog(getParent(), "Are you sure you want to delete this task?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
                         boolean deleted = deleteTask(taskName);
                         if (deleted) {
-                            JOptionPane.showMessageDialog(taskListPanel, "Task deleted: " + taskName, "Delete Task", JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.showMessageDialog(getParent(), "Task deleted: " + taskName, "Delete Task", JOptionPane.INFORMATION_MESSAGE);
                             updateTaskList();
+                            updateDeletedPieChart(taskName);
                         } else {
-                            JOptionPane.showMessageDialog(taskListPanel, "Failed to delete the task", "Delete Task", JOptionPane.WARNING_MESSAGE);
+                            JOptionPane.showMessageDialog(getParent(), "Failed to delete the task", "Delete Task", JOptionPane.WARNING_MESSAGE);
                         }
                     }
                 }
@@ -182,8 +213,6 @@ public class ProjectPage extends JFrame {
         taskListPanel.repaint();
     }
 
-
-    // deletet Task
     private boolean deleteTask(String taskName) {
         for (Task task : tasks) {
             if (task.getName().equals(taskName)) {
@@ -194,7 +223,6 @@ public class ProjectPage extends JFrame {
         return false;
     }
 
-    // Create MenuBar
     private void createMenuBar() {
         menuBar = new JMenuBar();
         settingsSection = new JMenu();
@@ -275,4 +303,7 @@ public class ProjectPage extends JFrame {
             this.add(deleteLabel, BorderLayout.EAST);
         }
     }
+
 }
+
+

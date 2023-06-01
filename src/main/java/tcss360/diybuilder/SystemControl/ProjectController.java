@@ -29,9 +29,10 @@ public class ProjectController extends Controller {
             String name = projTemp.get("title").toString();
             double budget = Double.parseDouble(projTemp.get("budget").toString());
             String plan = projTemp.get("title").toString();
-            String description = projTemp.get("title").toString();
+            String description = projTemp.get("description").toString();
 
-            Project temp = new Project(name, budget, description);
+            ArrayList<Task> tasks = readtasks(user.getUserName(), name);
+            Project temp = new Project(name, budget, description, tasks);
             projectsList.add(temp);
         }
         return projectsList;

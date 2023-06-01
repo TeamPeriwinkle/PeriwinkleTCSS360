@@ -23,8 +23,6 @@ public class BudgetPage extends JFrame {
     private final int rows;
     private JPanel panel1;
     private JPanel panel2;
-    private JButton backButton;
-    private JPanel buttonPanel;
     private Budget myBudget;
     private JMenuBar menuBar;
     private JMenu settingsSection;
@@ -42,18 +40,13 @@ public class BudgetPage extends JFrame {
         } else {
             rows = myBudget.getTasksList().size();
         }
-        createMenuBar();
+        panel1 = new JPanel(new GridLayout(rows, 1));
+        panel2 = new JPanel(new GridLayout(2, 1));
     }
 
     public void display()
     {
-        setup();
-
-        // Button setting
-        backButton.setPreferredSize(new Dimension(80, 30)); // Set preferred size
-        backButton.setFont(backButton.getFont().deriveFont(Font.BOLD, 12)); // Set font size
-        backButton.setMargin(new Insets(5, 10, 5, 10)); // Set padding
-        buttonPanel.add(backButton);
+        createMenuBar();
 
         // Category amount
         double overallTotal = BudgetController.calculateOverallTotal(myBudget);
@@ -147,23 +140,10 @@ public class BudgetPage extends JFrame {
         panel2.add(tasksScrollPane);
         panel2.add(categoryScrollPane);
 
-        // BackButton Action Listener
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                //create project page
-                JOptionPane.showMessageDialog(getParent(), "Mouse clicked");
-            }
-
-
-        });
-
         // Add the panel to the frame
         this.setLayout(new BorderLayout());
         this.add(panel1, BorderLayout.NORTH);
         this.add(panel2, BorderLayout.CENTER);
-        //this.add(buttonPanel, BorderLayout.SOUTH);
 
         // Set frame properties
         this.setSize(new Dimension(900, 700));
@@ -181,14 +161,6 @@ public class BudgetPage extends JFrame {
         }
     }
 
-    private void setup()
-    {
-        panel1 = new JPanel(new GridLayout(rows, 1));
-        panel2 = new JPanel(new GridLayout(2, 1));
-        backButton = new JButton("Back");
-        buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-    }
-
     private void createMenuBar() {
         menuBar = new JMenuBar();
         settingsSection = new JMenu();
@@ -202,7 +174,9 @@ public class BudgetPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                ProjectPage p = new ProjectPage(myproject, myUser);
+//                ProjectPage p = new ProjectPage(myproject, myUser);
+//                p.display();
+                ProjectPage2 p = new ProjectPage2(myproject, myUser);
                 p.display();
             }
         });

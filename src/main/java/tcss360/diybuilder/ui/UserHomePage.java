@@ -3,6 +3,7 @@ package tcss360.diybuilder.ui;
  * Mey
  */
 import tcss360.diybuilder.models.Project;
+import tcss360.diybuilder.models.Task;
 import tcss360.diybuilder.models.User;
 
 import javax.swing.*;
@@ -17,8 +18,7 @@ public class UserHomePage extends JFrame {
     private JMenu settingsSection;
     private JPanel projectListPanel;
     private ArrayList<Project> projects;
-    private User myuser;
-    private Project myProject;
+    protected User myUser;
     private ArrayList<ProjectButton> projectButtons;
    
     
@@ -26,7 +26,7 @@ public class UserHomePage extends JFrame {
     public UserHomePage(User theUser) {
         super("DIY Control");
         projects = theUser.getUserProjects();
-        myuser = theUser;
+        myUser = theUser;
         projectButtons = new ArrayList<>();
         createMenuBar();
     }
@@ -40,12 +40,13 @@ public class UserHomePage extends JFrame {
         gbc.insets = new Insets(10, 10, 10, 10);
 
         // Welcome Label
-        JLabel welcomeUser = new JLabel("Welcome Back " + myuser.getUserName(), null, SwingConstants.CENTER);
+        JLabel welcomeUser = new JLabel("Welcome Back " + myUser.getUserName(), null, SwingConstants.CENTER);
         welcomeUser.setFont(new Font("Arial", Font.PLAIN, 30));
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2; // Make this component span across two columns
-        gbc.insets = new Insets(10, 10, 50, 10); // Change this to create desired space below the label
+        // Change this to create desired space below the label
+        gbc.insets = new Insets(10, 10, 50, 10);
         this.add(welcomeUser, gbc);
 
         // Reset insets 
@@ -63,7 +64,8 @@ public class UserHomePage extends JFrame {
         projectCreatePanel.add(createProjectLabel);
 
         // Add space between "+" and "Create new project" labels
-        projectCreatePanel.add(Box.createHorizontalStrut(10)); // Change the number 10 to increase or decrease the space
+        // Change the number 10 to increase or decrease the space
+        projectCreatePanel.add(Box.createHorizontalStrut(10));
 
         // Create "Create new project" label
         JLabel projectLabel = new JLabel("Create new project");
@@ -75,6 +77,8 @@ public class UserHomePage extends JFrame {
         gbc.gridwidth = 2;
         this.add(projectCreatePanel, gbc);
 
+        createProjectLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
         createProjectLabel.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 JPanel projectDetailsPanel = new JPanel(new GridLayout(4, 2));
@@ -85,27 +89,29 @@ public class UserHomePage extends JFrame {
                 projectDetailsPanel.add(new JLabel("Budget:"));
                 JTextField budgetField = new JTextField();
                 projectDetailsPanel.add(budgetField);
-//                projectDetailsPanel.add(new JLabel("Plan (Optional):"));
-//                JTextField planField = new JTextField();
-//                projectDetailsPanel.add(planField);
                 projectDetailsPanel.add(new JLabel("Description:"));
                 JTextField descriptionField = new JTextField();
                 projectDetailsPanel.add(descriptionField);
 
-                int result = JOptionPane.showConfirmDialog(UserHomePage.this, projectDetailsPanel, "Create a new project", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                int result = JOptionPane.showConfirmDialog(UserHomePage.this, projectDetailsPanel,
+                        "Create a new project", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
                 if (result == JOptionPane.OK_OPTION) {
                     String projectName = projectNameField.getText();
                     String budgetText = budgetField.getText();
                     double budget = Double.parseDouble(budgetText);
-//                    String plan = planField.getText();
                     String description = descriptionField.getText();
                     if (!projectName.trim().isEmpty()) {
-                        Project newProject = new Project(projectName, budget, description);
+                        Project newProject = new Project(projectName, budget, description, new ArrayList<Task>());
                         projects.add(newProject);
-                        JOptionPane.showMessageDialog(UserHomePage.this, "New project created: " + projectName, "Create Project", JOptionPane.INFORMATION_MESSAGE);
-                        updateProjectList();
+//                        JOptionPane.showMessageDialog(UserHomePage.this, "New project created: "
+//                                + projectName, "Create Project", JOptionPane.INFORMATION_MESSAGE);
+//                        updateProjectList();
+                        dispose();
+                        ProjectPage p = new ProjectPage(newProject, myUser);
+                        p.display();
                     } else {
-                        JOptionPane.showMessageDialog(UserHomePage.this, "Invalid project name", "Create Project", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(UserHomePage.this, "Invalid project name",
+                                "Create Project", JOptionPane.WARNING_MESSAGE);
                     }
                 }
             }
@@ -129,27 +135,46 @@ public class UserHomePage extends JFrame {
         gbc.gridy = 0;
 
         for (int i = 0; i < projects.size(); i++) {
-            projects.get(i).initTasks(myuser.getUserName());
             final String projectName = projects.get(i).getName();
 
             ProjectButton projectButton = new ProjectButton(projectName, i);
 
+            Image cursorDeleteImage = Toolkit.getDefaultToolkit().getImage("src/main/resources/delete-24.png");
+            Image resizedDeleteImage = cursorDeleteImage.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+
+            // Create a custom cursor using the image
+            Cursor customDeleteCursor = Toolkit.getDefaultToolkit().createCustomCursor(
+                    resizedDeleteImage, new java.awt.Point(0, 0), "CustomCursor");
+            projectButton.getDeleteLabelLabel().setCursor(customDeleteCursor);
+
             projectButton.getDeleteLabelLabel().addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
-                    int confirm = JOptionPane.showConfirmDialog(projectListPanel, "Are you sure you want to delete this project?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+                    int confirm = JOptionPane.showConfirmDialog(projectListPanel,
+                            "Are you sure you want to delete this project?", "Confirm Delete",
+                            JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
                         boolean deleted = deleteProject(projectName);
                         if (deleted) {
-                            JOptionPane.showMessageDialog(projectListPanel, "Project deleted: " + projectName, "Delete Project", JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.showMessageDialog(projectListPanel, "Project deleted: " + projectName,
+                                    "Delete Project", JOptionPane.INFORMATION_MESSAGE);
                             updateProjectList();
                         } else {
-                            JOptionPane.showMessageDialog(projectListPanel, "Failed to delete the project", "Delete Project", JOptionPane.WARNING_MESSAGE);
+                            JOptionPane.showMessageDialog(projectListPanel, "Failed to delete the project",
+                                    "Delete Project", JOptionPane.WARNING_MESSAGE);
                         }
                     }
                 }
             });
 
             projectButton.addActionListener();
+            Image cursorImage = Toolkit.getDefaultToolkit().getImage("src/main/resources/cursor-60.png");
+            Image resizedCursorImage = cursorImage.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+
+            // Create a custom cursor using the image
+            Cursor customCursor = Toolkit.getDefaultToolkit().createCustomCursor(
+                    resizedCursorImage, new java.awt.Point(0, 0), "CustomCursor");
+
+            projectButton.setCursor(customCursor);
             projectListPanel.add(projectButton, gbc);
             gbc.gridy++;
         }
@@ -203,7 +228,7 @@ public class UserHomePage extends JFrame {
         aboutMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                About aboutPage = new About(myuser);
+                About aboutPage = new About(myUser);
                 aboutPage.display();
             }
         });
@@ -211,21 +236,10 @@ public class UserHomePage extends JFrame {
         noteMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                NotePage n = new NotePage(myuser);
+                NotePage n = new NotePage(myUser);
                 n.setVisible(true);
             }
         });
-
-//        JMenuItem projectMenuItem = new JMenuItem("Project");
-//        settingsSection.add(projectMenuItem);
-//
-//        projectMenuItem.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                dispose();
-//                ProjectPage projectPage = new ProjectPage();
-//                projectPage.display();
-//            }
-//        });
 
         setJMenuBar(menuBar);
     }
@@ -262,8 +276,10 @@ public class UserHomePage extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     dispose();
-                    ProjectPage projectPage = new ProjectPage(projects.get(index), myuser);
-                    projectPage.display();
+//                    ProjectPage projectPage = new ProjectPage(projects.get(index), myUser);
+//                    projectPage.display();
+                    ProjectPage2 p = new ProjectPage2(projects.get(index), myUser);
+                    p.display();
                 }
             });
         }
