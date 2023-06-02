@@ -275,7 +275,7 @@ public class UserHomePage extends JFrame {
                     dispose();
 //                    ProjectPage projectPage = new ProjectPage(projects.get(index), myUser);
 //                    projectPage.display();
-                    ProjectPage2 p = new ProjectPage2(projects.get(index), myUser);
+                    ProjectPage p = new ProjectPage(projects.get(index), myUser);
                     p.display();
                 }
             });

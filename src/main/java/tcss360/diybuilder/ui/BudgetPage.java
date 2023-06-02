@@ -176,7 +176,7 @@ public class BudgetPage extends JFrame {
                 dispose();
 //                ProjectPage p = new ProjectPage(myproject, myUser);
 //                p.display();
-                ProjectPage2 p = new ProjectPage2(myproject, myUser);
+                ProjectPage p = new ProjectPage(myproject, myUser);
                 p.display();
             }
         });

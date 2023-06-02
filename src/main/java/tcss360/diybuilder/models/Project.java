@@ -93,7 +93,7 @@ public class Project {
      *
      * @param username
      */
-//    public void initTasks(String username){
-//        taskList = ProjectController.readtasks(username, this.name);
-//    }
+    public void initTasks(String username){
+        taskList = ProjectController.readtasks(username, this.name);
+    }
 }

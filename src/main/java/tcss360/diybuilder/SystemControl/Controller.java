@@ -53,7 +53,7 @@ public class Controller <T>{
      * Note: this is not efficient but will suffice for now
      *  @author Alex G
      */
-    public void writeData() throws IOException {
+    public static void writeData() throws IOException {
 
 
         FileWriter fw = new FileWriter( DATAFILE2);

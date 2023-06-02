@@ -39,7 +39,7 @@ public class UserController extends Controller{
      * @param user
      * @throws IOException
      */
-    public void createUser(User user) throws IOException {
+    public static void createUser(User user) throws IOException {
         JSONObject userData = (JSONObject) data.get("users");
         // create new user Json object
         JSONObject newUser = new JSONObject();
@@ -62,7 +62,7 @@ public class UserController extends Controller{
      * @throws IOException
      * Note: not ideal, can be changed later
      */
-    public void createUser(String username, String email, String password) throws IOException {
+    public static void createUser(String username, String email, String password) throws IOException {
         User u = new User(username, email, password);
         createUser(u);
     }
@@ -102,7 +102,7 @@ public class UserController extends Controller{
     /**
      * adds in new user information to the original json data
      */
-    protected void updateData(JSONObject userData) throws IOException {
+    protected static void updateData(JSONObject userData) throws IOException {
 
         data.replace("users", userData);
         writeData();

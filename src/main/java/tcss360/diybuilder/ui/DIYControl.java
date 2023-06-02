@@ -177,26 +177,25 @@ public class DIYControl extends JFrame {
                             "Please enter your Username, Email Address, and Password.", "DIYControl",
                             JOptionPane.WARNING_MESSAGE);
                 } else {
-//                    if (UserController.userExists(username)) {
-//                        JOptionPane.showMessageDialog(getParent(), "Username already exists. Please try again.");
-//                    } else {
+                    if (UserController.userExists(username)) {
+                        JOptionPane.showMessageDialog(getParent(), "Username already exists. Please try again.");
+                    } else {
 
-//                        try {
-//                            UserController.createUser(username, email, password);
-//                        } catch (IOException ex) {
-//                            ex.printStackTrace();
-//                        }
-//                        try (BufferedWriter writer = new BufferedWriter(new FileWriter("df.json", true))) {
-//                            String line = username + "," + password + "," + email;
-//                            writer.write(line);
-//                            writer.newLine();
-//                            JOptionPane.showMessageDialog(getParent(), "Signup successful!");
-//                            dispose();
-//                        } catch (IOException theE) {
-//                            theE.printStackTrace();
-//                        }
-//                    }
-                    dispose();
+                        try {
+                            UserController.createUser(username, email, password);
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                        try (BufferedWriter writer = new BufferedWriter(new FileWriter("df.json", true))) {
+                            String line = username + "," + password + "," + email;
+                            writer.write(line);
+                            writer.newLine();
+                            JOptionPane.showMessageDialog(getParent(), "Signup successful!");
+                            dispose();
+                        } catch (IOException theE) {
+                            theE.printStackTrace();
+                        }
+                    }
 
                     // create note.txt file for new user
                     String filePath = "src/main/resources/UserNotes/" + username + "Notes.txt";
