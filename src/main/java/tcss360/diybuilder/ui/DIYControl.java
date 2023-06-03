@@ -1,45 +1,70 @@
+/*
+ * Team Periwinkle
+ */
 package tcss360.diybuilder.ui;
+
 import tcss360.diybuilder.SystemControl.UserController;
 import tcss360.diybuilder.models.User;
-
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URISyntaxException;
 
 /**
  * Login and Sign Up UI.
+ *
  * @author Soe Lin
  */
 public class DIYControl extends JFrame {
 
+    /** Label of title. */
     private JLabel titleLabel;
+    /** Username label. */
     private JLabel usernameLabel;
+    /** Username field to enter username. */
     private JTextField usernameField;
+    /** Email label. */
     private JLabel emailLabel;
+    /** Email field to enter email address. */
     private JTextField emailField;
+    /** Password label. */
     private JLabel passwordLabel;
+    /** Password field to enter password. */
     private JPasswordField passwordField;
+    /** Panel to hold all the buttons. */
     private JPanel buttonsPanel;
+    /** Login button. */
     private JButton loginButton;
+    /** Sing Up button. */
     private JButton signUpButton;
+    /** Back button. */
     private JButton backButton;
+    /** Create button. */
     private JButton createButton;
+    /** Exit Button. */
     private JButton exitButton;
+    /** String variable to hold username. */
     private String username;
+    /** String variable to hold email. */
     private String email;
+    /** String variable to hold password. */
     private String password;
-    private UserController userC;
+    /** UserController to perform read and write data. */
+    private final UserController userC;
 
+    /**
+     * Constructor.
+     */
     public DIYControl() {
         super("DIYControl");
         userC = new UserController();
     }
 
+    /**
+     * Set up the GUI and display.
+     */
     public void display()  {
         setSize(500, 500);
         // Set layout
@@ -79,16 +104,15 @@ public class DIYControl extends JFrame {
         gbc.gridwidth = 4;
         add(buttonsPanel, gbc);
 
-        // Adding to the panel
-
+        // Adding buttons to the button panel
         buttonsPanel.add(loginButton);
         buttonsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         buttonsPanel.add(signUpButton);
         buttonsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         buttonsPanel.add(exitButton);
 
-        // Buttons action section
 
+        // Buttons' action section
         exitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
@@ -262,10 +286,9 @@ public class DIYControl extends JFrame {
 
     }
 
-
-
-
-
+    /**
+     * Set up the necessary fields.
+     */
     private void setup() {
         titleLabel = new JLabel("Welcome to DIYControl");
         titleLabel.setFont(new Font("", Font.BOLD, 24));
@@ -284,6 +307,7 @@ public class DIYControl extends JFrame {
         exitButton = new JButton("Exit");
         createButton = new JButton("Create");
 
+        // Setting buttons' size to the same size
         Dimension buttonSize = new Dimension(100, 50);
         signUpButton.setMaximumSize(buttonSize);
         loginButton.setMaximumSize(buttonSize);
@@ -291,5 +315,4 @@ public class DIYControl extends JFrame {
         exitButton.setMaximumSize(buttonSize);
         createButton.setMaximumSize(buttonSize);
     }
-
 }

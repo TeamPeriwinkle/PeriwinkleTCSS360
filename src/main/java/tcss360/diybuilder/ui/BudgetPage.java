@@ -1,9 +1,7 @@
-package tcss360.diybuilder.ui;
-
 /*
- *
- * @author Soe Lin
+ * Team Periwinkle
  */
+package tcss360.diybuilder.ui;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,26 +13,43 @@ import tcss360.diybuilder.SystemControl.BudgetController;
 import tcss360.diybuilder.SystemControl.TaskController;
 import tcss360.diybuilder.models.*;
 
+/**
+ * Budget UI.
+ *
+ * @author Soe Lin
+ */
 public class BudgetPage extends JFrame {
 
+    /** Items column title to use in table. */
     private static final String[] ITEMS_COLUMNS = { "Items", "Cost per Unit", "Total Unit", "Total Cost" };
+    /** Task column title to use in table. */
     private static final String[] TASKS_COLUMNS = { "Tasks", "Amount" };
+    /** Category column title to use in table. */
     private static final String[] CATEGORY_COLUMNS = { "Category", "Amount" };
-    private final int rows;
-    private JPanel panel1;
-    private JPanel panel2;
-    private Budget myBudget;
-    private JMenuBar menuBar;
-    private JMenu settingsSection;
-    private Project myproject;
-    private User myUser;
+    /** Panel to hold items' table. */
+    private final JPanel panel1;
+    /** Panel to hold task and category table. */
+    private final JPanel panel2;
+    /** Budget object. */
+    private final Budget myBudget;
+    /** Project object. */
+    private final Project myproject;
+    /** User object. */
+    private final User myUser;
 
+    /**
+     * Constructor.
+     *
+     * @param theP project object
+     * @param theUser user object
+     */
     public BudgetPage(Project theP, User theUser) //also need parameter for project to go back to project page
     {
         super(theP.getName() + "'s Budget");
         myproject = theP;
         myUser = theUser;
         myBudget = new Budget(theP.getTaskList(), theP.getBudget());
+        int rows;
         if (myBudget.getTasksList().size() == 0) {
             rows = 1;
         } else {
@@ -44,6 +59,9 @@ public class BudgetPage extends JFrame {
         panel2 = new JPanel(new GridLayout(2, 1));
     }
 
+    /**
+     * Set up the GUI and display.
+     */
     public void display()
     {
         createMenuBar();
@@ -51,13 +69,13 @@ public class BudgetPage extends JFrame {
         // Category amount
         double overallTotal = BudgetController.calculateOverallTotal(myBudget);
         double estimatedBudget = myBudget.getEstimatedBudget();
-        double remaingBudget = estimatedBudget - overallTotal;
+        double remainingBudget = estimatedBudget - overallTotal;
 
         // Category Table
         Object[][] categoryData = {
                 {"Overall Total", String.format("$%.2f", overallTotal)},
                 {"Estimated Budget", String.format("$%.2f", estimatedBudget)},
-                {"Remaining Budget", String.format("$%.2f", remaingBudget)}
+                {"Remaining Budget", String.format("$%.2f", remainingBudget)}
         };
         JTable categoryTable = new JTable(categoryData, CATEGORY_COLUMNS) {
             @Override
@@ -152,7 +170,7 @@ public class BudgetPage extends JFrame {
         this.setVisible(true);
 
         // Warning Message for Remaining Budget
-        if (remaingBudget < 0)
+        if (remainingBudget < 0)
         {
             JOptionPane.showMessageDialog(getParent(),
                     "You have negative remaining Budget!\n" +
@@ -161,9 +179,11 @@ public class BudgetPage extends JFrame {
         }
     }
 
+    /**
+     * Create menu bar.
+     */
     private void createMenuBar() {
-        menuBar = new JMenuBar();
-        settingsSection = new JMenu();
+        JMenuBar menuBar = new JMenuBar();
 
         // add taskicon image
         ImageIcon backIcon = new ImageIcon("src/main/resources/backicon.png");
@@ -174,8 +194,6 @@ public class BudgetPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-//                ProjectPage p = new ProjectPage(myproject, myUser);
-//                p.display();
                 ProjectPage p = new ProjectPage(myproject, myUser);
                 p.display();
             }

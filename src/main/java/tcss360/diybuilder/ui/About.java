@@ -1,3 +1,6 @@
+/*
+ * Team Periwinkle
+ */
 package tcss360.diybuilder.ui;
 import tcss360.diybuilder.models.User;
 
@@ -19,24 +22,32 @@ import javax.swing.JPanel;
 
 /**
  * About UI + Object class.
+ *
  * @author Soe Lin
  */
-
 public class About extends JFrame {
-
+    /** Version number. */
     private static final String VERSIONNUMBER = " 0.1";
-    private JPanel myPanel;
-    private User user;
+    /** Panel to hold information. */
+    private final JPanel myPanel;
+    /** User object. */
+    private final User user;
 
+    /**
+     * Constructor.
+     *
+     * @param theUser user object.
+     */
     public About(User theUser) {
         super("DIYControl");
         myPanel = new JPanel();
         user = theUser;
     }
 
-
+    /**
+     * Set up the GUI and display.
+     */
     public void display() {
-
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(400, 500);
@@ -76,31 +87,6 @@ public class About extends JFrame {
         gbc.gridy = 4;
         this.add(backButton, gbc);
 
-        importButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-
-                try {
-                    user.deserialize();
-                } catch (IOException | ClassNotFoundException ex) {
-                    throw new RuntimeException(ex);
-                }
-
-            }
-        });
-
-        exportButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-
-                try {
-                    user.serialize();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-
-            }
-        });
-
-
         JLabel line0 = new JLabel("Version Number:" + VERSIONNUMBER);
         JLabel line1 = new JLabel("This app is registered to: " + user.getUserName());
         JLabel line2 = new JLabel("Email address of the user: " + user.getEmail());
@@ -133,6 +119,31 @@ public class About extends JFrame {
         myPanel.add(line9);
         myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.Y_AXIS));
 
+        // Buttons' action
+        importButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                try {
+                    user.deserialize();
+                } catch (IOException | ClassNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+            }
+        });
+
+        exportButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                try {
+                    user.serialize();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+            }
+        });
+
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 //need user Home Page to go back
@@ -146,5 +157,4 @@ public class About extends JFrame {
         this.setVisible(true);
 
     }
-
 }

@@ -1,3 +1,6 @@
+/*
+ * Team Periwinkle
+ */
 package tcss360.diybuilder.ui;
 
 import org.jfree.chart.ChartFactory;
@@ -18,17 +21,38 @@ import tcss360.diybuilder.SystemControl.BudgetController;
 import tcss360.diybuilder.SystemControl.TaskController;
 import tcss360.diybuilder.models.*;
 
+/**
+ * Project UI.
+ *
+ * @author Soe Lin
+ * @author Mey Vo
+ */
 public class ProjectPage extends JFrame {
-    private JPanel projectPanel;
+    /** Panel to hold project name and description. */
+    private final JPanel projectPanel;
+    /** Data to create pie chart. */
     private DefaultPieDataset dataset;
+    /** Pie chart. */
     private JFreeChart chart;
-    private JPanel buttonsPanel;
-    private JPanel taskListPanel;
-    private ArrayList<Task> tasks;
-    private Project project;
-    private User myUser;
-    private Budget myBudget;
+    /** Buttons to hold project's functions. */
+    private final JPanel buttonsPanel;
+    /** Panel to hold task list. */
+    private final JPanel taskListPanel;
+    /** Arraylist of task to manipulate tasks. */
+    private final ArrayList<Task> tasks;
+    /** Project object. */
+    private final Project project;
+    /** User object. */
+    private final User myUser;
+    /** Budget object. */
+    private final Budget myBudget;
 
+    /**
+     * Constructor.
+     *
+     * @param theP project object
+     * @param theUser user object
+     */
     public ProjectPage(Project theP, User theUser) {
         super("DIY Control");
         project = theP;
@@ -95,7 +119,7 @@ public class ProjectPage extends JFrame {
                     String name = taskNameField.getText();
 
                     // Create new task
-                    Task task = new Task(name, new ArrayList<Item>());
+                    Task task = new Task(name, new ArrayList<>());
                     tasks.add(task);
 
                     JOptionPane.showMessageDialog(getParent(), "New task created: " + name,
@@ -174,8 +198,8 @@ public class ProjectPage extends JFrame {
             // Create a custom cursor using the image
             Cursor customDeleteCursor = Toolkit.getDefaultToolkit().createCustomCursor(
                     resizedDeleteImage, new java.awt.Point(0, 0), "CustomCursor");
-            taskButton.getDeleteLabelLabel().setCursor(customDeleteCursor);
-            taskButton.getDeleteLabelLabel().addMouseListener(new MouseAdapter() {
+            taskButton.getDeleteLabel().setCursor(customDeleteCursor);
+            taskButton.getDeleteLabel().addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     int confirm = JOptionPane.showConfirmDialog(getParent(),
@@ -274,21 +298,39 @@ public class ProjectPage extends JFrame {
         setJMenuBar(menuBar);
     }
 
-    // creat TaskButton
+    /**
+     * Custom TaskButton inner class.
+     */
     private class TaskButton extends JButton {
+        /** Integer to use and actionPerformed. */
         private final int index;
+        /** Delete label. */
         private JLabel deleteLabel;
 
+        /**
+         * Constructor.
+         *
+         * @param name
+         * @param theIndex
+         */
         public TaskButton(String name, int theIndex) {
             super(name);
             index = theIndex;
             setup();
         }
 
-        public JLabel getDeleteLabelLabel() {
+        /**
+         * Return delete label.
+         *
+         * @return deleteLabel
+         */
+        public JLabel getDeleteLabel() {
             return deleteLabel;
         }
 
+        /**
+         * Set up for custom task button.
+         */
         private void setup() {
             this.setHorizontalAlignment(SwingConstants.LEFT);
             this.setPreferredSize(new Dimension(220, 25));
@@ -301,6 +343,19 @@ public class ProjectPage extends JFrame {
             deleteLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             this.setLayout(new BorderLayout());
             this.add(deleteLabel, BorderLayout.EAST);
+        }
+
+        /**
+         * Add action listener to the button.
+         */
+        public void addActionListener() {
+            this.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    dispose();
+                    // create and display task page
+                }
+            });
         }
     }
 
