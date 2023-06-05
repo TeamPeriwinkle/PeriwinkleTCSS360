@@ -130,6 +130,7 @@ public class UserHomePage extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
+        gbc.insets = new Insets(2, 2, 2, 2);
 
         for (int i = 0; i < projects.size(); i++) {
             final String projectName = projects.get(i).getName();

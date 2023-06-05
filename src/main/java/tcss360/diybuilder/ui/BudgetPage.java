@@ -36,6 +36,8 @@ public class BudgetPage extends JFrame {
     private final Project myproject;
     /** User object. */
     private final User myUser;
+    private int selection;
+    private int indexForTask;
 
     /**
      * Constructor.
@@ -43,11 +45,13 @@ public class BudgetPage extends JFrame {
      * @param theP project object
      * @param theUser user object
      */
-    public BudgetPage(Project theP, User theUser) //also need parameter for project to go back to project page
+    public BudgetPage(Project theP, User theUser, int flag, int index) //also need parameter for project to go back to project page
     {
         super(theP.getName() + "'s Budget");
         myproject = theP;
         myUser = theUser;
+        selection = flag;
+        indexForTask = index;
         myBudget = new Budget(theP.getTaskList(), theP.getBudget());
         int rows;
         if (myBudget.getTasksList().size() == 0) {
@@ -190,14 +194,25 @@ public class BudgetPage extends JFrame {
         ImageIcon resizedBackIcon = new ImageIcon(backIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
         JButton backIconButton = new JButton(resizedBackIcon);
         backIconButton.setFocusable(false);
-        backIconButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                ProjectPage p = new ProjectPage(myproject, myUser);
-                p.display();
-            }
-        });
+        if (selection == 1) {
+            backIconButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    dispose();
+                    ProjectPage p = new ProjectPage(myproject, myUser);
+                    p.display();
+                }
+            });
+        } else if (selection == 2) {
+            backIconButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    dispose();
+                    TaskPage t = new TaskPage(myproject, myUser, indexForTask);
+                    t.display();
+                }
+            });
+        }
 
         menuBar.add(backIconButton);
 

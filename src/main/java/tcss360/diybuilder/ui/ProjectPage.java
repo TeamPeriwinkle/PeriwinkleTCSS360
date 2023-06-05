@@ -185,6 +185,7 @@ public class ProjectPage extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
+        gbc.insets = new Insets(2, 2, 2, 2);
 
         for (int i = 0; i < tasks.size(); i++) {
             String taskName = tasks.get(i).getName();
@@ -232,7 +233,7 @@ public class ProjectPage extends JFrame {
             // Add the TaskButton to the task list panel
             gbc.gridy++;
             taskListPanel.add(taskButton, gbc);
-            taskButton.addActionListener(null);
+            taskButton.addActionListener();
         }
 
         // Refresh the task list panel
@@ -289,7 +290,7 @@ public class ProjectPage extends JFrame {
         budgetMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                BudgetPage b = new BudgetPage(project, myUser);
+                BudgetPage b = new BudgetPage(project, myUser, 1, 0);
                 b.display();
             }
         });
@@ -353,7 +354,8 @@ public class ProjectPage extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     dispose();
-                    // create and display task page
+                    TaskPage t = new TaskPage(project, myUser, index);
+                    t.display();
                 }
             });
         }
