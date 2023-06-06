@@ -194,6 +194,11 @@ public class BudgetPage extends JFrame {
         ImageIcon resizedBackIcon = new ImageIcon(backIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
         JButton backIconButton = new JButton(resizedBackIcon);
         backIconButton.setFocusable(false);
+
+        JButton homeButton = new JButton("Home");
+        homeButton.setFocusable(false);
+
+
         if (selection == 1) {
             backIconButton.addActionListener(new ActionListener() {
                 @Override
@@ -214,7 +219,17 @@ public class BudgetPage extends JFrame {
             });
         }
 
+        homeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                UserHomePage u = new UserHomePage(myUser);
+                u.display();
+            }
+        });
+
         menuBar.add(backIconButton);
+        menuBar.add(homeButton);
 
         setJMenuBar(menuBar);
     }

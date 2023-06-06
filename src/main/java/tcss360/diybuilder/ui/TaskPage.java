@@ -206,6 +206,18 @@ public class TaskPage extends JFrame {
             }
         });
 
+        JButton homeButton = new JButton("Home");
+        homeButton.setFocusable(false);
+
+        homeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                UserHomePage u = new UserHomePage(myUser);
+                u.display();
+            }
+        });
+
         // Add task icon image
         ImageIcon taskIcon = new ImageIcon("src/main/resources/taskicon.png");
         Image resizedTaskIcon = taskIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
@@ -215,6 +227,7 @@ public class TaskPage extends JFrame {
         JPanel backIconPanel = new JPanel();
         backIconPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         backIconPanel.add(backIconButton);
+        backIconPanel.add(homeButton);
 
         menuBar.add(backIconPanel);
         menuBar.add(Box.createHorizontalGlue());
