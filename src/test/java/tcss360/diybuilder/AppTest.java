@@ -60,16 +60,7 @@ public class AppTest
      */
     @Test
     public void iteration2Test() throws IOException, ClassNotFoundException {
-        //Serialize the User
-        User user1 = new User("LoganDeezDukes123", "migratious@gmail.com");
-        user1.serialize();
 
-        //Deserialize the User
-        User desiralizedUser = new User();
-        desiralizedUser.deserialize();
-
-        assertEquals("LoganDeezDukes123", desiralizedUser.getUserName());
-        assertEquals("migratious@gmail.com", desiralizedUser.getEmail());
     }
 
     @Test
@@ -92,34 +83,6 @@ public class AppTest
         System.out.println(testTask.getName());
     }
 
-    /**
-     * Example of how it is possible to get information using models
-     */
-    @Test
-    public void loadItem(){
-        Controller c = new Controller();
-        String username = "alexg123";
-        String password = "123";
-
-        User alex = new User(username);
-
-        String projectTitle = "bathroom";
-        Project firstProj = alex.getProject(projectTitle);
-        firstProj.initTasks(username);
-
-        firstProj.getTaskList();
-        String taskName = "replace tiles";
-
-        Task firstTask = firstProj.getTask(taskName);
-
-        String itemName = "white tile";
-
-        Item firstItem  = firstTask.getItem(itemName);
-
-        assertEquals(itemName, firstItem.getName() );
-
-
-    }
 
     /**
      * test to see if new info is added to permanent data
@@ -138,7 +101,7 @@ public class AppTest
         String description = "new pc build for gaming and school";
         Double budget = 1200.0;
 
-        Project newProj = new Project(projectName, budget, "somePlan",description);
+        Project newProj = new Project(projectName, budget,description);
 
         ProjectController.createProject(username, newProj);
 

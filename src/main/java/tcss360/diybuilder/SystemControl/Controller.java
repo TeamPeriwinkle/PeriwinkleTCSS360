@@ -15,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 public class Controller{
     static protected String DATAFILE = "df.json";
     static public JSONObject data = new JSONObject();
+    static protected JSONObject userData;
 
     public Controller(){
         readData();
@@ -48,6 +49,7 @@ public class Controller{
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        userData = (JSONObject) data.get("users");
 
     }
 
@@ -56,10 +58,8 @@ public class Controller{
      * Note: this is not efficient but will suffice for now
      *  @author Alex G
      */
-    protected static void writeData() {
 
-        //Path p = Paths.get("df.json");
-        //Path folder = p.getParent();
+    public static void writeData() throws IOException {
 
         FileWriter fw = null;
         try {
@@ -81,5 +81,12 @@ public class Controller{
 
         data.replace("users", userData);
         writeData();
+    }
+
+    /**
+     * retrieves all user data, currenlty can be removed if time allows
+     */
+    public static void loadUserData(){
+        userData = (JSONObject) data.get("users");
     }
 }

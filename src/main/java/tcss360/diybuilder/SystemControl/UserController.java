@@ -16,7 +16,6 @@ public class UserController extends Controller{
     //private static UserController singleInstance = null;
 
     //datafield
-    protected static JSONObject userData;
     protected static JSONObject currentUser;
 
     //contructor
@@ -52,13 +51,16 @@ public class UserController extends Controller{
      * @param password password passed in by user
      * @throws IOException
      */
-    public void createUser(String username, String email, String password) throws IOException {
+
+    public static void createUser(String username, String email, String password) throws IOException {
 
         //make sure things are properly loaded in
         if(userData.isEmpty()){
             loadUserData();
         }
 
+
+        JSONObject userData = (JSONObject) data.get("users");
         // create new user Json object
         JSONObject newUser = new JSONObject();
         newUser.put("userName", username);
@@ -104,13 +106,6 @@ public class UserController extends Controller{
         currentUser = (JSONObject) userData.get(username);
     }
 
-    /**
-     * retrieves all user data, currenlty can be removed if time allows
-     */
-    public static void loadUserData(){
-        userData = (JSONObject) data.get("users");
-    }
-
 
     /**
      * checks user credentials(username and password)
@@ -127,5 +122,16 @@ public class UserController extends Controller{
         }
 
         return false;
+    }
+
+
+
+    /**
+     * adds in new user information to the original json data
+     */
+    protected static void updateData(JSONObject userData) throws IOException {
+
+        data.replace("users", userData);
+        writeData();
     }
 }

@@ -1,3 +1,6 @@
+/*
+ * Team Periwinkle
+ */
 package tcss360.diybuilder.models;
 /**
  * User Object Class.
@@ -19,26 +22,14 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public User(){}
     public User(String name, String email, String password){
+        UserController.loadUserAccount(name);
         this.userName = name;
         this.email = email;
         this.password = password;
+        this.userProjects = ProjectController.readProjects(this.userName);
     }
 
-    public User(String name, String email){
-        this.userName = name;
-        this.email = email;
-        this.password = "";
-    }
-
-    public User(String name){
-        User temp = UserController.getUserObject(name);
-        this.userName = temp.getUserName();
-        this.email = temp.getEmail();
-        this.password = temp.getPassword();
-        userProjects = ProjectController.readProjects(userName);
-    }
 
     //getters
     public String getEmail(){
@@ -53,20 +44,27 @@ public class User implements Serializable {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     //setters
     public void setUserName(String name){
         this.userName = name;
     }
+
     public void setEmail(String email){this.email = email;}
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public ArrayList<Project> getUserProjects() {
         return userProjects;
     }
 
+
+    //bunch of helper methods
+
+    //methods to add
+    //addProject()
     /**
      * used to get a specific project Object
      * @param title
@@ -80,6 +78,7 @@ public class User implements Serializable {
         }
         return new Project();
     }
+
 
     /**
      *

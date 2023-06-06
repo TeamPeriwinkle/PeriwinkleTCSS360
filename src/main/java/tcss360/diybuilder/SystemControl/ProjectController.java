@@ -40,9 +40,10 @@ public class ProjectController extends UserController {
             String name = projTemp.get("title").toString();
             double budget = Double.parseDouble(projTemp.get("budget").toString());
             String plan = projTemp.get("title").toString();
-            String description = projTemp.get("title").toString();
+            String description = projTemp.get("description").toString();
 
-            Project temp = new Project(name, budget, plan, description);
+            ArrayList<Task> tasks = readtasks(username, name);
+            Project temp = new Project(name, budget, description, tasks);
             projectsList.add(temp);
         }
         return projectsList;
@@ -146,8 +147,7 @@ public class ProjectController extends UserController {
         //add project information to a Json Object
         newProject.put("title", project.getName());
         newProject.put("budget", project.getBudget());
-        newProject.put("plan", project.getPlan());
-        newProject.put("description", project.getPlan());
+        newProject.put("description", project.getDescription());
         newProject.put("tasks", tempTasks);
 
         //add everything back to the user data and update json file
@@ -460,5 +460,15 @@ public class ProjectController extends UserController {
             e.printStackTrace();
         }
 
+    }
+
+    public static double calculateOverallTotal(Budget theBudget) {
+        double result = 0;
+        ArrayList<Task> taskList = theBudget.getTasksList();
+        for (int i = 0; i < taskList.size(); i++) {
+            result += ProjectController.calcuateTaskCost(taskList.get(i));
+        }
+
+        return result;
     }
 }

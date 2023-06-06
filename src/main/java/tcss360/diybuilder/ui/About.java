@@ -1,3 +1,6 @@
+/*
+ * Team Periwinkle
+ */
 package tcss360.diybuilder.ui;
 import tcss360.diybuilder.models.User;
 
@@ -19,35 +22,41 @@ import javax.swing.JPanel;
 
 /**
  * About UI + Object class.
+ *
  * @author Soe Lin
  */
-
 public class About extends JFrame {
-
+    /** Version number. */
     private static final String VERSIONNUMBER = " 0.1";
-    private String username;
-    private String email;
-    private JPanel myPanel;
-    private User user;
+    /** Panel to hold information. */
+    private final JPanel myPanel;
+    /** User object. */
+    private final User user;
 
-    public About() {
+    /**
+     * Constructor.
+     *
+     * @param theUser user object.
+     */
+    public About(User theUser) {
         super("DIYControl");
         myPanel = new JPanel();
-        user = new User(username, email);
+        user = theUser;
     }
 
-
+    /**
+     * Set up the GUI and display.
+     */
     public void display() {
 
-
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(600, 600);
+        this.setSize(400, 500);
         this.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
         JLabel titleLabel = new JLabel("About");
-        titleLabel.setFont(new Font("", Font.BOLD, 24));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -58,53 +67,29 @@ public class About extends JFrame {
         gbc.gridy = 1;
         this.add(myPanel, gbc);
 
+        gbc.insets = new Insets(10, 10, 5, 5);
         JButton backButton = new JButton("Back");
+        backButton.setFocusable(false);
+        JButton exportButton = new JButton("Export");
+        exportButton.setFocusable(false);
+        JButton importButton = new JButton("Import");
+        importButton.setFocusable(false);
 
         gbc.gridx = 0;
         gbc.gridy = 2;
-        this.add(backButton, gbc);
-
-        JButton exportButton = new JButton("Export");
-        JButton importButton = new JButton("Import");
-
-        gbc.gridx = 0;
-        gbc.gridy = 3;
         this.add(importButton, gbc);
 
         gbc.gridx = 0;
-        gbc.gridy = 4;
+        gbc.gridy = 3;
         this.add(exportButton, gbc);
 
-        importButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-
-                try {
-                    user.deserialize();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                } catch (ClassNotFoundException ex) {
-                    throw new RuntimeException(ex);
-                }
-
-            }
-        });
-
-        exportButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-
-                try {
-                    user.serialize();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-
-            }
-        });
-
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        this.add(backButton, gbc);
 
         JLabel line0 = new JLabel("Version Number:" + VERSIONNUMBER);
-        JLabel line1 = new JLabel("This app is registered to: " + username);
-        JLabel line2 = new JLabel("Email address of the user: " + email);
+        JLabel line1 = new JLabel("This app is registered to: " + user.getUserName());
+        JLabel line2 = new JLabel("Email address of the user: " + user.getEmail());
         JLabel line3 = new JLabel("This app is provided by Team Periwinkle.");
         JLabel line4 = new JLabel("Members of Team Periwinkle:");
         JLabel line5 = new JLabel("Soe Lin, nickname: redpanda1222");
@@ -134,15 +119,37 @@ public class About extends JFrame {
         myPanel.add(line9);
         myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.Y_AXIS));
 
+        // Buttons' action
+        importButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                try {
+                    user.deserialize();
+                } catch (IOException | ClassNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+            }
+        });
+
+        exportButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                try {
+                    user.serialize();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+            }
+        });
+
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 //need user Home Page to go back
                 dispose();
-                UserHomePage userHomePage = new UserHomePage("whatever");
+                UserHomePage userHomePage = new UserHomePage(user);
                 userHomePage.display();
-
-
-
             }
         });
 
@@ -150,10 +157,4 @@ public class About extends JFrame {
         this.setVisible(true);
 
     }
-
-    public JPanel getPanel() {
-        return myPanel;
-    }
-
-
 }
