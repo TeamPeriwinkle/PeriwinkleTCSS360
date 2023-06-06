@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.json.simple.*;
 import tcss360.diybuilder.models.*;
+
 /**
  * User Controller Class.
  * @author Alex Garcia
@@ -14,11 +15,9 @@ public class UserController extends Controller{
     //can load this in to remove some redudancy in code
     //private static UserController singleInstance = null;
 
+    //datafield
     protected static JSONObject userData;
     protected static JSONObject currentUser;
-
-    //thinking that the tag "users" isnt needed anymore
-    //private static JSONObject currentUser;
 
     //contructor
     public UserController() {
@@ -34,34 +33,16 @@ public class UserController extends Controller{
      */
     public static User getUserObject(String username)
     {
-        JSONObject userData = (JSONObject) data.get("users");
+        //make sure things are properly loaded in
+        if(userData.isEmpty()){
+            loadUserData();
+        }
+
        //JSONObject users = (JSONObject) data.get("users");
        JSONObject user = (JSONObject) userData.get(username);
        User temp = new User((String)user.get("username") ,  (String)user.get("email"), (String)user.get("password"));
        return temp;
     }
-
-
-//    /**
-//     * writes in a new user to the json file
-//     * @param user
-//     * @throws IOException
-//     */
-//    public void createUser(User user) throws IOException {
-//        JSONObject userData = (JSONObject) data.get("users");
-//        // create new user Json object
-//        JSONObject newUser = new JSONObject();
-//        newUser.put("userName", user.getUserName());
-//        newUser.put("email", user.getEmail());
-//        newUser.put("password", user.getPassword());
-//        newUser.put("projects", new JSONArray());
-//
-//        //add new user to the existing user data
-//        userData.put((String)user.getUserName(), newUser);
-//
-//        //update the og data
-//        updateData(userData);
-//    }
 
 
     /**
@@ -73,31 +54,35 @@ public class UserController extends Controller{
      */
     public void createUser(String username, String email, String password) throws IOException {
 
-        //can become redudnant, think about holding this in a
-        JSONObject userData = (JSONObject) data.get("users");
+        //make sure things are properly loaded in
+        if(userData.isEmpty()){
+            loadUserData();
+        }
 
         // create new user Json object
         JSONObject newUser = new JSONObject();
         newUser.put("userName", username);
         newUser.put("email",email);
         newUser.put("password", password);
-        newUser.put("projects", new JSONArray());//should be empty Json Array
+        newUser.put("projects", new JSONArray());//should be empty Json Array to start
 
-        //add new user to the existing user data
+        //add the new user to the existing user data
         userData.put(username, newUser);
 
-        //update the og data
+        //update the overall data
         updateData(userData);
     }
 
 
     /**
-     * check to see if user already exists
-     * @param username
+     * check to see if a given username already exists
+     * @param username name of user
      * @return boolean
      */
     public static boolean userExists(String username) {
-        JSONObject userData = (JSONObject) data.get("users");
+        if(userData.isEmpty()){
+            loadUserData();
+        }
 
         if(userData.get(username) == null){
             return false;
@@ -109,8 +94,21 @@ public class UserController extends Controller{
     /**
      * loads in the current User account into static datafield(as a Json Object)
      */
-    public void loadUserAccount(){
+    public static void loadUserAccount(String username){
+        //make sure everything is loading in correctly
+        if(userData.isEmpty()){
+            loadUserData();
+        }
 
+        //place the signed-in users information into the static field
+        currentUser = (JSONObject) userData.get(username);
+    }
+
+    /**
+     * retrieves all user data, currenlty can be removed if time allows
+     */
+    public static void loadUserData(){
+        userData = (JSONObject) data.get("users");
     }
 
 
@@ -118,7 +116,10 @@ public class UserController extends Controller{
      * checks user credentials(username and password)
      */
     public static boolean checkCredentials(String username, String password) {
-        JSONObject userData = (JSONObject) data.get("users");
+        //make sure things are loaded in properly, shouldnt be a problem however
+        if(userData.isEmpty()){
+            loadUserData();
+        }
 
         if (userData.get(username) != null) {
             JSONObject userInfo = (JSONObject) userData.get(username);
