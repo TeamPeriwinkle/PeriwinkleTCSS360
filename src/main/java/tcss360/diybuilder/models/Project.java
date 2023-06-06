@@ -4,8 +4,6 @@
 package tcss360.diybuilder.models;
 
 import tcss360.diybuilder.SystemControl.ProjectController;
-
-import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -28,9 +26,9 @@ public class Project {
     /**
      * Constructor.
      *
-     * @param name
-     * @param budget
-     * @param description
+     * @param name project name
+     * @param budget project budget
+     * @param description project description
      */
     public Project(String name, double budget, String description, ArrayList<Task> theTaskList) {
         this.name = name;
@@ -39,6 +37,13 @@ public class Project {
         taskList = theTaskList;
     }
 
+    /**
+     * Another constructor.
+     *
+     * @param name project name
+     * @param budget project budget
+     * @param description project description
+     */
     public Project(String name, double budget, String description) {
         this.name = name;
         this.budget = budget;
@@ -71,7 +76,7 @@ public class Project {
     /**
      * Set the name of the Project.
      *
-     * @param name
+     * @param name project name
      */
     public void setTitle(String name) {
         this.name = name;
@@ -92,13 +97,13 @@ public class Project {
      * @return Task ArrayList
      */
     public ArrayList<Task> getTaskList() {
-        return taskList;
+        return new ArrayList<Task>(taskList);
     }
 
     /**
      * Reading and initializing the task from data.
      *
-     * @param username
+     * @param username name of the user
      */
     public void initTasks(String username){
         taskList = ProjectController.readtasks(username, this.name);
@@ -106,8 +111,9 @@ public class Project {
 
     /**
      * used to get a specific project Object
-     * @param
-     * @return
+     *
+     * @param taskName task name
+     * @return task object
      */
     public Task getTask(String taskName){
         for (Task task: taskList) {
@@ -118,5 +124,29 @@ public class Project {
 
         //change this later
         return new Task("","","");
+    }
+
+    /**
+     * Adding task to the ArrayList and adding to JSON file.
+     *
+     * @param theTask task object
+     */
+    public void addTask(Task theTask) {
+        taskList.add(theTask);
+
+        // code to add for the JSON file
+        ProjectController.createTask(theTask.getName());
+    }
+
+    /**
+     * Deleting task from the ArrayList and deleting from the JSON file.
+     *
+     * @param index index
+     */
+    public void deleteTask(int index) {
+        // code to add for the JSON file
+        ProjectController.deleteTask(taskList.get(index).getName());
+
+        taskList.remove(index);
     }
 }

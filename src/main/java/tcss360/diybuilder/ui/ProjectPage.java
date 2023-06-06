@@ -38,7 +38,7 @@ public class ProjectPage extends JFrame {
     /** Panel to hold task list. */
     private final JPanel taskListPanel;
     /** Arraylist of task to manipulate tasks. */
-    private final ArrayList<Task> tasks;
+    private ArrayList<Task> tasks;
     /** Project object. */
     private final Project project;
     /** User object. */
@@ -63,6 +63,9 @@ public class ProjectPage extends JFrame {
         taskListPanel = new JPanel(new GridBagLayout());
     }
 
+    /**
+     * Set up the JFrame and display.
+     */
     public void display() {
         createMenuBar();
         projectPanel.setLayout(new BoxLayout(projectPanel, BoxLayout.Y_AXIS));
@@ -119,7 +122,8 @@ public class ProjectPage extends JFrame {
 
                     // Create new task
                     Task task = new Task(name, new ArrayList<>());
-                    tasks.add(task);
+                    //tasks.add(task);
+                    project.addTask(task);
 
                     JOptionPane.showMessageDialog(getParent(), "New task created: " + name,
                             "Create Task", JOptionPane.INFORMATION_MESSAGE);
@@ -161,6 +165,9 @@ public class ProjectPage extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Update the pie chart based on the added data.
+     */
     private void updateAddedPieChart() {
         // Create Dataset
         double remBudget = project.getBudget() - ProjectController.calculateOverallTotal(myBudget);
@@ -172,13 +179,22 @@ public class ProjectPage extends JFrame {
         chart.fireChartChanged();
     }
 
+    /**
+     * Update the pie chart based on the deleted data.
+     *
+     * @param name name of the task
+     */
     private void updateDeletedPieChart(String name) {
         dataset.remove(name);
 
         chart.fireChartChanged();
     }
 
+    /**
+     * Update the task list based on the added or deleted task.
+     */
     private void updateTaskList() {
+        tasks = project.getTaskList();
         taskListPanel.removeAll();
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -206,16 +222,9 @@ public class ProjectPage extends JFrame {
                             "Are you sure you want to delete this task?",
                             "Confirm Delete", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
-                        boolean deleted = deleteTask(taskName);
-                        if (deleted) {
-                            JOptionPane.showMessageDialog(getParent(), "Task deleted: " + taskName,
-                                    "Delete Task", JOptionPane.INFORMATION_MESSAGE);
-                            updateTaskList();
-                            updateDeletedPieChart(taskName);
-                        } else {
-                            JOptionPane.showMessageDialog(getParent(), "Failed to delete the task",
-                                    "Delete Task", JOptionPane.WARNING_MESSAGE);
-                        }
+                        project.deleteTask(taskButton.getIndex());
+                        updateTaskList();
+                        updateDeletedPieChart(taskName);
                     }
                 }
             });
@@ -240,16 +249,9 @@ public class ProjectPage extends JFrame {
         taskListPanel.repaint();
     }
 
-    private boolean deleteTask(String taskName) {
-        for (Task task : tasks) {
-            if (task.getName().equals(taskName)) {
-                tasks.remove(task);
-                return true;
-            }
-        }
-        return false;
-    }
-
+    /**
+     * Creating menu bar for JFrame.
+     */
     private void createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         JMenu settingsSection = new JMenu();
@@ -310,13 +312,17 @@ public class ProjectPage extends JFrame {
         /**
          * Constructor.
          *
-         * @param name
-         * @param theIndex
+         * @param name task name
+         * @param theIndex index for taskbutton
          */
         public TaskButton(String name, int theIndex) {
             super(name);
             index = theIndex;
             setup();
+        }
+
+        public int getIndex() {
+            return index;
         }
 
         /**
