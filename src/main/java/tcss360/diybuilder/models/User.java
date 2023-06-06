@@ -7,6 +7,7 @@ package tcss360.diybuilder.models;
  * @author Alex Garcia
  */
 import tcss360.diybuilder.SystemControl.ProjectController;
+import tcss360.diybuilder.SystemControl.UserController;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -21,19 +22,14 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public User(){}
     public User(String name, String email, String password){
+        UserController.loadUserAccount(name);
         this.userName = name;
         this.email = email;
         this.password = password;
-        userProjects = ProjectController.readProjects(this);
+        this.userProjects = ProjectController.readProjects(this.userName);
     }
 
-    public User(String name, String email){
-        this.userName = name;
-        this.email = email;
-        this.password = "";
-    }
 
     //getters
     public String getEmail(){
@@ -48,20 +44,27 @@ public class User implements Serializable {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     //setters
     public void setUserName(String name){
         this.userName = name;
     }
+
     public void setEmail(String email){this.email = email;}
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public ArrayList<Project> getUserProjects() {
         return userProjects;
     }
 
+
+    //bunch of helper methods
+
+    //methods to add
+    //addProject()
     /**
      * used to get a specific project Object
      * @param title
@@ -88,7 +91,17 @@ public class User implements Serializable {
         }
 
         return result;
+
     }
+
+    /**
+     * check to see if there is a user with the same username already
+     * @return
+     */
+    public boolean alreadyExists(){
+        return UserController.userExists(this.userName);
+    }
+
     /**
      * Serialize a User Object
      * @throws IOException

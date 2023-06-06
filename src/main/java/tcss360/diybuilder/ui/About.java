@@ -1,3 +1,6 @@
+/*
+ * Team Periwinkle
+ */
 package tcss360.diybuilder.ui;
 import tcss360.diybuilder.models.User;
 
@@ -19,24 +22,32 @@ import javax.swing.JPanel;
 
 /**
  * About UI + Object class.
+ *
  * @author Soe Lin
  */
-
 public class About extends JFrame {
-
+    /** Version number. */
     private static final String VERSIONNUMBER = " 0.1";
-    private JPanel myPanel;
-    private User user;
+    /** Panel to hold information. */
+    private final JPanel myPanel;
+    /** User object. */
+    private final User user;
 
+    /**
+     * Constructor.
+     *
+     * @param theUser user object.
+     */
     public About(User theUser) {
         super("DIYControl");
         myPanel = new JPanel();
         user = theUser;
     }
 
-
+    /**
+     * Set up the GUI and display.
+     */
     public void display() {
-
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(400, 500);
@@ -45,7 +56,7 @@ public class About extends JFrame {
         gbc.insets = new Insets(10, 10, 10, 10);
 
         JLabel titleLabel = new JLabel("About");
-        titleLabel.setFont(new Font("", Font.BOLD, 24));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -59,50 +70,22 @@ public class About extends JFrame {
         gbc.insets = new Insets(10, 10, 5, 5);
         JButton backButton = new JButton("Back");
         backButton.setFocusable(false);
-
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        this.add(backButton, gbc);
-
         JButton exportButton = new JButton("Export");
         exportButton.setFocusable(false);
         JButton importButton = new JButton("Import");
         importButton.setFocusable(false);
 
         gbc.gridx = 0;
-        gbc.gridy = 3;
+        gbc.gridy = 2;
         this.add(importButton, gbc);
 
         gbc.gridx = 0;
-        gbc.gridy = 4;
+        gbc.gridy = 3;
         this.add(exportButton, gbc);
 
-        importButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-
-                try {
-                    user.deserialize();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                } catch (ClassNotFoundException ex) {
-                    throw new RuntimeException(ex);
-                }
-
-            }
-        });
-
-        exportButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-
-                try {
-                    user.serialize();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-
-            }
-        });
-
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        this.add(backButton, gbc);
 
         JLabel line0 = new JLabel("Version Number:" + VERSIONNUMBER);
         JLabel line1 = new JLabel("This app is registered to: " + user.getUserName());
@@ -136,6 +119,31 @@ public class About extends JFrame {
         myPanel.add(line9);
         myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.Y_AXIS));
 
+        // Buttons' action
+        importButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                try {
+                    user.deserialize();
+                } catch (IOException | ClassNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+            }
+        });
+
+        exportButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                try {
+                    user.serialize();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+            }
+        });
+
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 //need user Home Page to go back
@@ -149,10 +157,4 @@ public class About extends JFrame {
         this.setVisible(true);
 
     }
-
-    public JPanel getPanel() {
-        return myPanel;
-    }
-
-
 }

@@ -32,11 +32,19 @@ public class Project {
      * @param budget
      * @param description
      */
+    public Project(String name, double budget, String description, ArrayList<Task> theTaskList) {
+        this.name = name;
+        this.budget = budget;
+        this.description = description;
+        taskList = theTaskList;
+    }
+
     public Project(String name, double budget, String description) {
         this.name = name;
         this.budget = budget;
         this.description = description;
     }
+
 
     public Project() {
 
@@ -94,5 +102,21 @@ public class Project {
      */
     public void initTasks(String username){
         taskList = ProjectController.readtasks(username, this.name);
+    }
+
+    /**
+     * used to get a specific project Object
+     * @param
+     * @return
+     */
+    public Task getTask(String taskName){
+        for (Task task: taskList) {
+            if(task.getName().equals(taskName)){
+                return task;
+            }
+        }
+
+        //change this later
+        return new Task("","","");
     }
 }

@@ -4,15 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.json.simple.*;
-import tcss360.diybuilder.models.User;
+import tcss360.diybuilder.models.*;
 
 /**
  * User Controller Class.
  * @author Alex Garcia
  */
 public class UserController extends Controller{
-    //static protected JSONObject userData = new JSONObject();
-    //static protected List<User> userRepository = new ArrayList<>();
+
+    //can load this in to remove some redudancy in code
+    //private static UserController singleInstance = null;
+
+    //datafield
+    protected static JSONObject currentUser;
 
     //contructor
     public UserController() {
@@ -21,60 +25,66 @@ public class UserController extends Controller{
 
 
     /**
-     * @param key
+     * Goes into the volotile data(JSONOBJECTS) and returns a User Object
+     * @param username the username user passes in when performing an action such as logging in
      * @return User Object
      * @author Alex Garcia
      */
-    public static User getUserObject(String key)
+    public static User getUserObject(String username)
     {
-        JSONObject userData = (JSONObject) data.get("users");
+        //make sure things are properly loaded in
+        if(userData.isEmpty()){
+            loadUserData();
+        }
+
        //JSONObject users = (JSONObject) data.get("users");
-       JSONObject user = (JSONObject) userData.get(key);
+       JSONObject user = (JSONObject) userData.get(username);
        User temp = new User((String)user.get("username") ,  (String)user.get("email"), (String)user.get("password"));
        return temp;
     }
 
+
     /**
-     *
-     * @param user
+     * function to be used when creating a new account, will add user to permanant and volotile data
+     * @param username username passed in by user
+     * @param email email passed in by user
+     * @param password password passed in by user
      * @throws IOException
      */
-    public void createUser(User user) throws IOException {
+
+    public static void createUser(String username, String email, String password) throws IOException {
+
+        //make sure things are properly loaded in
+        if(userData.isEmpty()){
+            loadUserData();
+        }
+
+
         JSONObject userData = (JSONObject) data.get("users");
         // create new user Json object
         JSONObject newUser = new JSONObject();
-        newUser.put("userName", user.getUserName());
-        newUser.put("email", user.getEmail());
-        newUser.put("password", user.getPassword());
-        newUser.put("projects", new JSONArray());
+        newUser.put("userName", username);
+        newUser.put("email",email);
+        newUser.put("password", password);
+        newUser.put("projects", new JSONArray());//should be empty Json Array to start
 
-        //add new user to the existing user data
-        userData.put((String)user.getUserName(), newUser);
+        //add the new user to the existing user data
+        userData.put(username, newUser);
 
-        //update the og data
+        //update the overall data
         updateData(userData);
     }
 
-    /**
-     * @param username
-     * @param email
-     * @param password
-     * @throws IOException
-     * Note: not ideal, can be changed later
-     */
-    public void createUser(String username, String email, String password) throws IOException {
-        User u = new User(username, email, password);
-        createUser(u);
-    }
-
 
     /**
-     * check to see if user already exists
-     * @param username
+     * check to see if a given username already exists
+     * @param username name of user
      * @return boolean
      */
     public static boolean userExists(String username) {
-        JSONObject userData = (JSONObject) data.get("users");
+        if(userData.isEmpty()){
+            loadUserData();
+        }
 
         if(userData.get(username) == null){
             return false;
@@ -83,12 +93,28 @@ public class UserController extends Controller{
         }
     }
 
+    /**
+     * loads in the current User account into static datafield(as a Json Object)
+     */
+    public static void loadUserAccount(String username){
+        //make sure everything is loading in correctly
+        if(userData.isEmpty()){
+            loadUserData();
+        }
+
+        //place the signed-in users information into the static field
+        currentUser = (JSONObject) userData.get(username);
+    }
+
 
     /**
      * checks user credentials(username and password)
      */
     public static boolean checkCredentials(String username, String password) {
-        JSONObject userData = (JSONObject) data.get("users");
+        //make sure things are loaded in properly, shouldnt be a problem however
+        if(userData.isEmpty()){
+            loadUserData();
+        }
 
         if (userData.get(username) != null) {
             JSONObject userInfo = (JSONObject) userData.get(username);
@@ -99,14 +125,13 @@ public class UserController extends Controller{
     }
 
 
+
     /**
      * adds in new user information to the original json data
      */
-    protected void updateData(JSONObject userData) throws IOException {
+    protected static void updateData(JSONObject userData) throws IOException {
 
         data.replace("users", userData);
         writeData();
     }
-
-
 }
