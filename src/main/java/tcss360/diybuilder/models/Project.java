@@ -123,7 +123,7 @@ public class Project {
         }
 
         //change this later
-        return new Task("","","");
+        return new Task("");
     }
 
     /**

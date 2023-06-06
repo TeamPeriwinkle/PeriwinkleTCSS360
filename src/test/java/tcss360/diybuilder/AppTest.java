@@ -110,7 +110,7 @@ public class AppTest
         ProjectController.createTask("Gather Parts");
         ProjectController.loadTask("Gather Parts");
 
-        ProjectController.createItem("CPU", 120.0, "1");
+        ProjectController.createItem("CPU", 120.0, 1);
 
         ProjectController.loadItem("CPU");
     }

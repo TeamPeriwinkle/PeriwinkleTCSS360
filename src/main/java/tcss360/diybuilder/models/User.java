@@ -60,6 +60,21 @@ public class User implements Serializable {
         return userProjects;
     }
 
+    /**
+     *
+     * @param title
+     * @param budget
+     * @param description
+     */
+    public void addProject(String title,Double budget, String description ){
+
+        //add project to datafield for the user object instance
+        Project newProj = new Project(title, budget, description);
+        this.userProjects.add(newProj);
+
+        //add project to permanent data
+        ProjectController.createProject(userName, newProj);
+    }
 
     //bunch of helper methods
 

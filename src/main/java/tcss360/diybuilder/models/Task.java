@@ -30,9 +30,10 @@ public class Task {
         itemsList = theItemsList;
     }
 
-
-    public Task(String taskName, String pn, String startDate) {
+    public Task(String name){
+        this.name = name;
     }
+
 
 
     public String getName() {
@@ -47,22 +48,22 @@ public class Task {
         return itemsList;
     }
 
-    public void addItem(Item theItem) {
-        itemsList.add(theItem);
+    public void addItem(String itemName, double price, int unit) {
+        Item newItem= new Item(itemName, price, unit);
 
-        // Add item to the project controller
-        String itemName = theItem.getName();
-        Double itemPrice = theItem.getPrice();
-        String itemUnits = theItem.getUnit();
-        ProjectController.createItem(itemName, itemPrice,itemUnits);
+        //add to object datafield
+        itemsList.add(newItem);
+
+        //add to permanant data
+        ProjectController.createItem(itemName, price,unit);
     }
 
     public void removeItem(int index) {
-        itemsList.remove(index);
-
         // Delete from project Controller
         Item itemToDelete = itemsList.get(index);
         String itemName = itemToDelete.getName();
+
+        itemsList.remove(index);
         ProjectController.deleteItem(itemName);
     }
 
@@ -82,6 +83,9 @@ public class Task {
             }
         }
 
+        //item should be loaded in when editing an item
+        ProjectController.editItem(itemName, newPrice, newUnit);
+
     }
 
 
@@ -99,16 +103,6 @@ public class Task {
         return sb.toString();
     }
 
-    public String getPN() {
-        return null;
-    }
-
-    public String getStartDate() {
-        return null;
-    }
-
-    public static void add(Task task) {
-    }
 
     public Item getItem(String itemName){
         for (Item item: itemsList) {
@@ -117,7 +111,7 @@ public class Task {
             }
         }
 
-        //change this later
+        //for error checkin this might not be ideal
         return new Item("", 0, 0);
     }
 
