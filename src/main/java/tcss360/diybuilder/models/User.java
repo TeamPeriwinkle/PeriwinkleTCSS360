@@ -57,7 +57,7 @@ public class User implements Serializable {
     }
 
     public ArrayList<Project> getUserProjects() {
-        return userProjects;
+        return new ArrayList<Project>(userProjects);
     }
 
 
@@ -65,6 +65,8 @@ public class User implements Serializable {
 
     //methods to add
     //addProject()
+
+
     /**
      * used to get a specific project Object
      * @param title
@@ -78,6 +80,8 @@ public class User implements Serializable {
         }
         return new Project();
     }
+
+     
 
 
     /**
@@ -126,4 +130,33 @@ public class User implements Serializable {
         this.email = deserializedUser.email;
         this.userName = deserializedUser.userName;
     }
+
+    /**
+     * 
+     * @param title
+     * @param budget
+     * @param description
+    */
+    public void addProject(String title, Double budget, String description){
+
+        // add project to detafield for the user object instance
+        Project p = new Project(title, budget, description);
+        this.userProjects.add(p);
+
+        //add project to permanent data
+        ProjectController.createProject(userName, p);
+    }
+
+     /**
+     * 
+     * @param title
+    */
+
+    public void deleteProject(int index) {
+        ProjectController.deleteProject(userProjects.get(index).getName());
+
+        userProjects.remove(index);
+
+    }
+
 }
