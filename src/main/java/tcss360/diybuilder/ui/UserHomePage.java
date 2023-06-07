@@ -2,39 +2,36 @@
  * Team Periwinkle
  */
 package tcss360.diybuilder.ui;
-/**
- * Project UI.
- *
- * @author Mey Vo
- */
+
 import tcss360.diybuilder.models.Project;
-import tcss360.diybuilder.models.Task;
 import tcss360.diybuilder.models.User;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 
-
+/**
+ * Project UI.
+ *
+ * @author Mey Vo
+ * @author Soe Lin
+ */
 public class UserHomePage extends JFrame {
-
-    private JMenuBar menuBar;
-    private JMenu settingsSection;
+    /** Panel for project list. */
     private JPanel projectListPanel;
-    //private ArrayList<Project> userProjects;
+    /** User object. */
     protected User myUser;
-    private ArrayList<ProjectButton> projectButtons;
    
     
 
     /**
      * Constructor.
+     *
+     * @param theUser user object
      */
     public UserHomePage(User theUser) {
         super("DIY Control");
        // userProjects = myUser.getUserProjects();
         myUser = theUser;
-        projectButtons = new ArrayList<>();
         createMenuBar();
     }
 
@@ -137,9 +134,11 @@ public class UserHomePage extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Update the project panel based on the updated list.
+     */
     private void updateProjectList() {
         // Create Dataset
-        //userProjects = myUser.getUserProjects();
         projectListPanel.removeAll();
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -199,6 +198,12 @@ public class UserHomePage extends JFrame {
         projectListPanel.repaint();
     }
 
+    /**
+     * Delete project from the project list.
+     *
+     * @param projectName name of the project
+     * @return boolean
+     */
     private boolean deleteProject(String projectName) {
         for (Project project : myUser.getUserProjects()) {
             if (project.getName().equals(projectName)) {
@@ -208,10 +213,13 @@ public class UserHomePage extends JFrame {
         }
         return false;
     }
-    // creat MenuBar
+
+    /**
+     * Create menu bar.
+     */
     private void createMenuBar() {
-        menuBar = new JMenuBar();
-        settingsSection = new JMenu();
+        JMenuBar menuBar = new JMenuBar();
+        JMenu settingsSection = new JMenu();
 
         // Add task icon image
         ImageIcon taskIcon = new ImageIcon("src/main/resources/taskicon.png");
@@ -256,33 +264,35 @@ public class UserHomePage extends JFrame {
         });
 
         settingsSection.add(aboutMenuItem);
+        settingsSection.addSeparator();
         settingsSection.add(noteMenuItem);
+        settingsSection.addSeparator();
         settingsSection.add(signOutMenuItem);
         setJMenuBar(menuBar);
     }
 
-    // Creat ProjectButton inner class.
+    /**
+     * Custom project button class.
+     *
+     * @author Soe Lin
+     */
     private class ProjectButton extends JButton {
          /** Integer to use and actionPerformed. */
-        private int index;
+        private final int index;
          /** Delete label. */
-        private JLabel deleteLabel;
+        private final JLabel deleteLabel;
 
         /**
          * Constructor.
          *
-         * @param name
-         * @param theIndex
+         * @param name name of the project
+         * @param theIndex index position for the project
          */
         public ProjectButton(String name, int theIndex) {
             super(name);
             index = theIndex;
             deleteLabel = new JLabel("-");
             setup();
-        }
-
-        public int getIndex() {
-            return index;
         }
 
          /**
@@ -316,8 +326,6 @@ public class UserHomePage extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     dispose();
-//                    ProjectPage projectPage = new ProjectPage(projects.get(index), myUser);
-//                    projectPage.display();
                     ProjectPage p = new ProjectPage(myUser.getUserProjects().get(index), myUser);
                     p.display();
                 }
