@@ -82,6 +82,15 @@ public class TaskPage extends JFrame {
                     String unit = totalUnitField.getText();
                     int totalUnit = Integer.parseInt(unit);
 
+                    // Check to see if the price exceeds the budget
+                    if(pricePerUnit > project.getBudget()){
+                        JOptionPane.showMessageDialog(getParent(), "Number exceeds set Budget.");
+                        return;
+                    }
+                    //Check if item is duplicate from existing item list
+                    if (duplicateCheck(name)){
+                        return; // Duplicate found
+                    }
                     // Create new item
                     myTask.addItem(name, pricePerUnit, totalUnit);
                     //items.add(new Item(name, pricePerUnit, totalUnit));
@@ -193,6 +202,22 @@ public class TaskPage extends JFrame {
         }
         return false;
     }
+
+    /**
+     * Determine if adding a new item is a duplicate of an already existing item.
+     * @param name
+     * @return
+     */
+    private boolean duplicateCheck(String name) {
+        for (Item item : myTask.getItemsList()) {
+            if (item.getName().equals(name)) {
+                JOptionPane.showMessageDialog(getParent(), "Duplicate item. Please try again.");
+                return true; // Match found
+            }
+        }
+        return false; //Match not found
+    }
+
 
     private void createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
@@ -333,6 +358,12 @@ public class TaskPage extends JFrame {
                         String name = itemNameField.getText();
                         String price = pricePerUnitField.getText();
                         double pricePerUnit = Double.parseDouble(price);
+
+                        //Check to see if pricePerUnit of existing item doesn't exceed budget
+                        if(pricePerUnit >project.getBudget()){
+                            JOptionPane.showMessageDialog(getParent(), "number exceeds set Budget.");
+                            return;
+                        }
                         String unit = totalUnitField.getText();
                         int totalUnit = Integer.parseInt(unit);
 

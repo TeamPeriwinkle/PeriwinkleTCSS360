@@ -11,6 +11,7 @@ import tcss360.diybuilder.SystemControl.ProjectController;
  *
  * @author Soe Lin
  * @author Mey Vo
+ * @editor Charmel Mbala
  */
 public class Task {
 
