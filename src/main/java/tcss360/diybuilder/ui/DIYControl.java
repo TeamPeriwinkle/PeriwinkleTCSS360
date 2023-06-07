@@ -3,6 +3,7 @@
  */
 package tcss360.diybuilder.ui;
 
+//import tcss360.diybuilder.SystemControl.UserController;
 import tcss360.diybuilder.SystemControl.UserController;
 import tcss360.diybuilder.models.User;
 import javax.swing.*;
@@ -52,14 +53,14 @@ public class DIYControl extends JFrame {
     /** String variable to hold password. */
     private String password;
     /** UserController to perform read and write data. */
-    private final UserController userC;
+    //private final UserController userC;
 
     /**
      * Constructor.
      */
     public DIYControl() {
         super("DIYControl");
-        userC = new UserController();
+        //userC = new UserController();
     }
 
     /**
@@ -129,9 +130,10 @@ public class DIYControl extends JFrame {
                     JOptionPane.showMessageDialog(getParent(), "Please enter your Username and Password.");
                 } else{
 
-                    if (userC.checkCredentials(username, password)) {
+                    //currently uses controller, if time permits change this is use models only
+                    if (UserController.checkCredentials(username, password)) {
                         dispose();
-                        User u = UserController.getUserObject(username);
+                        User u = new User(username);
                         UserHomePage userHomePage = new UserHomePage(u);
                         userHomePage.display();
                     } else {
@@ -201,39 +203,20 @@ public class DIYControl extends JFrame {
                             "Please enter your Username, Email Address, and Password.", "DIYControl",
                             JOptionPane.WARNING_MESSAGE);
                 } else {
+
+                    //could use just the model but will work for now
                     if (UserController.userExists(username)) {
                         JOptionPane.showMessageDialog(getParent(), "Username already exists. Please try again.");
                     } else {
 
                         try {
+                            //uses user controller for now but
                             UserController.createUser(username, email, password);
+                            JOptionPane.showMessageDialog(getParent(), "Account Created Successfully!");
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }
-                        try (BufferedWriter writer = new BufferedWriter(new FileWriter("df.json", true))) {
-                            String line = username + "," + password + "," + email;
-                            writer.write(line);
-                            writer.newLine();
-                            JOptionPane.showMessageDialog(getParent(), "Signup successful!");
-                            dispose();
-                        } catch (IOException theE) {
-                            theE.printStackTrace();
-                        }
                     }
-
-                    // create note.txt file for new user
-                    String filePath = "src/main/resources/UserNotes/" + username + "Notes.txt";
-                    try {
-                        FileWriter writer = new FileWriter(filePath);
-                        writer.write(username + "'s Note");  // Write the content to the file
-                        writer.close();
-                        System.out.println("Text file created successfully.");
-                    } catch (IOException theE) {
-                        System.out.println("An error occurred while creating the text file.");
-                        theE.printStackTrace();
-                    }
-
-                    //create user Home Page
                 }
 
             }

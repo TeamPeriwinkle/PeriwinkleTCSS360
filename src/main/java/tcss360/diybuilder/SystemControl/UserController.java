@@ -63,7 +63,7 @@ public class UserController extends Controller{
         JSONObject userData = (JSONObject) data.get("users");
         // create new user Json object
         JSONObject newUser = new JSONObject();
-        newUser.put("userName", username);
+        newUser.put("username", username);
         newUser.put("email",email);
         newUser.put("password", password);
         newUser.put("projects", new JSONArray());//should be empty Json Array to start

@@ -114,9 +114,11 @@ public class ProjectController extends UserController {
         if(userData.isEmpty()){
             loadUserData();
         }
-        if(currentUser.isEmpty()){
+        if(currentUser == null){
+            System.out.println("ahsbdashdbasd");
             loadUserAccount(userName);
         }
+
 
         JSONArray projectData = (JSONArray) currentUser.get("projects");
 
@@ -149,6 +151,7 @@ public class ProjectController extends UserController {
         newProject.put("budget", project.getBudget());
         newProject.put("description", project.getDescription());
         newProject.put("tasks", tempTasks);
+        newProject.put("note", "");
 
         //add everything back to the user data and update json file
         userProjects.add(newProject);
@@ -208,7 +211,7 @@ public class ProjectController extends UserController {
      * @param itemPrice price for the new Item
      * @param itemUnits number of units for the new item
      */
-    public static void createItem(String itemName, Double itemPrice, String itemUnits){
+    public static void createItem(String itemName, Double itemPrice, int itemUnits){
         JSONArray userProjects = (JSONArray) currentUser.get("projects");
         JSONArray projectTasks = (JSONArray) currentProject.get("tasks");
         JSONArray taskItems = (JSONArray) currentTask.get("items");
@@ -443,7 +446,6 @@ public class ProjectController extends UserController {
         }
 
         //add everything back to project data and then user data
-
         currentTask.replace("items", taskItems);
 
         //update the currentTask in the Project task Array
@@ -462,6 +464,50 @@ public class ProjectController extends UserController {
 
     }
 
+
+    /**
+     * edits an item in permanant and volotile data
+     * @param itemName new name for the item
+     * @param price new price for the item
+     * @param unit new
+     */
+    public static void editItem(String itemName, Double price, int unit){
+        //just a precaution, shouldnt ever actually run
+        if(currentTask.isEmpty()){
+            System.out.println("ERROR: Task has not been loaded in cannot delete item");
+            return;
+        }
+
+        //to be used later to update volatile data
+        JSONArray userProjects = (JSONArray) currentUser.get("projects");//array of current user projects
+        JSONArray projectTasks = (JSONArray) currentProject.get("tasks");//array of current project tasks
+        JSONArray taskItems = (JSONArray) currentTask.get("items");//array of task items
+
+        //make edits to the volatile (JSONObject)
+        currentItem.replace("name", itemName);
+        currentItem.replace("price", price);
+        currentItem.replace("unit", unit );
+
+
+        //add everything back to project data and then user data
+        taskItems.set(itemIndex, currentItem);
+        currentTask.replace("items", taskItems);
+
+        //update the currentTask in the Project task Array
+        projectTasks.set(taskIndex, currentTask);
+        currentProject.replace("tasks",projectTasks);
+        userProjects.set(projectIndex, currentProject);
+        currentUser.replace("projects", userProjects);
+
+        userData.replace((String)currentUser.get("username"), currentUser);
+
+        try {
+            updateData(userData);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static double calculateOverallTotal(Budget theBudget) {
         double result = 0;
         ArrayList<Task> taskList = theBudget.getTasksList();
@@ -470,5 +516,33 @@ public class ProjectController extends UserController {
         }
 
         return result;
+    }
+
+    /**
+     * save note for the currently loaded
+     * @param note
+     */
+    public static void saveNote(String note){
+        if(currentUser.isEmpty()){
+            System.out.println("ERROR: User has not been loaded in properly cannot delete project");
+        }
+
+        JSONArray userProjects = (JSONArray) currentUser.get("projects");//array of all user objects
+
+
+        //edit note
+        currentProject.replace("note", note);
+        userProjects.set(projectIndex, currentProject);
+        currentUser.replace("projects", userProjects);
+
+        userData.replace(currentUser.get("name"), currentUser);//think about removing userData Tag
+
+        //update permanent data
+        try {
+            updateData(userData);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }

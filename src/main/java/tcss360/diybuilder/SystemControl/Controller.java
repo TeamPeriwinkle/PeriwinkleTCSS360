@@ -50,7 +50,6 @@ public class Controller{
             e.printStackTrace();
         }
         userData = (JSONObject) data.get("users");
-
     }
 
     /**

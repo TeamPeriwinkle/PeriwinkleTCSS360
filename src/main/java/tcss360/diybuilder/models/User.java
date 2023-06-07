@@ -29,6 +29,14 @@ public class User implements Serializable {
         this.password = password;
         this.userProjects = ProjectController.readProjects(this.userName);
     }
+    public User(String username){
+        UserController.loadUserAccount(username);
+        User temp = UserController.getUserObject(username);
+        this.userName = temp.userName;
+        this.email = temp.email;
+        this.password = temp.password;
+        this.userProjects = temp.userProjects;
+    }
 
 
     //getters
@@ -57,14 +65,31 @@ public class User implements Serializable {
     }
 
     public ArrayList<Project> getUserProjects() {
-        return userProjects;
+        return new ArrayList<Project>(userProjects);
     }
 
+    /**
+     *
+     * @param title
+     * @param budget
+     * @param description
+     */
+    public void addProject(String title,double budget, String description ){
+
+        //add project to datafield for the user object instance
+        Project newProj = new Project(title, budget, description);
+        this.userProjects.add(newProj);
+
+        //add project to permanent data
+        ProjectController.createProject(userName, newProj);
+    }
 
     //bunch of helper methods
 
     //methods to add
     //addProject()
+
+
     /**
      * used to get a specific project Object
      * @param title
@@ -78,6 +103,8 @@ public class User implements Serializable {
         }
         return new Project();
     }
+
+     
 
 
     /**
@@ -126,4 +153,36 @@ public class User implements Serializable {
         this.email = deserializedUser.email;
         this.userName = deserializedUser.userName;
     }
+
+    /**
+     * 
+     * @param title
+     * @param budget
+     * @param description
+    */
+    public void addProject(String title, Double budget, String description){
+
+        // add project to detafield for the user object instance
+        Project p = new Project(title, budget, description);
+        this.userProjects.add(p);
+
+        //add project to permanent data
+        ProjectController.createProject(userName, p);
+    }
+
+     /**
+     * 
+     * @param projectName
+    */
+
+    public void deleteProject(String projectName) {
+
+        for (int i = 0; i < userProjects.size() ; i++) {
+            if(userProjects.get(i).getName().equals(projectName)){
+                ProjectController.deleteProject(userProjects.get(i).getName());
+                userProjects.remove(i);
+            }
+        }
+    }
+
 }

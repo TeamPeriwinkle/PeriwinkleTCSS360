@@ -25,7 +25,10 @@ public class Budget {
      */
     public Budget(ArrayList<Task> theTasksList, double theEstimatedBudget) {
         tasksList = new ArrayList<>();
-        tasksList.addAll(theTasksList);
+
+        if(theTasksList.size()>0){
+            tasksList.addAll(theTasksList);
+        }
         estimatedBudget = theEstimatedBudget;
     }
 

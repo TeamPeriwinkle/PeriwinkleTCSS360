@@ -1,11 +1,15 @@
+/*
+ * Team Periwinkle
+ */
 package tcss360.diybuilder.ui;
 /**
- * Mey
+ * Project UI.
+ *
+ * @author Mey Vo
  */
 import tcss360.diybuilder.models.Project;
 import tcss360.diybuilder.models.Task;
 import tcss360.diybuilder.models.User;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -17,20 +21,26 @@ public class UserHomePage extends JFrame {
     private JMenuBar menuBar;
     private JMenu settingsSection;
     private JPanel projectListPanel;
-    private ArrayList<Project> projects;
+    //private ArrayList<Project> userProjects;
     protected User myUser;
     private ArrayList<ProjectButton> projectButtons;
    
     
 
+    /**
+     * Constructor.
+     */
     public UserHomePage(User theUser) {
         super("DIY Control");
-        projects = theUser.getUserProjects();
+       // userProjects = myUser.getUserProjects();
         myUser = theUser;
         projectButtons = new ArrayList<>();
         createMenuBar();
     }
 
+    /**
+     * Set up the GUI and display.
+     */
     public void display() {
         //set layout
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -93,6 +103,7 @@ public class UserHomePage extends JFrame {
                 JTextField descriptionField = new JTextField();
                 projectDetailsPanel.add(descriptionField);
 
+                // Show the panel in a JOptionPane
                 int result = JOptionPane.showConfirmDialog(UserHomePage.this, projectDetailsPanel,
                         "Create a new project", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
                 if (result == JOptionPane.OK_OPTION) {
@@ -101,11 +112,11 @@ public class UserHomePage extends JFrame {
                     double budget = Double.parseDouble(budgetText);
                     String description = descriptionField.getText();
                     if (!projectName.trim().isEmpty()) {
-                        Project newProject = new Project(projectName, budget, description, new ArrayList<Task>());
-                        projects.add(newProject);
+                        myUser.addProject(projectName, budget, description);
                         JOptionPane.showMessageDialog(UserHomePage.this, "New project created: "
                                 + projectName, "Create Project", JOptionPane.INFORMATION_MESSAGE);
-                        updateProjectList();
+                                // update list project
+                                updateProjectList();
                     } else {
                         JOptionPane.showMessageDialog(UserHomePage.this, "Invalid project name",
                                 "Create Project", JOptionPane.WARNING_MESSAGE);
@@ -114,6 +125,7 @@ public class UserHomePage extends JFrame {
             }
         });
 
+        // Set up layout
         projectListPanel = new JPanel(new GridBagLayout());
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -126,15 +138,19 @@ public class UserHomePage extends JFrame {
     }
 
     private void updateProjectList() {
+        // Create Dataset
+        //userProjects = myUser.getUserProjects();
         projectListPanel.removeAll();
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.insets = new Insets(2, 2, 2, 2);
 
-        for (int i = 0; i < projects.size(); i++) {
-            final String projectName = projects.get(i).getName();
 
+        for (int i = 0; i < myUser.getUserProjects().size(); i++) {
+            final String projectName = myUser.getUserProjects().get(i).getName();
+
+            // Mouseclick delete project
             ProjectButton projectButton = new ProjectButton(projectName, i);
 
             Image cursorDeleteImage = Toolkit.getDefaultToolkit().getImage("src/main/resources/delete-24.png");
@@ -172,30 +188,32 @@ public class UserHomePage extends JFrame {
             Cursor customCursor = Toolkit.getDefaultToolkit().createCustomCursor(
                     resizedCursorImage, new java.awt.Point(0, 0), "CustomCursor");
 
+            // Add the ProjectButton to the task list panel
             projectButton.setCursor(customCursor);
             projectListPanel.add(projectButton, gbc);
             gbc.gridy++;
         }
 
+          // Refresh the project list panel
         projectListPanel.revalidate();
         projectListPanel.repaint();
     }
 
     private boolean deleteProject(String projectName) {
-        for (Project project : projects) {
+        for (Project project : myUser.getUserProjects()) {
             if (project.getName().equals(projectName)) {
-                projects.remove(project);
+                myUser.deleteProject(projectName);
                 return true;
             }
         }
         return false;
     }
-
+    // creat MenuBar
     private void createMenuBar() {
         menuBar = new JMenuBar();
-
         settingsSection = new JMenu();
 
+        // Add task icon image
         ImageIcon taskIcon = new ImageIcon("src/main/resources/taskicon.png");
         Image resizedTaskIcon = taskIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
         ImageIcon resizedIcon = new ImageIcon(resizedTaskIcon);
@@ -203,18 +221,11 @@ public class UserHomePage extends JFrame {
         menuBar.add(Box.createRigidArea(new Dimension(400, 0)));
         settingsSection.setIcon(resizedIcon);
         menuBar.add(Box.createHorizontalGlue());
-        menuBar.add(settingsSection);
+        menuBar.add(settingsSection); // Add settingsSection to the menu bar
 
+
+        // Creat "Sign Out" menu item
         JMenuItem signOutMenuItem = new JMenuItem("Sign Out");
-        JMenuItem aboutMenuItem = new JMenuItem("About");
-        JMenuItem noteMenuItem = new JMenuItem("Note");
-
-        settingsSection.add(aboutMenuItem);
-        settingsSection.addSeparator();
-        settingsSection.add(noteMenuItem);
-        settingsSection.addSeparator();
-        settingsSection.add(signOutMenuItem);
-
         signOutMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();
@@ -222,7 +233,10 @@ public class UserHomePage extends JFrame {
                 jFrame.display();
             }
         });
+    
 
+        //Creat "About" menu item
+        JMenuItem aboutMenuItem = new JMenuItem("About");
         aboutMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();
@@ -231,6 +245,8 @@ public class UserHomePage extends JFrame {
             }
         });
 
+        //Creat "Note" menu item
+        JMenuItem noteMenuItem = new JMenuItem("Note");
         noteMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();
@@ -239,22 +255,39 @@ public class UserHomePage extends JFrame {
             }
         });
 
+        settingsSection.add(aboutMenuItem);
+        settingsSection.add(noteMenuItem);
+        settingsSection.add(signOutMenuItem);
         setJMenuBar(menuBar);
     }
 
+    // Creat ProjectButton inner class.
     private class ProjectButton extends JButton {
+         /** Integer to use and actionPerformed. */
         private int index;
+         /** Delete label. */
         private JLabel deleteLabel;
+
+        /**
+         * Constructor.
+         *
+         * @param name
+         * @param theIndex
+         */
         public ProjectButton(String name, int theIndex) {
             super(name);
             index = theIndex;
             deleteLabel = new JLabel("-");
             setup();
         }
+
         public int getIndex() {
             return index;
         }
 
+         /**
+         * Set up for custom project button.
+         */
         public void setup() {
             this.setHorizontalAlignment(SwingConstants.LEFT);
             this.setPreferredSize(new Dimension(220, 25));
@@ -265,10 +298,19 @@ public class UserHomePage extends JFrame {
             this.setLayout(new BorderLayout());
             this.add(deleteLabel, BorderLayout.EAST);
         }
+
+         /**
+         * Return delete label.
+         *
+         * @return deleteLabel
+         */
         public JLabel getDeleteLabelLabel() {
             return deleteLabel;
         }
 
+        /**
+         * Add action listener to the button.
+         */
         public void addActionListener() {
             this.addActionListener(new ActionListener() {
                 @Override
@@ -276,7 +318,7 @@ public class UserHomePage extends JFrame {
                     dispose();
 //                    ProjectPage projectPage = new ProjectPage(projects.get(index), myUser);
 //                    projectPage.display();
-                    ProjectPage p = new ProjectPage(projects.get(index), myUser);
+                    ProjectPage p = new ProjectPage(myUser.getUserProjects().get(index), myUser);
                     p.display();
                 }
             });

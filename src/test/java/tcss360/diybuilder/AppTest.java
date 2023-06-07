@@ -67,20 +67,15 @@ public class AppTest
     public void loginUser(){
         Controller genController = new Controller();
 
-        String username = "alexg123";
-        String password = "123";
+        String username = "a6";
+        String password = "a6";
 
         UserController userController = new UserController();
+        UserController.loadUserAccount(username);
         assertTrue(userController.checkCredentials(username, password));
 
         User testUser = userController.getUserObject(username);
 
-        Project testProj = testUser.getUserProjects().get(0);
-        testProj.initTasks(testUser.getUserName());
-
-        Task testTask = testProj.getTaskList().get(0);
-
-        System.out.println(testTask.getName());
     }
 
 
@@ -110,7 +105,7 @@ public class AppTest
         ProjectController.createTask("Gather Parts");
         ProjectController.loadTask("Gather Parts");
 
-        ProjectController.createItem("CPU", 120.0, "1");
+        ProjectController.createItem("CPU", 120.0, 1);
 
         ProjectController.loadItem("CPU");
     }
