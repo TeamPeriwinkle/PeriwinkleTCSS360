@@ -3,17 +3,7 @@ package tcss360.diybuilder.ui;
 import tcss360.diybuilder.models.Project;
 import tcss360.diybuilder.models.User;
 
-import javax.swing.BorderFactory;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
-import javax.swing.Box;
-import javax.swing.ImageIcon;
+import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
@@ -68,6 +58,7 @@ public class NotesPage extends JFrame {
 
         this.setSize(500, 500);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout());
     }
 
@@ -82,6 +73,7 @@ public class NotesPage extends JFrame {
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         this.add(scrollPane);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        textArea.setText(currentProject.getNote());
         //this.add(textArea);
     }
 
@@ -97,22 +89,20 @@ public class NotesPage extends JFrame {
         menuBar.add(menuFile);
 
         // Add a home button to go back to the user's home page
-        JMenu menuHome = new JMenu();
-        this.getContentPane().add(menuHome, BorderLayout.NORTH);
-        ImageIcon homeIcon = new ImageIcon("homeicon.png");
+        ImageIcon homeIcon = new ImageIcon("src/main/resources/homeicon.png");
         Image resizedHomeIcon = homeIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         ImageIcon resizedIcon = new ImageIcon(resizedHomeIcon);
-        menuHome.setIcon(resizedIcon);
+
         menuBar.add(Box.createHorizontalGlue());
-        menuBar.add(menuHome);
-        menuHome.addMouseListener(new MouseAdapter() {
-
+        JButton homeButton = new JButton(resizedIcon);
+        this.getContentPane().add(homeButton, BorderLayout.NORTH);
+        menuBar.add(homeButton);
+        homeButton.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                UserHomePage userHomePage = new UserHomePage(currentUser);
+            public void actionPerformed(ActionEvent e) {
                 dispose();
-                userHomePage.setVisible(true);
-
+                UserHomePage userHomePage = new UserHomePage(currentUser);
+                userHomePage.display();
             }
         });
     }
