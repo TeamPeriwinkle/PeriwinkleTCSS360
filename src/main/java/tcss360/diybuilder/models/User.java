@@ -29,6 +29,14 @@ public class User implements Serializable {
         this.password = password;
         this.userProjects = ProjectController.readProjects(this.userName);
     }
+    public User(String username){
+        UserController.loadUserAccount(username);
+        User temp = UserController.getUserObject(username);
+        this.userName = temp.userName;
+        this.email = temp.email;
+        this.password = temp.password;
+        this.userProjects = temp.userProjects;
+    }
 
 
     //getters
@@ -66,7 +74,7 @@ public class User implements Serializable {
      * @param budget
      * @param description
      */
-    public void addProject(String title,Double budget, String description ){
+    public void addProject(String title,double budget, String description ){
 
         //add project to datafield for the user object instance
         Project newProj = new Project(title, budget, description);
@@ -164,14 +172,17 @@ public class User implements Serializable {
 
      /**
      * 
-     * @param title
+     * @param projectName
     */
 
-    public void deleteProject(int index) {
-        ProjectController.deleteProject(userProjects.get(index).getName());
+    public void deleteProject(String projectName) {
 
-        userProjects.remove(index);
-
+        for (int i = 0; i < userProjects.size() ; i++) {
+            if(userProjects.get(i).getName().equals(projectName)){
+                ProjectController.deleteProject(userProjects.get(i).getName());
+                userProjects.remove(i);
+            }
+        }
     }
 
 }

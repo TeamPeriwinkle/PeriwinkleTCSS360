@@ -114,9 +114,11 @@ public class ProjectController extends UserController {
         if(userData.isEmpty()){
             loadUserData();
         }
-        if(currentUser.isEmpty()){
+        if(currentUser == null){
+            System.out.println("ahsbdashdbasd");
             loadUserAccount(userName);
         }
+
 
         JSONArray projectData = (JSONArray) currentUser.get("projects");
 

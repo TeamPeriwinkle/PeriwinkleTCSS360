@@ -4,6 +4,8 @@
 package tcss360.diybuilder.models;
 
 import tcss360.diybuilder.SystemControl.ProjectController;
+import tcss360.diybuilder.SystemControl.UserController;
+
 import java.util.ArrayList;
 
 /**
@@ -20,7 +22,7 @@ public class Project {
     /** The description of the Project. */
     private String description;
     /** Array list of Task Object. */
-    private ArrayList<Task> taskList;
+    private ArrayList<Task> taskList = new ArrayList<>();
 
 
     /**
@@ -97,7 +99,7 @@ public class Project {
      * @return Task ArrayList
      */
     public ArrayList<Task> getTaskList() {
-        return new ArrayList<Task>(taskList);
+        return taskList;
     }
 
     /**

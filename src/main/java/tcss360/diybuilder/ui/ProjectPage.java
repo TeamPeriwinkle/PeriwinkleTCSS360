@@ -38,7 +38,7 @@ public class ProjectPage extends JFrame {
     /** Panel to hold task list. */
     private final JPanel taskListPanel;
     /** Arraylist of task to manipulate tasks. */
-    private ArrayList<Task> tasks;
+    //private ArrayList<Task> tasks;
     /** Project object. */
     private final Project project;
     /** User object. */
@@ -54,9 +54,10 @@ public class ProjectPage extends JFrame {
      */
     public ProjectPage(Project theP, User theUser) {
         super("DIY Control");
+        ProjectController.loadProject(theP.getName());
         project = theP;
         myUser = theUser;
-        tasks = project.getTaskList();
+        //tasks = project.getTaskList();
         myBudget = new Budget(project.getTaskList(), project.getBudget());
         projectPanel = new JPanel();
         buttonsPanel = new JPanel();
@@ -74,7 +75,7 @@ public class ProjectPage extends JFrame {
         dataset = new DefaultPieDataset();
         double remBudget = project.getBudget() - ProjectController.calculateOverallTotal(myBudget);
         dataset.setValue("Remaining Budget", remBudget);
-        for (Task t : tasks) {
+        for (Task t : project.getTaskList()) {
             dataset.setValue(t.getName(), ProjectController.calcuateTaskCost(t));
         }
 
@@ -172,7 +173,7 @@ public class ProjectPage extends JFrame {
         // Create Dataset
         double remBudget = project.getBudget() - ProjectController.calculateOverallTotal(myBudget);
         dataset.setValue("Remaining Budget", remBudget);
-        for (Task t : tasks) {
+        for (Task t : project.getTaskList()) {
             dataset.setValue(t.getName(), ProjectController.calcuateTaskCost(t));
         }
 
@@ -194,7 +195,7 @@ public class ProjectPage extends JFrame {
      * Update the task list based on the added or deleted task.
      */
     private void updateTaskList() {
-        tasks = project.getTaskList();
+        //tasks = project.getTaskList();
         taskListPanel.removeAll();
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -202,8 +203,8 @@ public class ProjectPage extends JFrame {
         gbc.gridy = 0;
         gbc.insets = new Insets(2, 2, 2, 2);
 
-        for (int i = 0; i < tasks.size(); i++) {
-            String taskName = tasks.get(i).getName();
+        for (int i = 0; i < project.getTaskList().size(); i++) {
+            String taskName = project.getTaskList().get(i).getName();
 
             // Mouseclick delete project
             TaskButton taskButton = new TaskButton(taskName, i);

@@ -1,7 +1,9 @@
 package tcss360.diybuilder.ui;
 
+import tcss360.diybuilder.SystemControl.ProjectController;
 import tcss360.diybuilder.models.Item;
 import tcss360.diybuilder.models.Project;
+import tcss360.diybuilder.models.Task;
 import tcss360.diybuilder.models.User;
 
 import javax.swing.*;
@@ -14,18 +16,21 @@ import java.util.ArrayList;
 
 public class TaskPage extends JFrame {
 
-    private ArrayList<Item> items;
+    //private ArrayList<Item> items;
     private JPanel itemListPanel;
     private User myUser;
     private Project project;
     private int myIndex;
+    private Task myTask;
 
     public TaskPage(Project theP, User theUser, int theIndex) {
         super("DIY Control");
         project = theP;
         myIndex = theIndex;
+        myTask = project.getTaskList().get(theIndex);
+        ProjectController.loadTask(myTask.getName());
         myUser = theUser;
-        items = project.getTaskList().get(theIndex).getItemsList();
+       // items = project.getTaskList().get(theIndex).getItemsList();
         itemListPanel = new JPanel(new GridBagLayout());
     }
 
@@ -78,7 +83,8 @@ public class TaskPage extends JFrame {
                     int totalUnit = Integer.parseInt(unit);
 
                     // Create new item
-                    items.add(new Item(name, pricePerUnit, totalUnit));
+                    myTask.addItem(name, pricePerUnit, totalUnit);
+                    //items.add(new Item(name, pricePerUnit, totalUnit));
 
                     JOptionPane.showMessageDialog(getParent(), "New item added: " + name,
                             "Add item", JOptionPane.INFORMATION_MESSAGE);
@@ -124,8 +130,8 @@ public class TaskPage extends JFrame {
         gbc.gridy = 0;
         gbc.insets = new Insets(2, 2, 2, 2);
 
-        for (int i = 0; i < items.size(); i++) {
-            String itemName = items.get(i).getName();
+        for (int i = 0; i < myTask.getItemsList().size(); i++) {
+            String itemName = myTask.getItemsList().get(i).getName();
 
             // Mouseclick delete project
             ItemButton itemButton = new ItemButton(itemName, i);
@@ -178,9 +184,10 @@ public class TaskPage extends JFrame {
     }
 
     private boolean deleteItem(String itemName) {
-        for (Item item : items) {
+        for (Item item : myTask.getItemsList()) {
             if (item.getName().equals(itemName)) {
-                items.remove(item);
+                myTask.removeItem(itemName);
+                //items.remove(item);
                 return true;
             }
         }
@@ -306,17 +313,17 @@ public class TaskPage extends JFrame {
 
                     itemDetailsPanel.add(new JLabel("Item Name:"));
                     JTextField itemNameField = new JTextField();
-                    itemNameField.setText(items.get(index).getName());
+                    itemNameField.setText(myTask.getItemsList().get(index).getName());
                     itemDetailsPanel.add(itemNameField);
 
                     itemDetailsPanel.add(new JLabel("Price Per unit:"));
                     JTextField pricePerUnitField = new JTextField();
-                    pricePerUnitField.setText("" + items.get(index).getPrice());
+                    pricePerUnitField.setText("" + myTask.getItemsList().get(index).getPrice());
                     itemDetailsPanel.add(pricePerUnitField);
 
                     itemDetailsPanel.add(new JLabel("Total unit:"));
                     JTextField totalUnitField = new JTextField();
-                    totalUnitField.setText("" + items.get(index).getUnit());
+                    totalUnitField.setText("" + myTask.getItemsList().get(index).getUnit());
                     itemDetailsPanel.add(totalUnitField);
 
                     // Show the panel in a JOptionPane
@@ -329,9 +336,9 @@ public class TaskPage extends JFrame {
                         String unit = totalUnitField.getText();
                         int totalUnit = Integer.parseInt(unit);
 
-                        items.get(index).setName(name);
-                        items.get(index).setPrice(pricePerUnit);
-                        items.get(index).setUnit(totalUnit);
+                        myTask.getItemsList().get(index).setName(name);
+                        myTask.getItemsList().get(index).setPrice(pricePerUnit);
+                        myTask.getItemsList().get(index).setUnit(totalUnit);
 
                         JOptionPane.showMessageDialog(getParent(), "Item updated",
                                 "Item details", JOptionPane.INFORMATION_MESSAGE);

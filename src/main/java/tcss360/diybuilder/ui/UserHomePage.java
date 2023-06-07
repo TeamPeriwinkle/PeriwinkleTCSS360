@@ -21,7 +21,7 @@ public class UserHomePage extends JFrame {
     private JMenuBar menuBar;
     private JMenu settingsSection;
     private JPanel projectListPanel;
-    private ArrayList<Project> projects;
+    //private ArrayList<Project> userProjects;
     protected User myUser;
     private ArrayList<ProjectButton> projectButtons;
    
@@ -32,7 +32,7 @@ public class UserHomePage extends JFrame {
      */
     public UserHomePage(User theUser) {
         super("DIY Control");
-        projects = theUser.getUserProjects();
+       // userProjects = myUser.getUserProjects();
         myUser = theUser;
         projectButtons = new ArrayList<>();
         createMenuBar();
@@ -112,8 +112,7 @@ public class UserHomePage extends JFrame {
                     double budget = Double.parseDouble(budgetText);
                     String description = descriptionField.getText();
                     if (!projectName.trim().isEmpty()) {
-                        Project newProject = new Project(projectName, budget, description, new ArrayList<Task>());
-                        projects.add(newProject);
+                        myUser.addProject(projectName, budget, description);
                         JOptionPane.showMessageDialog(UserHomePage.this, "New project created: "
                                 + projectName, "Create Project", JOptionPane.INFORMATION_MESSAGE);
                                 // update list project
@@ -140,14 +139,16 @@ public class UserHomePage extends JFrame {
 
     private void updateProjectList() {
         // Create Dataset
+        //userProjects = myUser.getUserProjects();
         projectListPanel.removeAll();
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.insets = new Insets(2, 2, 2, 2);
 
-        for (int i = 0; i < projects.size(); i++) {
-            final String projectName = projects.get(i).getName();
+
+        for (int i = 0; i < myUser.getUserProjects().size(); i++) {
+            final String projectName = myUser.getUserProjects().get(i).getName();
 
             // Mouseclick delete project
             ProjectButton projectButton = new ProjectButton(projectName, i);
@@ -199,9 +200,9 @@ public class UserHomePage extends JFrame {
     }
 
     private boolean deleteProject(String projectName) {
-        for (Project project : projects) {
+        for (Project project : myUser.getUserProjects()) {
             if (project.getName().equals(projectName)) {
-                projects.remove(project);
+                myUser.deleteProject(projectName);
                 return true;
             }
         }
@@ -317,7 +318,7 @@ public class UserHomePage extends JFrame {
                     dispose();
 //                    ProjectPage projectPage = new ProjectPage(projects.get(index), myUser);
 //                    projectPage.display();
-                    ProjectPage p = new ProjectPage(projects.get(index), myUser);
+                    ProjectPage p = new ProjectPage(myUser.getUserProjects().get(index), myUser);
                     p.display();
                 }
             });

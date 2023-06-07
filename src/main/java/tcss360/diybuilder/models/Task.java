@@ -58,13 +58,14 @@ public class Task {
         ProjectController.createItem(itemName, price,unit);
     }
 
-    public void removeItem(int index) {
+    public void removeItem(String itemName) {
         // Delete from project Controller
-        Item itemToDelete = itemsList.get(index);
-        String itemName = itemToDelete.getName();
-
-        itemsList.remove(index);
-        ProjectController.deleteItem(itemName);
+        for (int i = 0; i < itemsList.size(); i++) {
+            if(itemsList.get(i).getName().equals(itemName)){
+                ProjectController.deleteItem(itemName);
+                itemsList.remove(i);
+            }
+        }
     }
 
     /**
