@@ -264,7 +264,9 @@ public class UserHomePage extends JFrame {
         });
 
         settingsSection.add(aboutMenuItem);
+        settingsSection.addSeparator();
         settingsSection.add(noteMenuItem);
+        settingsSection.addSeparator();
         settingsSection.add(signOutMenuItem);
         setJMenuBar(menuBar);
     }
