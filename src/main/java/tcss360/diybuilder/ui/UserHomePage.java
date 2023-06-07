@@ -22,6 +22,7 @@ public class UserHomePage extends JFrame {
     private JMenu settingsSection;
     private JPanel projectListPanel;
     //private ArrayList<Project> userProjects;
+     /** User object. */
     protected User myUser;
     private ArrayList<ProjectButton> projectButtons;
    
@@ -137,6 +138,9 @@ public class UserHomePage extends JFrame {
         setVisible(true);
     }
 
+     /**
+     * Update the project list based on the added or deleted task.
+     */
     private void updateProjectList() {
         // Create Dataset
         //userProjects = myUser.getUserProjects();
@@ -208,7 +212,10 @@ public class UserHomePage extends JFrame {
         }
         return false;
     }
-    // creat MenuBar
+    
+     /**
+     * Creating menu bar for JFrame.
+     */
     private void createMenuBar() {
         menuBar = new JMenuBar();
         settingsSection = new JMenu();
