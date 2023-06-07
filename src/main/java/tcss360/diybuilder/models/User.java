@@ -4,6 +4,7 @@
 package tcss360.diybuilder.models;
 /**
  * User Object Class.
+ *
  * @author Alex Garcia
  */
 import tcss360.diybuilder.SystemControl.ProjectController;
@@ -14,14 +15,25 @@ import java.util.ArrayList;
 
 public class User implements Serializable {
 
-    //data field
+    /** Name of the user. */
     private String userName;
+    /** Email of the user. */
     private String email;
+    /** Password of the user. */
     private String password;
+    /** List of project. */
     private ArrayList<Project> userProjects;
 
+    /** Serial version UID. */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Constructor.
+     *
+     * @param name user name
+     * @param email user email
+     * @param password user password
+     */
     public User(String name, String email, String password){
         UserController.loadUserAccount(name);
         this.userName = name;
@@ -29,6 +41,12 @@ public class User implements Serializable {
         this.password = password;
         this.userProjects = ProjectController.readProjects(this.userName);
     }
+
+    /**
+     * Constructor.
+     *
+     * @param username user name
+     */
     public User(String username){
         UserController.loadUserAccount(username);
         User temp = UserController.getUserObject(username);

@@ -289,6 +289,7 @@ public class ProjectPage extends JFrame {
 
         // Create "Budget" menu item
         JMenuItem budgetMenuItem = new JMenuItem("Budget");
+        JMenuItem noteMenuItem = new JMenuItem("Note");
         budgetMenuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();
@@ -296,7 +297,18 @@ public class ProjectPage extends JFrame {
                 b.display();
             }
         });
-        settingsSection.add(budgetMenuItem); // Add the Budget menu item to settingsSection
+        settingsSection.add(budgetMenuItem);// Add the Budget menu item to settingsSection
+        settingsSection.addSeparator();
+
+        noteMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                // create note page
+                NotesPage notepage = new NotesPage(myUser, project );
+                notepage.display();
+            }
+        });
+        settingsSection.add(noteMenuItem);
 
         setJMenuBar(menuBar);
     }

@@ -17,6 +17,7 @@ import java.io.IOException;
  * Login and Sign Up UI.
  *
  * @author Soe Lin
+ * @editor Charmel Mbala
  */
 public class DIYControl extends JFrame {
 
@@ -197,6 +198,11 @@ public class DIYControl extends JFrame {
                 username = usernameField.getText();
                 email = emailField.getText();
                 password = String.valueOf(passwordField.getPassword());
+                // Validation for proper username only letters and numbers
+                String usernamePattern = "^[a-zA-Z0-9]+$";
+                // Validation for proper email address
+                String emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+
 
                 if (username.compareTo("") == 0 || email.compareTo("") == 0 || password.compareTo("") == 0) {
                     JOptionPane.showMessageDialog(getParent(),
@@ -208,6 +214,7 @@ public class DIYControl extends JFrame {
                     if (UserController.userExists(username)) {
                         JOptionPane.showMessageDialog(getParent(), "Username already exists. Please try again.");
                     } else {
+                        if(username.matches(usernamePattern) && email.matches(emailPattern)){
 
                         try {
                             //uses user controller for now but
@@ -215,7 +222,8 @@ public class DIYControl extends JFrame {
                             JOptionPane.showMessageDialog(getParent(), "Account Created Successfully!");
                         } catch (IOException ex) {
                             ex.printStackTrace();
-                        }
+                        }}
+                        else { JOptionPane.showMessageDialog(getParent(), "Invalid Username/Email. Please try again.");}
                     }
                 }
 

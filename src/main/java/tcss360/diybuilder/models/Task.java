@@ -11,6 +11,7 @@ import tcss360.diybuilder.SystemControl.ProjectController;
  *
  * @author Soe Lin
  * @author Mey Vo
+ * @editor Charmel Mbala
  */
 public class Task {
 
@@ -30,24 +31,49 @@ public class Task {
         itemsList = theItemsList;
     }
 
+    /**
+     * Another constructor.
+     *
+     * @param name name of the user
+     */
     public Task(String name){
         this.name = name;
     }
 
-
-
+    /**
+     * Get name of the task.
+     *
+     * @return task name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Set name of the task.
+     *
+     * @param theName task name
+     */
     public void setName(String theName) {
         name = theName;
     }
 
+    /**
+     * Get the item list.
+     *
+     * @return items list
+     */
     public ArrayList<Item> getItemsList() {
         return itemsList;
     }
 
+    /**
+     * Adding item to the list and JSON file.
+     *
+     * @param itemName item name
+     * @param price price per unit of item
+     * @param unit total unit of item
+     */
     public void addItem(String itemName, double price, int unit) {
         Item newItem= new Item(itemName, price, unit);
 
@@ -58,6 +84,11 @@ public class Task {
         ProjectController.createItem(itemName, price,unit);
     }
 
+    /**
+     * Removing item from the list and JSON file.
+     *
+     * @param itemName item name
+     */
     public void removeItem(String itemName) {
         // Delete from project Controller
         for (int i = 0; i < itemsList.size(); i++) {
@@ -89,22 +120,12 @@ public class Task {
 
     }
 
-
-
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Task name: " + name);
-        sb.append("\n");
-        for (int i = 0; i < itemsList.size(); i++) {
-            sb.append(itemsList.get(i).toString());
-            sb.append("\n");
-        }
-        return sb.toString();
-    }
-
-
+    /**
+     * Get an item.
+     *
+     * @param itemName item name
+     * @return item object
+     */
     public Item getItem(String itemName){
         for (Item item: itemsList) {
             if(item.getName().equals(itemName)){

@@ -4,7 +4,6 @@
 package tcss360.diybuilder.models;
 
 import tcss360.diybuilder.SystemControl.ProjectController;
-import tcss360.diybuilder.SystemControl.UserController;
 
 import java.util.ArrayList;
 
@@ -23,6 +22,8 @@ public class Project {
     private String description;
     /** Array list of Task Object. */
     private ArrayList<Task> taskList = new ArrayList<>();
+
+    private String note = "";
 
 
     /**
@@ -103,15 +104,6 @@ public class Project {
     }
 
     /**
-     * Reading and initializing the task from data.
-     *
-     * @param username name of the user
-     */
-    public void initTasks(String username){
-        taskList = ProjectController.readtasks(username, this.name);
-    }
-
-    /**
      * used to get a specific project Object
      *
      * @param taskName task name
@@ -150,5 +142,16 @@ public class Project {
         ProjectController.deleteTask(taskList.get(index).getName());
 
         taskList.remove(index);
+    }
+
+    public String getNote(){
+        if(note.isEmpty()){
+            note = ProjectController.findNote();
+        }
+        return note;}
+
+    public void setNote(String newNote){
+        this.note = newNote;
+        ProjectController.saveNote(newNote);
     }
 }
