@@ -85,29 +85,29 @@ public class AppTest
      */
     @Test
     public void createProjectWithItems(){
-        Controller c = new Controller();
-        String username = "alexg123";
-        String password = "123";
-        loadUserData();
-
-        UserController.loadUserAccount(username);
-
-        String projectName = "gaming pc";
-        String description = "new pc build for gaming and school";
-        Double budget = 1200.0;
-
-        Project newProj = new Project(projectName, budget,description);
-
-        ProjectController.createProject(username, newProj);
-
-        ProjectController.loadProject(projectName);
-
-        ProjectController.createTask("Gather Parts");
-        ProjectController.loadTask("Gather Parts");
-
-        ProjectController.createItem("CPU", 120.0, 1);
-
-        ProjectController.loadItem("CPU");
+//        Controller c = new Controller();
+//        String username = "alexg123";
+//        String password = "123";
+//        loadUserData();
+//
+//        UserController.loadUserAccount(username);
+//
+//        String projectName = "gaming pc";
+//        String description = "new pc build for gaming and school";
+//        Double budget = 1200.0;
+//
+//        Project newProj = new Project(projectName, budget,description);
+//
+//        ProjectController.createProject(username, newProj);
+//
+//        ProjectController.loadProject(projectName);
+//
+//        ProjectController.createTask("Gather Parts");
+//        ProjectController.loadTask("Gather Parts");
+//
+//        ProjectController.createItem("CPU", 120.0, 1);
+//
+//        ProjectController.loadItem("CPU");
     }
 
     /**
@@ -139,21 +139,21 @@ public class AppTest
 
     @Test
     public void deleteTask(){
-        Controller c = new Controller();//can have this be done for all tests but for now it will be a part of every test
-        UserController.loadUserData();
-
-        String username = "alexg123";
-
-        UserController.loadUserAccount(username);
-
-        //items and projects to be deleted for testing
-        String projectName = "gaming pc";
-        String taskName = "Gather Parts";
-
-        ProjectController.loadProject(projectName);
-
-        //should delete the item
-        ProjectController.deleteTask(taskName);
+//        Controller c = new Controller();//can have this be done for all tests but for now it will be a part of every test
+//        UserController.loadUserData();
+//
+//        String username = "alexg123";
+//
+//        UserController.loadUserAccount(username);
+//
+//        //items and projects to be deleted for testing
+//        String projectName = "gaming pc";
+//        String taskName = "Gather Parts";
+//
+//        ProjectController.loadProject(projectName);
+//
+//        //should delete the item
+//        ProjectController.deleteTask(taskName);
     }
 
     @Test

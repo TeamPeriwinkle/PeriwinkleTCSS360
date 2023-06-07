@@ -41,6 +41,7 @@ public class ProjectController extends UserController {
             double budget = Double.parseDouble(projTemp.get("budget").toString());
             String plan = projTemp.get("title").toString();
             String description = projTemp.get("description").toString();
+            String note = projTemp.get("note").toString();
 
             ArrayList<Task> tasks = readtasks(username, name);
             Project temp = new Project(name, budget, description, tasks);
@@ -544,5 +545,9 @@ public class ProjectController extends UserController {
             e.printStackTrace();
         }
 
+    }
+
+    public static String findNote(){
+        return currentProject.get("note").toString();
     }
 }

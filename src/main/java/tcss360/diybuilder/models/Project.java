@@ -24,6 +24,8 @@ public class Project {
     /** Array list of Task Object. */
     private ArrayList<Task> taskList = new ArrayList<>();
 
+    private String note = "";
+
 
     /**
      * Constructor.
@@ -150,5 +152,16 @@ public class Project {
         ProjectController.deleteTask(taskList.get(index).getName());
 
         taskList.remove(index);
+    }
+
+    public String getNote(){
+        if(note.isEmpty()){
+            note = ProjectController.findNote();
+        }
+        return note;}
+
+    public void setNote(String newNote){
+        this.note = newNote;
+        ProjectController.saveNote(newNote);
     }
 }
