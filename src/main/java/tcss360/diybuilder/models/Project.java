@@ -4,7 +4,6 @@
 package tcss360.diybuilder.models;
 
 import tcss360.diybuilder.SystemControl.ProjectController;
-import tcss360.diybuilder.SystemControl.UserController;
 
 import java.util.ArrayList;
 
@@ -100,15 +99,6 @@ public class Project {
      */
     public ArrayList<Task> getTaskList() {
         return taskList;
-    }
-
-    /**
-     * Reading and initializing the task from data.
-     *
-     * @param username name of the user
-     */
-    public void initTasks(String username){
-        taskList = ProjectController.readtasks(username, this.name);
     }
 
     /**

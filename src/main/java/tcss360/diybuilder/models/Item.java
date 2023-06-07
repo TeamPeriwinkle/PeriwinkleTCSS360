@@ -21,9 +21,9 @@ public class Item {
     /**
      * Constructor.
      *
-     * @param theName
-     * @param thePrice
-     * @param theUnit
+     * @param theName name of the item
+     * @param thePrice price of the item
+     * @param theUnit total unit of the item
      */
     public Item(String theName, double thePrice, int theUnit) {
         name = theName;
@@ -61,7 +61,7 @@ public class Item {
     /**
      * Set the name of the item.
      *
-     * @param theName
+     * @param theName name of the item
      */
     public void setName(String theName) {
         name = theName;
@@ -70,7 +70,7 @@ public class Item {
     /**
      * Set the price of the item.
      *
-     * @param thePrice
+     * @param thePrice price of the item
      */
     public void setPrice(double thePrice) {
         price = thePrice;
@@ -79,7 +79,7 @@ public class Item {
     /**
      * Set the total unit of the item.
      *
-     * @param theUnit
+     * @param theUnit total unit of the item
      */
     public void setUnit(int theUnit) {
         unit = theUnit;
