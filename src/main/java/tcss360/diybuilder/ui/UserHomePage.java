@@ -134,8 +134,9 @@ public class UserHomePage extends JFrame {
         setVisible(true);
     }
 
-    /**
-     * Update the project panel based on the updated list.
+
+     /**
+     * Update the project list based on the added or deleted task.
      */
     private void updateProjectList() {
         // Create Dataset
@@ -214,8 +215,9 @@ public class UserHomePage extends JFrame {
         return false;
     }
 
-    /**
-     * Create menu bar.
+    
+     /**
+     * Creating menu bar for JFrame.
      */
     private void createMenuBar() {
         JMenuBar menuBar = new JMenuBar();

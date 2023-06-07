@@ -1,5 +1,8 @@
 package tcss360.diybuilder.ui;
-
+/**
+ *
+ * @author Soe Lin
+ */
 import tcss360.diybuilder.SystemControl.ProjectController;
 import tcss360.diybuilder.models.Item;
 import tcss360.diybuilder.models.Project;
@@ -18,7 +21,9 @@ public class TaskPage extends JFrame {
 
     //private ArrayList<Item> items;
     private JPanel itemListPanel;
+     /** User object. */
     private User myUser;
+     /** Project object. */
     private Project project;
     private int myIndex;
     private Task myTask;
@@ -131,6 +136,9 @@ public class TaskPage extends JFrame {
         this.setVisible(true);
     }
 
+     /**
+     * Update the Item list based on the added or deleted task.
+     */
     private void updateItemList() {
         itemListPanel.removeAll();
 
@@ -203,6 +211,7 @@ public class TaskPage extends JFrame {
         return false;
     }
 
+
     /**
      * Determine if adding a new item is a duplicate of an already existing item.
      * @param name
@@ -219,6 +228,9 @@ public class TaskPage extends JFrame {
     }
 
 
+     /**
+     * Creating menu bar for JFrame.
+     */
     private void createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         JMenu settingsSection = new JMenu();
