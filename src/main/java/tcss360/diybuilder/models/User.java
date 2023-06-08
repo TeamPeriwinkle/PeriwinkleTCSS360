@@ -6,6 +6,7 @@ package tcss360.diybuilder.models;
  * User Object Class.
  *
  * @author Alex Garcia
+ * @author Mey Vo
  */
 import tcss360.diybuilder.SystemControl.ProjectController;
 import tcss360.diybuilder.SystemControl.UserController;
@@ -57,7 +58,7 @@ public class User implements Serializable {
     }
 
 
-    //getters
+    /** getters*/
     public String getEmail(){
         return email;
     }
@@ -177,6 +178,7 @@ public class User implements Serializable {
      * @param title
      * @param budget
      * @param description
+     * @author Mey Vo
     */
     public void addProject(String title, Double budget, String description){
 
@@ -189,10 +191,10 @@ public class User implements Serializable {
     }
 
      /**
-     * 
-     * @param projectName
+     * deletes a project from valotile and permanent data
+     * @param projectName project to be deleted
+      * @author Mey Vo
     */
-
     public void deleteProject(String projectName) {
 
         for (int i = 0; i < userProjects.size() ; i++) {

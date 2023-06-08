@@ -11,6 +11,7 @@ import java.util.ArrayList;
  * Handles data retrieval, writing, and deletion from web of JSONOBJECTs, Specifically handles
  * everything invloving project, task, and items
  * @author Alex Garcia
+ * @author Soe Lin
  */
 public class ProjectController extends UserController {
 
@@ -521,6 +522,12 @@ public class ProjectController extends UserController {
         }
     }
 
+    /**
+     * calculates the total for the project
+     * @param theBudget budget object
+     * @return
+     * @Soe Lin
+     */
     public static double calculateOverallTotal(Budget theBudget) {
         double result = 0;
         ArrayList<Task> taskList = theBudget.getTasksList();

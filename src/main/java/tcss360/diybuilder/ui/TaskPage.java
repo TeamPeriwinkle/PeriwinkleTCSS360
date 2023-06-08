@@ -1,8 +1,4 @@
 package tcss360.diybuilder.ui;
-/**
- *
- * @author Soe Lin
- */
 import tcss360.diybuilder.SystemControl.ProjectController;
 import tcss360.diybuilder.models.Item;
 import tcss360.diybuilder.models.Project;

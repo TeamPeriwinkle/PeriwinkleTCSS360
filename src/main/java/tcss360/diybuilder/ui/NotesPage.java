@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 /**
  * GUI for notepage
  * @author Mahiliet Awasso
+ * Editor/contributor: Soe
  */
 public class NotesPage extends JFrame {
 

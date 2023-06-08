@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 
 /**
  * Unit test for deleting project components
- *  Warninga: user must be created beforehand along with project, task and item
+ *  Warning: user must be created beforehand along with project, task and item
  *  Warning: when running delete, item, then task, then project or will run into errors
  */
 
