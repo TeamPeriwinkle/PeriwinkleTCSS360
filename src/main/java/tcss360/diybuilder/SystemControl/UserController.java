@@ -12,10 +12,8 @@ import tcss360.diybuilder.models.*;
  */
 public class UserController extends Controller{
 
-    //can load this in to remove some redudancy in code
-    //private static UserController singleInstance = null;
 
-    //datafield
+    /**static field for the current user*/
     protected static JSONObject currentUser;
 
     //contructor
@@ -95,6 +93,7 @@ public class UserController extends Controller{
 
     /**
      * loads in the current User account into static datafield(as a Json Object)
+     * @param username username of the user to be loaded into the static field
      */
     public static void loadUserAccount(String username){
         //make sure everything is loading in correctly
@@ -109,16 +108,20 @@ public class UserController extends Controller{
 
     /**
      * checks user credentials(username and password)
+     * @param username username enterered when trying to log in
+     * @param password password entered when trying to log in
+     * @return true or false
      */
     public static boolean checkCredentials(String username, String password) {
-        //make sure things are loaded in properly, shouldnt be a problem however
+        //make sure things are loaded in properly, shouldnt be a problem
         if(userData.isEmpty()){
             loadUserData();
         }
 
-        if (userData.get(username) != null) {
+
+        if (userData.get(username) != null) {//does the user actually exist
             JSONObject userInfo = (JSONObject) userData.get(username);
-            return password.equals((String)userInfo.get("password"));
+            return password.equals((String)userInfo.get("password"));//match passwords
         }
 
         return false;
@@ -128,6 +131,8 @@ public class UserController extends Controller{
 
     /**
      * adds in new user information to the original json data
+     * @param userData jsobobject full of the newly updated user data
+     * @throws
      */
     protected static void updateData(JSONObject userData) throws IOException {
 

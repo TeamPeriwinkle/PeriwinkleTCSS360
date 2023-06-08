@@ -7,25 +7,37 @@ import tcss360.diybuilder.models.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Handles data retrieval, writing, and deletion from web of JSONOBJECTs, Specifically handles
+ * everything invloving project, task, and items
+ * @author Alex Garcia
+ */
 public class ProjectController extends UserController {
 
-    //Used to keep preloaded data making access to nested data easier
+    /**Used to keep preloaded data making access to nested data easier*/
     private static JSONObject currentProject;
+
+    /**Used to keep preloaded data for current task*/
     private static JSONObject currentTask;
+
+    /**Used to keep preloaded data for current item*/
     private static JSONObject currentItem;
-    
-    //used to keep track of index placements for project, task, and item(makes deleting much easier)
+
+    /**Used to keep indexes of the preloaded data*/
     private static int projectIndex;
     private static int taskIndex;
     private static int itemIndex;
 
-    //constructors
+
     public ProjectController() {}
 
-    //METHODS
+
 
     /**
      * helper method to fill ProjectList
+     * reads in projects data for a given user
+     * @param username username for the user whose data is to be retrieved
+     * @return returns an array of projects Objects for the user
      */
     static public ArrayList<Project> readProjects(String username) {
         ArrayList<Project> projectsList = new ArrayList<>();
@@ -51,10 +63,10 @@ public class ProjectController extends UserController {
     }
 
     /**
-     *
-     * @param userName
-     * @param projectName
-     * @return
+     *reads in the tasks for a give project
+     * @param userName username whom the project belongs to
+     * @param projectName project in which the task is located in
+     * @return returns an array of Task Objects
      */
     static public ArrayList<Task> readtasks(String userName, String projectName) {
         ArrayList<Task> result = new ArrayList<>();
@@ -83,9 +95,9 @@ public class ProjectController extends UserController {
     }
 
     /**
-     * Returns the Item array for a task
-     * @param things
-     * @return
+     * helper method to convert a JSONarray to an item Array
+     * @param things fun name for the JSON array to be converted
+     * @return returns an array List of item objects
      */
     protected static ArrayList<Item> JSONArrayToItemArray(JSONArray things) {
 
@@ -105,8 +117,8 @@ public class ProjectController extends UserController {
 
 
     /**
-     *
-     * @param userName
+     * returns the JSONARRAY filled with a users projects
+     * @param userName username of the user
      * @return Json Array for all user projects
      */
     protected static JSONArray readProjectdata(String userName){
@@ -128,18 +140,17 @@ public class ProjectController extends UserController {
 
     /**
      * To be used when creating a new project(will handle saving the project information to th json file)
-     * @param project
+     * @param project project object to be created
+     * @param userName the owner of this project
      */
     public static void createProject(String userName, Project project){
-        //might be redudant but makes sure we have everything loaded in
+        //might be redundant but makes sure we have everything loaded in
         if(userData.isEmpty()){
             loadUserData();
         }
         if(currentUser.isEmpty()){
             loadUserAccount(userName);
         }
-
-        //JSONObject user = (JSONObject) userData.get(userName);//really just current user
 
         JSONArray userProjects = (JSONArray) currentUser.get("projects");
 
@@ -159,7 +170,7 @@ public class ProjectController extends UserController {
         currentUser.replace("projects", userProjects);
         userData.replace(userName, currentUser);
 
-        //make sure both volotile and permanant data are updated accordingly
+        //make sure both volatile and permanant data are updated accordingly
         try {
             updateData(userData);
         } catch (IOException e) {
@@ -273,16 +284,17 @@ public class ProjectController extends UserController {
     }
 
     /**
-     * loads in the current project into static datafield
+     * loads in the current task into static datafield
+     * @param taskName
      */
-    public static void loadTask(String TaskName){
+    public static void loadTask(String taskName){
         JSONArray projectTasks = (JSONArray) currentProject.get("tasks");
 
         for (int i = 0; i < projectTasks.size() ; i++) {
             JSONObject tempTask = (JSONObject)projectTasks.get(i);
             String tempName = (String)tempTask.get("name");
 
-            if(tempName.equals(TaskName)){
+            if(tempName.equals(taskName)){
                 currentTask = tempTask;
                 taskIndex = i;
             }
@@ -298,6 +310,7 @@ public class ProjectController extends UserController {
     /**
      * loads in the current Item into static datafield
      * assumes task is already loaded in
+     * @param itemName name for the item to be loaded in
      */
     public static void loadItem(String itemName){
         JSONArray taskItems = (JSONArray) currentTask.get("items");
@@ -335,7 +348,6 @@ public class ProjectController extends UserController {
     }
 
 
-    //DELETION METHODS
     /**
      * used to delete a task from volotile and permananent memory
      * WARNING: use only after currentUser has been loaded in
@@ -372,7 +384,7 @@ public class ProjectController extends UserController {
     }
 
     /**
-     * used to delete a task from volotile and permananent memory
+     * used to delete a task from volatile and permanent memory
      * WARNING: use after currentProject has ben loaded in
      * @param taskName name of task to be deleted
      */
@@ -467,7 +479,7 @@ public class ProjectController extends UserController {
 
 
     /**
-     * edits an item in permanant and volotile data
+     * edits an item in permanant and volatile data
      * @param itemName new name for the item
      * @param price new price for the item
      * @param unit new
@@ -520,7 +532,7 @@ public class ProjectController extends UserController {
     }
 
     /**
-     * save note for the currently loaded
+     * save note for the currently loaded user and project
      * @param note
      */
     public static void saveNote(String note){
@@ -547,6 +559,10 @@ public class ProjectController extends UserController {
 
     }
 
+    /**
+     * get the note for the currently loaded project
+     * @return note in the form of a string
+     */
     public static String findNote(){
         return currentProject.get("note").toString();
     }

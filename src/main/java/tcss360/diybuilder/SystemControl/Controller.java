@@ -13,8 +13,13 @@ import java.nio.charset.StandardCharsets;
  */
 
 public class Controller{
+    /**file name for data*/
     static protected String DATAFILE = "df.json";
+
+    /**JSONOBJECT for the data read in */
     static public JSONObject data = new JSONObject();
+
+    /**JSONOBJECT for user tag in data*/
     static protected JSONObject userData;
 
     public Controller(){
@@ -58,7 +63,7 @@ public class Controller{
      *  @author Alex G
      */
 
-    public static void writeData() throws IOException {
+    protected static void writeData() throws IOException {
 
         FileWriter fw = null;
         try {
