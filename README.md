@@ -1,4 +1,18 @@
 # Team-Periwinkle
+# External Library/ Dependencies
+ json-simple: A lightweight JSON processing library for Java.
+
+json-simple is a third-party library used in this project to handle JSON data. It provides convenient methods for parsing and generating JSON structures. More information about json-simple can be found at: [JSON](https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple/1.1.1).
+
+JFREECHART: A Library used to display charts
+[Jfreechart](https://mvnrepository.com/artifact/com.guicedee.services/jfreechart).
+
+Lifecycles: A library used
+[Lifecycles](https://maven.apache.org/ref/3.9.2/maven-core/lifecycles.html#clean_Lifecycle).
+
+
+
+
 # Code Review Guide
 Hello Reviewers, 
 The code to be reviewed can be found [here](https://github.com/TeamPeriwinkle/TCSS360a/tree/master/src/main/java/tcss360/diybuilder).
