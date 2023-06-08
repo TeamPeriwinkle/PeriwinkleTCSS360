@@ -17,6 +17,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+/**
+ * Login and Sign Up UI.
+ *
+ * @author Soe Lin
+ * @author Charmel Mbala
+ */
+
 public class TaskPage extends JFrame {
 
     //private ArrayList<Item> items;
@@ -28,6 +35,14 @@ public class TaskPage extends JFrame {
     private int myIndex;
     private Task myTask;
 
+    /**
+     * The TaskPage class represents the user interface for a specific task in the DIY Builder application.
+     * It allows users to view, add, and manage items related to the task.
+     * This class extends the JFrame class to create a window-based UI.
+     * @param theP
+     * @param theUser
+     * @param theIndex
+     */
     public TaskPage(Project theP, User theUser, int theIndex) {
         super("DIY Control");
         project = theP;
@@ -39,6 +54,9 @@ public class TaskPage extends JFrame {
         itemListPanel = new JPanel(new GridBagLayout());
     }
 
+    /**
+     * Display the UI to the JFrame initialize panels and Buttons.
+     */
     public void display() {
 
         createMenuBar();

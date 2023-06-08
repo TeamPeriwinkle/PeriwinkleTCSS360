@@ -8,10 +8,20 @@ import tcss360.diybuilder.SystemControl.ProjectController;
 
 /**
  * Task Object class.
+ * Represents a task in the DIY Builder application.
+ * Tasks are used to organize and manage items for a specific project.
  *
+ * This class provides methods to add, remove, and edit items within a task.
+ * Each task has a name and an associated list of items.
+ *
+ * Tasks can be created, modified, and retrieved using the DIY Builder application.
+ * The tasks and their associated items are stored in JSON format.
+ *
+ * This class interacts with the {@link Item} class and the {@link ProjectController}
+ * for item management and persistence.
  * @author Soe Lin
  * @author Mey Vo
- * @editor Charmel Mbala
+ * @author Charmel Mbala
  */
 public class Task {
 
