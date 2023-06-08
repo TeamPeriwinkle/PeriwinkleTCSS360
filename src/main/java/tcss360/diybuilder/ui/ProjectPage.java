@@ -37,8 +37,6 @@ public class ProjectPage extends JFrame {
     private final JPanel buttonsPanel;
     /** Panel to hold task list. */
     private final JPanel taskListPanel;
-    /** Arraylist of task to manipulate tasks. */
-    //private ArrayList<Task> tasks;
     /** Project object. */
     private final Project project;
     /** User object. */
@@ -57,7 +55,6 @@ public class ProjectPage extends JFrame {
         ProjectController.loadProject(theP.getName());
         project = theP;
         myUser = theUser;
-        //tasks = project.getTaskList();
         myBudget = new Budget(project.getTaskList(), project.getBudget());
         projectPanel = new JPanel();
         buttonsPanel = new JPanel();
@@ -69,7 +66,6 @@ public class ProjectPage extends JFrame {
      */
     public void display() {
         createMenuBar();
-        projectPanel.setLayout(new BoxLayout(projectPanel, BoxLayout.Y_AXIS));
 
         // Create Dataset
         dataset = new DefaultPieDataset();
@@ -82,7 +78,6 @@ public class ProjectPage extends JFrame {
         // Create chart
         chart = ChartFactory.createPieChart("Budget Pie Chart", dataset, false, true, false);
         ChartPanel chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new Dimension(200, 200));
 
         // Create description label
         JLabel projectName = new JLabel("Project Name: " + project.getName());
@@ -93,6 +88,7 @@ public class ProjectPage extends JFrame {
 
         // Set up Buttons Panel
         buttonsPanel.setLayout(new GridBagLayout());
+        buttonsPanel.setPreferredSize(new Dimension(400, 400));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
@@ -164,6 +160,14 @@ public class ProjectPage extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
+        if (remBudget < 0)
+        {
+            JOptionPane.showMessageDialog(getParent(),
+                    "Current Pie chart is not working!\n" +
+                             "You have negative remaining Budget!\n" +
+                            "Consider to edit the estimated budget or Reduce the items.",
+                    "DIYControl", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     /**
@@ -177,6 +181,15 @@ public class ProjectPage extends JFrame {
             dataset.setValue(t.getName(), ProjectController.calcuateTaskCost(t));
         }
 
+        if (remBudget < 0)
+        {
+            JOptionPane.showMessageDialog(getParent(),
+                    "Current Pie chart is not working!\n" +
+                            "You have negative remaining Budget!\n" +
+                            "Consider to edit the estimated budget or Reduce the items.",
+                    "DIYControl", JOptionPane.WARNING_MESSAGE);
+        }
+
         chart.fireChartChanged();
     }
 
@@ -188,6 +201,16 @@ public class ProjectPage extends JFrame {
     private void updateDeletedPieChart(String name) {
         dataset.remove(name);
 
+        int remBudget = dataset.getValue("Remaining Budget").intValue();
+
+        if (remBudget < 0)
+        {
+            JOptionPane.showMessageDialog(getParent(),
+                    "You still have negative remaining Budget!\n" +
+                            "Consider to edit the estimated budget or Reduce the items.",
+                    "DIYControl", JOptionPane.WARNING_MESSAGE);
+        }
+
         chart.fireChartChanged();
     }
 
@@ -195,7 +218,6 @@ public class ProjectPage extends JFrame {
      * Update the task list based on the added or deleted task.
      */
     private void updateTaskList() {
-        //tasks = project.getTaskList();
         taskListPanel.removeAll();
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -209,18 +231,12 @@ public class ProjectPage extends JFrame {
             // Mouseclick delete project
             TaskButton taskButton = new TaskButton(taskName, i);
 
-            Image cursorDeleteImage = Toolkit.getDefaultToolkit().getImage("src/main/resources/delete-24.png");
-            Image resizedDeleteImage = cursorDeleteImage.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-
-            // Create a custom cursor using the image
-            Cursor customDeleteCursor = Toolkit.getDefaultToolkit().createCustomCursor(
-                    resizedDeleteImage, new java.awt.Point(0, 0), "CustomCursor");
-            taskButton.getDeleteLabel().setCursor(customDeleteCursor);
+            taskButton.getDeleteLabel().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             taskButton.getDeleteLabel().addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     int confirm = JOptionPane.showConfirmDialog(getParent(),
-                            "Are you sure you want to delete this task?",
+                            "Are you sure you want to delete this " + taskName + "?",
                             "Confirm Delete", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
                         project.deleteTask(taskButton.getIndex());
@@ -229,15 +245,6 @@ public class ProjectPage extends JFrame {
                     }
                 }
             });
-
-            Image cursorImage = Toolkit.getDefaultToolkit().getImage("src/main/resources/cursor-60.png");
-            Image resizedCursorImage = cursorImage.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-
-            // Create a custom cursor using the image
-            Cursor customCursor = Toolkit.getDefaultToolkit().createCustomCursor(
-                    resizedCursorImage, new java.awt.Point(0, 0), "CustomCursor");
-
-            taskButton.setCursor(customCursor);
 
             // Add the TaskButton to the task list panel
             gbc.gridy++;
@@ -255,13 +262,10 @@ public class ProjectPage extends JFrame {
      */
     private void createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
-        JMenu settingsSection = new JMenu();
+        JMenu settingsSection = new JMenu("Settings");
 
-        // Add back icon image
-        ImageIcon backIcon = new ImageIcon("src/main/resources/backicon.png");
-        ImageIcon resizedBackIcon = new ImageIcon(backIcon.getImage().getScaledInstance(25, 25,
-                Image.SCALE_SMOOTH));
-        JButton backIconButton = new JButton(resizedBackIcon);
+        // Create back button
+        JButton backIconButton = new JButton("Back");
         backIconButton.setFocusable(false);
         backIconButton.addActionListener(new ActionListener() {
             @Override
@@ -272,11 +276,6 @@ public class ProjectPage extends JFrame {
             }
         });
 
-        // Add task icon image
-        ImageIcon taskIcon = new ImageIcon("src/main/resources/taskicon.png");
-        Image resizedTaskIcon = taskIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-        ImageIcon resizedIcon = new ImageIcon(resizedTaskIcon);
-
         // Create back icon panel
         JPanel backIconPanel = new JPanel();
         backIconPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -284,7 +283,6 @@ public class ProjectPage extends JFrame {
 
         menuBar.add(backIconPanel);
         menuBar.add(Box.createHorizontalGlue());
-        settingsSection.setIcon(resizedIcon);
         menuBar.add(settingsSection); // Add settingsSection to the menu bar
 
         // Create "Budget" menu item

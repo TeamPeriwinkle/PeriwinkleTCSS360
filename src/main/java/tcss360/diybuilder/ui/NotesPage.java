@@ -18,15 +18,16 @@ import java.awt.event.ActionListener;
 public class NotesPage extends JFrame {
 
     //datafield
-    JTextArea textArea;
-    JScrollPane scrollPane;
-    JMenuBar menuBar;
-    JMenu menuFile;
-    JMenuItem iSave, iOpen;
+    private JTextArea textArea;
+    private JScrollPane scrollPane;
+    private JMenuBar menuBar;
+    private JMenu menuFile;
+    private JMenuItem iSave, iOpen;
 
     //current user and project
     private static User currentUser;
     private static Project currentProject;
+    private String previousNote;
 
 
     /**
@@ -43,7 +44,7 @@ public class NotesPage extends JFrame {
         createWindow();
         createTextArea();
         createMenuBar();
-        createFileMenu();
+        //createFileMenu();
 
     }
 
@@ -74,6 +75,7 @@ public class NotesPage extends JFrame {
         this.add(scrollPane);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         textArea.setText(currentProject.getNote());
+        previousNote = textArea.getText();
         //this.add(textArea);
     }
 
@@ -86,53 +88,80 @@ public class NotesPage extends JFrame {
         this.setJMenuBar(menuBar);
 
         menuFile = new JMenu("File");
-        menuBar.add(menuFile);
+        JButton saveButton = new JButton("Save");
+        saveButton.setFocusable(false);
+        menuBar.add(saveButton);
+        //menuBar.add(menuFile);
 
         // Add a home button to go back to the user's home page
-        ImageIcon homeIcon = new ImageIcon("src/main/resources/homeicon.png");
-        Image resizedHomeIcon = homeIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-        ImageIcon resizedIcon = new ImageIcon(resizedHomeIcon);
-
         menuBar.add(Box.createHorizontalGlue());
-        JButton homeButton = new JButton(resizedIcon);
+        JButton homeButton = new JButton("Home");
+        JButton backButton = new JButton("Back");
+        homeButton.setFocusable(false);
+        backButton.setFocusable(false);
         this.getContentPane().add(homeButton, BorderLayout.NORTH);
+        menuBar.add(backButton);
         menuBar.add(homeButton);
         homeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (!previousNote.equals(textArea.getText())) {
+                    int result = JOptionPane.showConfirmDialog(getParent(), "Do you want to save current Note?",
+                            "Save Note", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                    if (result == JOptionPane.OK_OPTION) {
+                        String noteContent = textArea.getText();
+                        currentProject.setNote(noteContent);
+                        JOptionPane.showMessageDialog(getParent(), "Notes saved successfully!");
+                    }
+                }
                 dispose();
                 UserHomePage userHomePage = new UserHomePage(currentUser);
                 userHomePage.display();
             }
         });
-    }
 
-    /**
-     * creating a menu item(speciffically the save delete open items)
-     * @author Mahiliet Awasso
-     */
-    public void createFileMenu() {
-        iSave = new JMenuItem("Save");
-        menuFile.add(iSave);
-        iSave.addActionListener(new ActionListener() {
+        backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (!previousNote.equals(textArea.getText())) {
+                    int result = JOptionPane.showConfirmDialog(getParent(), "Do you want to save current Note?",
+                            "Save Note", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                    if (result == JOptionPane.OK_OPTION) {
+                        String noteContent = textArea.getText();
+                        currentProject.setNote(noteContent);
+                        JOptionPane.showMessageDialog(getParent(), "Notes saved successfully!");
+                    }
+                }
+                dispose();
+                ProjectPage p = new ProjectPage(currentProject, currentUser);
+                p.display();
+            }
+        });
 
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
                 String noteContent = textArea.getText();
                 currentProject.setNote(noteContent);
-            }
-        });
-
-        iOpen = new JMenuItem("Open");
-        menuFile.add(iOpen);
-        iOpen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-
-                //display the note for the current project
-                textArea.setText(currentProject.getNote());
+                JOptionPane.showMessageDialog(getParent(), "Notes saved successfully!");
             }
         });
     }
+
+//    /**
+//     * creating a menu item(speciffically the save delete open items)
+//     * @author Mahiliet Awasso
+//     */
+//    public void createFileMenu() {
+//        iSave = new JMenuItem("Save");
+//        menuFile.add(iSave);
+//        iSave.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//
+//                String noteContent = textArea.getText();
+//                currentProject.setNote(noteContent);
+//            }
+//        });
+//    }
 }
