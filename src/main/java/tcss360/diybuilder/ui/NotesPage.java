@@ -142,6 +142,7 @@ public class NotesPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String noteContent = textArea.getText();
+                previousNote = textArea.getText();
                 currentProject.setNote(noteContent);
                 JOptionPane.showMessageDialog(getParent(), "Notes saved successfully!");
             }

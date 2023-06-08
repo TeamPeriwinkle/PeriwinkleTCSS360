@@ -37,8 +37,8 @@ public class NoteTest{
      */
     @Test
     public void saveNote() throws IOException {
-        String username = "a6";
-        String projectName = "bedroom";
+        String username = "soe1";
+        String projectName = "wall";
         UserController.loadUserAccount(username);
         projectController.loadProject(projectName);
 
