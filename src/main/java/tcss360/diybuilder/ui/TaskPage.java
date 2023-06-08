@@ -1,5 +1,4 @@
 package tcss360.diybuilder.ui;
-
 import tcss360.diybuilder.SystemControl.ProjectController;
 import tcss360.diybuilder.models.Item;
 import tcss360.diybuilder.models.Project;
@@ -14,15 +13,32 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+/**
+ * Login and Sign Up UI.
+ *
+ * @author Soe Lin
+ * @author Charmel Mbala
+ */
+
 public class TaskPage extends JFrame {
 
     //private ArrayList<Item> items;
     private JPanel itemListPanel;
+     /** User object. */
     private User myUser;
+     /** Project object. */
     private Project project;
     private int myIndex;
     private Task myTask;
 
+    /**
+     * The TaskPage class represents the user interface for a specific task in the DIY Builder application.
+     * It allows users to view, add, and manage items related to the task.
+     * This class extends the JFrame class to create a window-based UI.
+     * @param theP
+     * @param theUser
+     * @param theIndex
+     */
     public TaskPage(Project theP, User theUser, int theIndex) {
         super("DIY Control");
         project = theP;
@@ -34,6 +50,9 @@ public class TaskPage extends JFrame {
         itemListPanel = new JPanel(new GridBagLayout());
     }
 
+    /**
+     * Display the UI to the JFrame initialize panels and Buttons.
+     */
     public void display() {
 
         createMenuBar();
@@ -131,6 +150,9 @@ public class TaskPage extends JFrame {
         this.setVisible(true);
     }
 
+     /**
+     * Update the Item list based on the added or deleted task.
+     */
     private void updateItemList() {
         itemListPanel.removeAll();
 
@@ -203,6 +225,7 @@ public class TaskPage extends JFrame {
         return false;
     }
 
+
     /**
      * Determine if adding a new item is a duplicate of an already existing item.
      * @param name
@@ -219,15 +242,15 @@ public class TaskPage extends JFrame {
     }
 
 
+     /**
+     * Creating menu bar for JFrame.
+     */
     private void createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
-        JMenu settingsSection = new JMenu();
+        JMenu settingsSection = new JMenu("Settings");
 
-        // Add back icon image
-        ImageIcon backIcon = new ImageIcon("src/main/resources/backicon.png");
-        ImageIcon resizedBackIcon = new ImageIcon(backIcon.getImage().getScaledInstance(25, 25,
-                Image.SCALE_SMOOTH));
-        JButton backIconButton = new JButton(resizedBackIcon);
+        // Create back button
+        JButton backIconButton = new JButton("Back");
         backIconButton.setFocusable(false);
         backIconButton.addActionListener(new ActionListener() {
             @Override
@@ -250,11 +273,6 @@ public class TaskPage extends JFrame {
             }
         });
 
-        // Add task icon image
-        ImageIcon taskIcon = new ImageIcon("src/main/resources/taskicon.png");
-        Image resizedTaskIcon = taskIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-        ImageIcon resizedIcon = new ImageIcon(resizedTaskIcon);
-
         // Create back icon panel
         JPanel backIconPanel = new JPanel();
         backIconPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -263,7 +281,6 @@ public class TaskPage extends JFrame {
 
         menuBar.add(backIconPanel);
         menuBar.add(Box.createHorizontalGlue());
-        settingsSection.setIcon(resizedIcon);
         menuBar.add(settingsSection); // Add settingsSection to the menu bar
 
         // Create "Budget" menu item
