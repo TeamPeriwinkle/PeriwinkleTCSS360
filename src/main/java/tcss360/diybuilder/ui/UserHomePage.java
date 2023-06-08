@@ -126,7 +126,7 @@ public class UserHomePage extends JFrame {
         projectListPanel = new JPanel(new GridBagLayout());
         gbc.gridx = 0;
         gbc.gridy = 2;
-        gbc.gridwidth = 2;
+        //gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         updateProjectList();
         this.add(projectListPanel, gbc);
@@ -153,13 +153,13 @@ public class UserHomePage extends JFrame {
             // Mouseclick delete project
             ProjectButton projectButton = new ProjectButton(projectName, i);
 
-            Image cursorDeleteImage = Toolkit.getDefaultToolkit().getImage("src/main/resources/delete-24.png");
-            Image resizedDeleteImage = cursorDeleteImage.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-
-            // Create a custom cursor using the image
-            Cursor customDeleteCursor = Toolkit.getDefaultToolkit().createCustomCursor(
-                    resizedDeleteImage, new java.awt.Point(0, 0), "CustomCursor");
-            projectButton.getDeleteLabelLabel().setCursor(customDeleteCursor);
+//            Image cursorDeleteImage = Toolkit.getDefaultToolkit().getImage("src/main/resources/delete-24.png");
+//            Image resizedDeleteImage = cursorDeleteImage.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+//
+//            // Create a custom cursor using the image
+//            Cursor customDeleteCursor = Toolkit.getDefaultToolkit().createCustomCursor(
+//                    resizedDeleteImage, new java.awt.Point(0, 0), "CustomCursor");
+            projectButton.getDeleteLabelLabel().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
             projectButton.getDeleteLabelLabel().addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
@@ -181,15 +181,15 @@ public class UserHomePage extends JFrame {
             });
 
             projectButton.addActionListener();
-            Image cursorImage = Toolkit.getDefaultToolkit().getImage("src/main/resources/cursor-60.png");
-            Image resizedCursorImage = cursorImage.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-
-            // Create a custom cursor using the image
-            Cursor customCursor = Toolkit.getDefaultToolkit().createCustomCursor(
-                    resizedCursorImage, new java.awt.Point(0, 0), "CustomCursor");
-
-            // Add the ProjectButton to the task list panel
-            projectButton.setCursor(customCursor);
+//            Image cursorImage = Toolkit.getDefaultToolkit().getImage("src/main/resources/cursor-60.png");
+//            Image resizedCursorImage = cursorImage.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+//
+//            // Create a custom cursor using the image
+//            Cursor customCursor = Toolkit.getDefaultToolkit().createCustomCursor(
+//                    resizedCursorImage, new java.awt.Point(0, 0), "CustomCursor");
+//
+//            // Add the ProjectButton to the task list panel
+//            projectButton.setCursor(customCursor);
             projectListPanel.add(projectButton, gbc);
             gbc.gridy++;
         }
@@ -221,15 +221,9 @@ public class UserHomePage extends JFrame {
      */
     private void createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
-        JMenu settingsSection = new JMenu();
-
-        // Add task icon image
-        ImageIcon taskIcon = new ImageIcon("src/main/resources/taskicon.png");
-        Image resizedTaskIcon = taskIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-        ImageIcon resizedIcon = new ImageIcon(resizedTaskIcon);
+        JMenu settingsSection = new JMenu("Settings");
 
         menuBar.add(Box.createRigidArea(new Dimension(400, 0)));
-        settingsSection.setIcon(resizedIcon);
         menuBar.add(Box.createHorizontalGlue());
         menuBar.add(settingsSection); // Add settingsSection to the menu bar
 
@@ -255,19 +249,7 @@ public class UserHomePage extends JFrame {
             }
         });
 
-        //Creat "Note" menu item
-        JMenuItem noteMenuItem = new JMenuItem("Note");
-        noteMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                NotePage n = new NotePage(myUser);
-                n.setVisible(true);
-            }
-        });
-
         settingsSection.add(aboutMenuItem);
-        settingsSection.addSeparator();
-        settingsSection.add(noteMenuItem);
         settingsSection.addSeparator();
         settingsSection.add(signOutMenuItem);
         setJMenuBar(menuBar);

@@ -233,13 +233,10 @@ public class TaskPage extends JFrame {
      */
     private void createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
-        JMenu settingsSection = new JMenu();
+        JMenu settingsSection = new JMenu("Settings");
 
-        // Add back icon image
-        ImageIcon backIcon = new ImageIcon("src/main/resources/backicon.png");
-        ImageIcon resizedBackIcon = new ImageIcon(backIcon.getImage().getScaledInstance(25, 25,
-                Image.SCALE_SMOOTH));
-        JButton backIconButton = new JButton(resizedBackIcon);
+        // Create back button
+        JButton backIconButton = new JButton("Back");
         backIconButton.setFocusable(false);
         backIconButton.addActionListener(new ActionListener() {
             @Override
@@ -262,11 +259,6 @@ public class TaskPage extends JFrame {
             }
         });
 
-        // Add task icon image
-        ImageIcon taskIcon = new ImageIcon("src/main/resources/taskicon.png");
-        Image resizedTaskIcon = taskIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-        ImageIcon resizedIcon = new ImageIcon(resizedTaskIcon);
-
         // Create back icon panel
         JPanel backIconPanel = new JPanel();
         backIconPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -275,7 +267,6 @@ public class TaskPage extends JFrame {
 
         menuBar.add(backIconPanel);
         menuBar.add(Box.createHorizontalGlue());
-        settingsSection.setIcon(resizedIcon);
         menuBar.add(settingsSection); // Add settingsSection to the menu bar
 
         // Create "Budget" menu item

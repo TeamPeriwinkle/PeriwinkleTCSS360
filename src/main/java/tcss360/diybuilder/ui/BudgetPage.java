@@ -190,10 +190,8 @@ public class BudgetPage extends JFrame {
     private void createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
 
-        // add taskicon image
-        ImageIcon backIcon = new ImageIcon("src/main/resources/backicon.png");
-        ImageIcon resizedBackIcon = new ImageIcon(backIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH));
-        JButton backIconButton = new JButton(resizedBackIcon);
+        // Create back button
+        JButton backIconButton = new JButton("Back");
         backIconButton.setFocusable(false);
 
         JButton homeButton = new JButton("Home");
